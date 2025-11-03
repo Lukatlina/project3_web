@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? null;
     
     // 2. 함수 이름 변경 (camelCase 컨벤션 적용)
-    $result = checkEmailStatus($email);
+    $result = checkEmailStatus($pdo, $email);
     echo $result;
 }
 
@@ -22,9 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
  * @param string|null $email 확인할 이메일
  * @return int 상태 코드
  */
-function checkEmailStatus($email) {
-    // 3. $pdo 변수를 함수 안으로 가져오기
-    global $pdo;
+function checkEmailStatus($pdo, $email) {
+
 
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return -1; // 잘못된 요청

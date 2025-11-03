@@ -1,9 +1,9 @@
 // 비밀번호 입력 인풋창 확인하는 함수.
 // 가입할 때 조건이 있었던 것과 달리 비어있지만 않으면 되는 것 같다.
 function passwordCheck() {
-  let password = document.getElementById("login_password");
-  let password_check = document.getElementById("login_password_check_text");
-  let button = document.getElementById("login_btn");
+  let password = document.getElementById("login-password");
+  let password_check = document.getElementById("login-password-check-message");
+  let button = document.getElementById("login-button");
 
 
   if(password.value == ""){
@@ -21,9 +21,9 @@ function passwordCheck() {
 
 
 function loginData() {
-  var form = document.getElementById("login_user_data_check");
+  var form = document.getElementById("login-form");
   // 자동 로그인 체크 박스를 확인하기 위해 변수 할당
-  let autologin = document.getElementById("AutoLogin");
+  let autologin = document.getElementById("auto-login-checkbox");
 
   form.addEventListener("submit", function(event) {
     event.preventDefault(); // 폼의 기본 동작인 페이지 새로고침을 막음
@@ -36,7 +36,7 @@ function loginData() {
     // }
   
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "login_user_data.php", true);
+    xhr.open("POST", "login_process.php", true);
   
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -46,7 +46,7 @@ function loginData() {
           console.log("response: " + response);
           // 응답 결과에 따라 처리
           if (response === "1") {
-            form.action = "weverse_main.php";
+            form.action = "../weverse_main.php";
             form.submit();
           } else if (response === "0") {
             // 팝업 띄우기
