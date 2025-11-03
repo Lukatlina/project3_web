@@ -30,7 +30,7 @@ if (empty($_POST['email'])) {
     <div id="next">
         <div class="signin-screen">
             <div class="signin-image">
-                <img src="image/weverse_account.png" width="201" height="18" alt="weverse account" class="signin-image-main">
+                <img src="../image/weverse_account.png" width="201" height="18" alt="weverse account" class="signin-image-main">
             </div>
             <div class="signin-box">
                 <h1 class="signin-header">위버스 계정으로 로그인해주세요.</h1>

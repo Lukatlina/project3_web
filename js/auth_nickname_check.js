@@ -1,8 +1,8 @@
 function checkNickname() {// JS 함수 이름을 사용하는 태그중 속성 ID 와 함수명이 겹치게 만들면 에러 발생
 
     let nickname = document.getElementById("nickname");
-    let nickname_check = document.getElementById("nickname_check");
-    let btn = document.getElementById("continue_join_btn");
+    let nickname_check = document.getElementById("nickname-check-message");
+    let btn = document.getElementById("continue-join-button");
 
     console.log(isNickname(nickname.value));
     if(!isNickname(nickname.value)){
