@@ -221,7 +221,7 @@ body{
     color: rgb(253, 91, 21);
 }
 
-.join_password_check_text{
+.password-check-rule{
     display: inline-flex;
     margin-top: 6.4px;
     height: 25.6px;
@@ -231,7 +231,7 @@ body{
 }
 
 
-.signin_box_header_sub{
+.signin-subheader{
     padding: 0px;
     margin: 0px 0px 2rem;
     font-size: 1.8rem;
@@ -243,7 +243,7 @@ body{
 
 
 
-.return_previous_page{
+.return-previous-page{
     margin-top: 2rem;
     text-decoration-line: underline;
     font-weight: 600;
@@ -261,12 +261,12 @@ body{
 }
 
 @media screen and (min-width: 768px){
-    .signin_box_header_sub {
+    .signin-subheader {
         font-size: 1.8rem;
     }
 }
 
-.signin_nickname{
+.signin-nickname-area{
     margin-top: 3rem;
 }
 

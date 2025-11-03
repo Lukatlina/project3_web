@@ -23,7 +23,7 @@
             <div class="signin-screen">
                 <div class="signin-image">
                     <img
-                        src="image/weverse_account.png"
+                        src="../image/weverse_account.png"
                         width="201"
                         height="18"
                         alt="weverse account"
