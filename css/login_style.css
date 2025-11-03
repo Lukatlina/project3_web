@@ -174,11 +174,11 @@ body{
     transition: all 0.2s ease 0s;
 }
 
-.signin_password{
+.signin-password-area{
     margin-bottom: 16px;
 }
 
-.show_login{
+.show-password-button{
     width: 28.8px;
     height: 25.6px;
     background-repeat: no-repeat;
@@ -190,11 +190,11 @@ body{
     cursor: pointer;
 }
 
-.show_btn_img{
+.password-input-line{
     border: 0px;
 }
 
-.show_btn_img::after{
+.password-input-line::after{
     content: "";
     position: absolute;
     left: 0px;
@@ -205,13 +205,13 @@ body{
     transition: all 0.2s ease 0s;
 }
 
-.password_check{
+.password-check-area{
     margin-top: 6.4px;
     display: flex;
     flex-direction: column;
 }
 
-.password_check_text{
+.password-check-message{
     visibility: hidden;
     display: inline-flex;
     margin-top: 6.4px;
