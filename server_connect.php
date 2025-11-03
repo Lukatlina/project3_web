@@ -1,6 +1,6 @@
 <?php
 
-$serverName = "192.168.56.102";
+$serverName = "127.0.0.1";
 $userName = "lunamoon";
 $server_pw = "digda1210";
 

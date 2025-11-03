@@ -1,13 +1,13 @@
 function checkPassword() {
     let password = document.getElementById("password");
-    let password_check_length = document.getElementById("join_password_check_text_length");
-    let password_check_english = document.getElementById("join_password_check_text_english");
-    let password_check_number = document.getElementById("join_password_check_text_number");
-    let password_check_sc = document.getElementById("join_password_check_text_sc");
+    let password_check_length = document.getElementById("password-rule-length");
+    let password_check_english = document.getElementById("password-rule-english");
+    let password_check_number = document.getElementById("password-rule-number");
+    let password_check_sc = document.getElementById("password-rule-special");
 
-    let check_password = document.getElementById("check_password");
-    let password_check_text = document.getElementById("password_check_text");
-    let pw_next_btn = document.getElementById("pw_next_btn");
+    let check_password = document.getElementById("check-password");
+    let password_check_text = document.getElementById("password-check-message");
+    let pw_next_btn = document.getElementById("password-next-button");
 
     console.log(password.value);
     console.log(check_password.value);

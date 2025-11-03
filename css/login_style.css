@@ -10,7 +10,7 @@ body{
     width: 100%;
 }
 
-.signinscreen{
+.signin-screen{
     --contents-min-height: auto;
     position: relative;
     margin: 0px auto 38px;
@@ -20,7 +20,7 @@ body{
     height: var(--contents-min-height,100vh);
     min-height: 880px;}
 
-.signin_img{
+.signin-image{
     height: 102px;
     display: flex;
     -webkit-box-align: center;
@@ -29,30 +29,30 @@ body{
     margin-top: 59px;
     margin-bottom: 16px;}
 
-.signin_img_1{
+.signin-image-main{
     margin-bottom: 0px;
 }
 
-.signin_img_1::after{
+.signin-image-main::after{
     content: "";
     display: block;
     clear: both;
 }
 
 @media screen and (min-width: 768px) {
-    .signinscreen_box{
+    .signin-box{
         --contents-horizontal-padding: 77px
         
     }
 }
 
-.signinscreen_box{
+.signin-box{
     --header-height: 178px;
     --contents-horizontal-padding: 38px;
     padding: 0 var(--contents-horizontal-padding,38px);
     height: var(--contents-min-height,auto);}
 
-.signin_box_header{
+.signin-header{
     padding: 0px;
     margin: 0px 0px 32px;
     font-size: 42px;
@@ -62,18 +62,18 @@ body{
     white-space: pre-line;
 }
 
-.form_box{
+.form-box{
     width: 100%;
     display: flex;
     flex-direction: column;}
 
-.label{
+.form-label{
     height: 25.6px;
     font-weight: 500;
     font-size: 20.8px;
     color: rgb(109, 109, 109)}
 
-.text_box{
+.text-box{
     width: 100%;
     margin-top: 3.2px;
     position: relative;
@@ -82,7 +82,7 @@ body{
     -webkit-box-align: center;
     align-items: center;}
 
-.text_box_input{
+.text-input{
     box-sizing: border-box;
     -webkit-box-flex: 1;
     flex-grow: 1;
@@ -95,7 +95,7 @@ body{
     padding: 0px 3.2px;
     word-break: keep-all;}
 
-.delete_login{
+.delete-button{
     height: 26px;
     background-repeat: no-repeat;
     background-size: contain;
@@ -104,12 +104,12 @@ body{
     opacity: 1;
     transition: all 0.2s ease 0s;}
 
-.email_check{
+.email-check-area{
     margin-top: 6.4px;
     display: flex;
     flex-direction: column;}
 
-.email_check_text{
+.email-check-message{
     visibility: hidden;
     display: inline-flex;
     margin-top: 6.4px;
@@ -119,18 +119,18 @@ body{
     color: rgb(253, 91, 21);}
 
 @media screen and (min-width: 768px) {
-    .signinscreen_box_btn{
+    .signin-button-area{
         width: calc(100% - 156.8px);
     }
 }
 
-.signinscreen_box_btn{
+.signin-button-area{
     position: absolute;
     bottom: 32px;
     text-align: center;
     width: calc(100% - 230px);}
 
-.continue_login_btn{
+.continue-login-button{
     display: flex;
     -webkit-box-pack: center;
     justify-content: center;
@@ -149,7 +149,7 @@ body{
     color: white;
     }
 
-.continue_login_btn::before{
+.continue-login-button::before{
     display: block;
     position: absolute;
     width: 100%;
@@ -159,11 +159,11 @@ body{
     transition: all 0.5s ease 0s;
     content: "";}
 
-    .continue_login_text{
+    .button-text{
         z-index: 10;
     }
 
-.delete_button_img::after{
+.text-input-line::after{
     content: "";
     position: absolute;
     left: 0px;
@@ -174,11 +174,11 @@ body{
     transition: all 0.2s ease 0s;
 }
 
-.signin_password{
+.signin-password-area{
     margin-bottom: 16px;
 }
 
-.show_login{
+.show-password-button{
     width: 28.8px;
     height: 25.6px;
     background-repeat: no-repeat;
@@ -190,11 +190,11 @@ body{
     cursor: pointer;
 }
 
-.show_btn_img{
+.password-input-line{
     border: 0px;
 }
 
-.show_btn_img::after{
+.password-input-line::after{
     content: "";
     position: absolute;
     left: 0px;
@@ -205,13 +205,13 @@ body{
     transition: all 0.2s ease 0s;
 }
 
-.password_check{
+.password-check-area{
     margin-top: 6.4px;
     display: flex;
     flex-direction: column;
 }
 
-.password_check_text{
+.password-check-message{
     visibility: hidden;
     display: inline-flex;
     margin-top: 6.4px;
@@ -221,7 +221,7 @@ body{
     color: rgb(253, 91, 21);
 }
 
-.join_password_check_text{
+.password-check-rule{
     display: inline-flex;
     margin-top: 6.4px;
     height: 25.6px;
@@ -231,7 +231,7 @@ body{
 }
 
 
-.signin_box_header_sub{
+.signin-subheader{
     padding: 0px;
     margin: 0px 0px 2rem;
     font-size: 1.8rem;
@@ -243,7 +243,7 @@ body{
 
 
 
-.return_previous_page{
+.return-previous-page{
     margin-top: 2rem;
     text-decoration-line: underline;
     font-weight: 600;
@@ -255,18 +255,18 @@ body{
 
 
 @media screen and (min-width: 768px){
-    .signin_box_header {
+    .signin-header {
         font-size: 2.6rem;
     }
 }
 
 @media screen and (min-width: 768px){
-    .signin_box_header_sub {
+    .signin-subheader {
         font-size: 1.8rem;
     }
 }
 
-.signin_nickname{
+.signin-nickname-area{
     margin-top: 3rem;
 }
 
@@ -275,12 +275,12 @@ body{
             background-color: rgb(250, 251, 252);
         }
 
-        .signinscreen {
+        .signin-screen {
             padding: 0px;
             height: auto;
             }
     
-        .signinscreen {
+        .signin-screen {
             margin: 38px auto;
             padding: 0px 77px;
             width: 768px;
