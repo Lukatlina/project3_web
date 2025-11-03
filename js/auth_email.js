@@ -1,7 +1,7 @@
 function printEmail() {
     let email = document.getElementById("email");
-    let email_check = document.getElementById("email_check");
-    let button = document.getElementById("continue_login_btn");
+    let email_check = document.getElementById("email-check-message");
+    let button = document.getElementById("continue-login-button");
 
     console.log(email.value);
 
@@ -31,8 +31,8 @@ function isEmail(asValue) {
 
 function loadData() {
   console.log("loadData() 시작");
-    var form = document.getElementById("checkEmail");
-    let email_check = document.getElementById("email_check");
+    var form = document.getElementById("email-check-form");
+    let email_check = document.getElementById("email-check-message");
 
     form.addEventListener("submit", function(event) {
       console.log("submit 시작");
@@ -45,19 +45,19 @@ function loadData() {
     }
     
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "email_compare.php", true);
+      xhr.open("POST", "email_check_process.php", true);
     
       xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
           if (xhr.status === 200) {
             console.log("POST 요청 성공");
-            var response = xhr.responseText;
+            var response = xhr.responseText.trim();
             console.log("response: " + response);
             // 응답 결과에 따라 처리
             if (response === "1") {
-              form.action = "weverse_login.php";
+              form.action = "login_page.php";
             } else if (response === "0") {
-              form.action = "weverse_email_check.php";
+              form.action = "register_page.php";
             } else if (response === "2") {
               email_check.textContent = "탈퇴한지 90일이 지나지 않은 이메일입니다.";
               email_check.style.color = "rgb(253, 91, 21)";
@@ -67,9 +67,11 @@ function loadData() {
               return;
             } else {
               console.log("response 오류");
+              return;
             }
           } else {
             console.log("POST 요청 실패");
+            return;
           }
           form.submit();
         }
@@ -78,4 +80,3 @@ function loadData() {
     });
     console.log("loadData() 끝");
   }
-
