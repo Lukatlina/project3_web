@@ -536,8 +536,6 @@ function changeImage(preview_content, item_btn, dataURL) {
   preview_content.insertBefore(newPreviewItem, item_btn);
 }
 
-
-
 // 이미지 선택시 change 이벤트가 일어나면 실행되는 함수
 function getImageFiles(event) {
   console.log("getImageFiles() 시작");

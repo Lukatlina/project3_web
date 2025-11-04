@@ -2,14 +2,12 @@ function openNicknameDialog() {
     
     var dialog = document.getElementById("dialog-nickname");
     dialog.style.display = "flex";
-    
 }
 
 function openNameDialog() {
     
     var dialog = document.getElementById("dialog-name");
     dialog.style.display = "flex";
-   
   }
 
   function checkmodifyName() {// JS 함수 이름을 사용하는 태그중 속성 ID 와 함수명이 겹치게 만들면 에러 발생
@@ -132,7 +130,7 @@ console.log(document.getElementById("dialog-nickname"));
   }
   
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "modify_userdata.php", true);
+    xhr.open("POST", "profile_update_process.php", true);
   
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -143,18 +141,6 @@ console.log(document.getElementById("dialog-nickname"));
           console.log("response: " + response);
           // 응답 결과에 따라 처리
           if (response === "1") {
-            // 성공시 바뀐 데이터 띄움
-            // if (formData.get("modifyNickname") != "") {
-            //   var modifiedNickname = formData.get("modifyNickname");
-            //   var modifiedtext = document.getElementById("modified-nickname-text");
-            //   modifiedtext.textContent = modifiedNickname;
-            // } else if (formData.get("modifyName") != "") {
-            //   var modifiedNickname = formData.get("modifyName");
-            //   var modifiedtext = document.getElementById("modified-nickname-text");
-            //   modifiedtext.textContent = modifiedNickname;
-            // } else {
-            //   // 비밀번호는 표시 하지 않음
-            // }
             location.reload();
           }  else {
             console.log("response 오류");
@@ -185,7 +171,7 @@ function saveNameDialog() {
     }
     
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "modify_userdata.php", true);
+      xhr.open("POST", "profile_update_process.php", true);
     
       xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -196,15 +182,6 @@ function saveNameDialog() {
             console.log("response: " + response);
             // 응답 결과에 따라 처리
             if (response === "1") {
-              // 성공시 바뀐 데이터 띄움
-              // if (formData.get("modifyName") != "") {
-              //   var modifiedLastName = formData.get("lastname");
-              //   var modifiedFirstName = formData.get("firstname");
-              //   var modifiedtext = document.getElementById("modified-name-text");
-              //   modifiedtext.textContent = modifiedLastName + modifiedFirstName;
-              // } else {
-              //   // 비밀번호는 표시 하지 않음
-              // }
               location.reload();
             }  else {
               console.log("response 오류");
@@ -220,44 +197,44 @@ function saveNameDialog() {
     });
   }
 
-  function savePasswordDialog() {
+  function savePasswordDialog(formData) {
   console.log("savePasswordDialog 함수 시작")
-    var dialog = document.getElementById("dialog-password");
-    var form = document.getElementById("form-password");
+    // var dialog = document.getElementById("dialog-password");
+    // var form = document.getElementById("form-password");
 
-        var formData = new FormData(form);
-        for (var pair of formData.entries()) {
-          console.log(pair[0] + ": " + pair[1]);
+    //     var formData = new FormData(form);
+    //     for (var pair of formData.entries()) {
+    //       console.log(pair[0] + ": " + pair[1]);
       
       
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "modify_userdata.php", true);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "profile_update_process.php", true);
       
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === XMLHttpRequest.DONE) {
-            console.log("리퀘스트 성공");
-            if (xhr.status === 200) {
-              console.log("POST 요청 성공");
-              var response = xhr.responseText;
-              console.log("response: " + response);
-              // 응답 결과에 따라 처리
-              if (response === "1") {
-                // 패스워드는 띄울 필요 없음
-                location.reload();
-              }  else {
-                console.log("response 오류");
-              }
-            } else {
-              console.log("POST 요청 실패");
-            }
-            // dialog.style.display = "none";
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        console.log("리퀘스트 성공");
+        if (xhr.status === 200) {
+          console.log("POST 요청 성공");
+          var response = xhr.responseText.trim();
+          console.log("response: " + response);
+          // 응답 결과에 따라 처리
+          if (response === "1") {
+            // 패스워드는 띄울 필요 없음
+            location.reload();
+          }  else {
+            console.log("response 오류");
           }
-        };
-        xhr.send(formData);
-        console.log("xhr.send");
-      };
+        } else {
+          console.log("POST 요청 실패");
+        }
+        // dialog.style.display = "none";
+      }
+    };
+    xhr.send(formData);
+    console.log("xhr.send");
+      // };
       console.log("savePasswordDialog 함수 끝")
-    }
+  }
 
     function checkCurrentPassword() {
 
@@ -275,7 +252,7 @@ function saveNameDialog() {
         }
         
           var xhr = new XMLHttpRequest();
-          xhr.open("POST", "current_password_check.php", true);
+          xhr.open("POST", "password_check_process.php", true);
         
           xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -289,7 +266,7 @@ function saveNameDialog() {
                   console.log("response 1 if문 실행");
                   // 유저가 입력한 비밀번호가 유저의 비밀번호와 일치할 경우
                   current_password_check_text.style.visibility = "hidden";
-                  savePasswordDialog();
+                  savePasswordDialog(formData);
                   dialog.style.display = "none";
                 } else {
                   current_password_check_text.style.visibility = "visible";
@@ -308,14 +285,14 @@ function saveNameDialog() {
 
 function logoutUser() {
 
-fetch("logout_user_data.php", {
+fetch("../auth/logout_process.php", {
   method: "POST",
 })
   .then(function(response) {
     // 응답 처리
     console.log(response);
     if (response.status === 200) {
-      window.location.href = "weverse_main.php";
+      window.location.href = "../weverse_main.php";
       alert("로그아웃되었습니다.");
     }else{
       alert("로그아웃 실패");
