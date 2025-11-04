@@ -18,9 +18,9 @@ function checkNickname() {// JS 함수 이름을 사용하는 태그중 속성 I
 
 function checkmodifyNickname() {// JS 함수 이름을 사용하는 태그중 속성 ID 와 함수명이 겹치게 만들면 에러 발생
 
-  let nickname = document.getElementById("modifyNickname");
-  let nickname_check = document.getElementById("modifyNickname_check");
-  let btn = document.getElementById("nickname_change_complete");
+  let nickname = document.getElementById("modify-nickname");
+  let nickname_check = document.getElementById("modify-nickname-check");
+  let btn = document.getElementById("nickname-change-complete");
 
   console.log(isNickname(nickname.value));
   if(!isNickname(nickname.value)){

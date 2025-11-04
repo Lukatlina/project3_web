@@ -90,17 +90,17 @@ function checkPassword() {
 }
 
 function checkmodifyPassword() {
-    let current_password = document.getElementById("current_password");
-    let modify_password = document.getElementById("modify_password");
+    let current_password = document.getElementById("current-password");
+    let modify_password = document.getElementById("modify-password");
     
-    let modify_password_check_length = document.getElementById("modify_password_check_text_length");
-    let modify_password_check_english = document.getElementById("modify_password_check_text_english");
-    let modify_password_check_number = document.getElementById("modify_password_check_text_number");
-    let modify_password_check_sc = document.getElementById("modify_password_check_text_sc");
+    let modify_password_check_length = document.getElementById("modify-password-rule-text-length");
+    let modify_password_check_english = document.getElementById("modify-password-rule-text-english");
+    let modify_password_check_number = document.getElementById("modify-password-rule-text-number");
+    let modify_password_check_sc = document.getElementById("modify-password-rule-text-sc");
 
-    let modify_check_password = document.getElementById("modify_check_password");
-    let modify_password_check_text = document.getElementById("modify_password_check_text");
-    let pw_change_btn = document.getElementById("password_change_complete");
+    let modify_check_password = document.getElementById("modify-check-password");
+    let modify_password_check_text = document.getElementById("modify-password-check-message");
+    let pw_change_btn = document.getElementById("password-change-complete");
 
     console.log(modify_password.value);
     console.log(modify_check_password.value);
