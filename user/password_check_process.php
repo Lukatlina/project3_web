@@ -29,7 +29,7 @@ function comparePassword($pdo, $email, $password) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_SESSION['email'] ?? null;
-    $currentPassword = $_POST['current_password'] ?? null;
+    $currentPassword = $_POST['current-password'] ?? null;
 
     // 3. (변경) $pdo 변수를 함수로 전달
     $result = comparePassword($pdo, $email, $currentPassword);

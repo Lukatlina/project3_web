@@ -12,35 +12,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
+$modifyNickname = $_POST['modify-nickname'] ?? null;
+    $lastName = $_POST['lastname'] ?? null;
+    $firstName = $_POST['firstname'] ?? null;
+    $modifyPassword = $_POST['modify-password'] ?? null;
+
     try {
         $pdo->beginTransaction(); // (개선) 트랜잭션 시작
 
-        // 2. (변경) 변수명 camelCase 및 PDO 적용
-        if (!empty($_POST['modifyNickname'])) {
+        // 3. (변경) PDO Prepared Statement로 변경
+        if (!empty($modifyNickname)) {
             // --- 닉네임 변경 ---
-            $nickname = $_POST['modifyNickname'];
             $sql = "UPDATE user SET nickname = ?, update_time = now() WHERE email = ?";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$nickname, $email]);
+            $stmt->execute([$modifyNickname, $email]);
 
-        } elseif (!empty($_POST['lastname']) && !empty($_POST['firstname'])) {
+        } elseif (!empty($lastName) || !empty($firstName)) {
             // --- 이름 변경 ---
-            $lastName = $_POST['lastname'];
-            $firstName = $_POST['firstname'];
             $sql = "UPDATE user SET first_name = ?, last_name = ?, update_time = now() WHERE email = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$firstName, $lastName, $email]);
 
-        } elseif (!empty($_POST['modify_password'])) {
+        } elseif (!empty($modifyPassword)) {
             // --- 비밀번호 변경 ---
-            $modifyPassword = $_POST['modify_password'];
             $encryptedModifyPassword = password_hash($modifyPassword, PASSWORD_DEFAULT);
             $sql = "UPDATE user SET password = ?, update_time = now() WHERE email = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$encryptedModifyPassword, $email]);
 
         } else {
-            // 아무 작업도 하지 않음
             throw new Exception("No data received.");
         }
 
@@ -53,4 +53,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "0"; // 실패
     }
 }
-    ?>
+?>
