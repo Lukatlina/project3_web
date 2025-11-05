@@ -1,12 +1,8 @@
 <?php
     // header('Cache-Control: no cache'); //no cache
     // session_cache_limiter('private_no_expire'); // works
-    include 'check_auto_login.php';
-
-    if (!session_id()) {
-        session_start();
-    }
-
+    include_once 'check_auto_login.php';
+    include_once 'config/config.php';
 ?>
 
 <!DOCTYPE html>
@@ -17,79 +13,79 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weverse</title>
-    <link rel="stylesheet" type="text/css" href="artist_style.css">
+    <link rel="stylesheet" type="text/css" href="css/feed_style.css">
 </head>
 <body>
     <?php
-        include 'server_connect.php';
+        $boardNumber = (int)($_GET['board_number'] ?? 0);
+        $userNumber = (int)($_SESSION['user_number'] ?? 0);
         
-        $board_number = $_GET['board_number'];
-        $user_number = $_SESSION['user_number'];
-        
-        $user_sql = "SELECT board_number, board.user_number, contents, contents_save_time, cheering, nickname
-        FROM board
-        LEFT JOIN user ON board.user_number=user.user_number
-        WHERE board_number='$board_number';";
-        $user_result = mysqli_query( $conn, $user_sql );
-        
-        // 유저 고유번호와 닉네임을 함께 조회해서 가져온다.
-        $board_row = mysqli_fetch_assoc($user_result);
-        $board_number = $board_row['board_number'];
-        $contents = $board_row['contents'];
-        $date_time = $board_row['contents_save_time'];
-        $cheering = $board_row['cheering'];
-        $nickname = $board_row['nickname'];
-        
-        $dateTime = new DateTime($date_time);
+        // (추가) 유효성 검사: 게시글 번호가 없으면 중단
+        if ($boardNumber === 0) {
+            echo "잘못된 접근입니다.";
+            exit();
+        }
 
-        // 전체 comment 갯수 확인
-        $whole_comment_sql = "SELECT count(*) AS number_of_comments
-        FROM comments
-        WHERE board_number='$board_number' AND parent_number=0
-        ORDER BY comments_number;";
-        $count_comments_result = mysqli_query( $conn, $whole_comment_sql );
+        // 3. (추가) HTML 렌더링에 필요한 변수들 초기화
+        $boardRow = null;
+        $comments = [];
+        $processedContents = ""; // ★★★ 비디오/이미지가 처리될 변수
+        $numberOfComments = 0;
+        $nickname = "";
+        $cheering = 0;
+        $dateTime = new DateTime(); // 기본값으로 현재 시간
 
-        $row = mysqli_fetch_assoc($count_comments_result);
-        $number_of_comments = $row['number_of_comments'];
-        
-        // comment를 조회해서 가져온다.
-        $comments_sql = "SELECT comments_number, parent_number, comments.user_number, comments_text, comments_save_time, comments_cheering, nickname
-        FROM comments
-        LEFT JOIN user ON comments.user_number=user.user_number
-        WHERE board_number='$board_number' AND parent_number=0
-        ORDER BY comments.comments_number LIMIT 20;";
-        $comments_result = mysqli_query( $conn, $comments_sql );
-
-        $comments = array();
-
-        for ($i = 0; $i < mysqli_num_rows($comments_result); $i++) {
-            $comments_row = mysqli_fetch_array($comments_result);
-            $comments_number = $comments_row['comments_number'];
-            $parent_number = $comments_row['parent_number'];
-            $write_user_number = $comments_row['user_number'];
-            $comments_text = $comments_row['comments_text'];
-            $comments_save_time = $comments_row['comments_save_time'];
-            $comments_cheering = $comments_row['comments_cheering'];
-            $write_user_nickname = $comments_row['nickname'];
+        try {
+            // 4. (변경) 게시글 정보 mysqli 쿼리를 PDO로 변경
+            $sql = "SELECT board.board_number, board.user_number, board.contents, 
+                        board.contents_save_time, board.cheering, user.nickname
+                    FROM board
+                    LEFT JOIN user ON board.user_number = user.user_number
+                    WHERE board.board_number = ?";
             
-            // 날짜 포맷 변경을 위한 DateTime 함수 선언. 
-            $comments_dateTime = new DateTime($comments_save_time);
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$boardNumber]);
+            $boardRow = $stmt->fetch(); // (변경) fetch()로 1개 행만 가져오기
 
-            $comments[] = array(
-                'index' => $i,
-                'id' => $comments_number,
-                'parent_number' => $parent_number,
-                'write_user_number' => $write_user_number,
-                'comments_text' =>  $comments_text,
-                'comments_dateTime' => $comments_dateTime,
-                'comments_cheering' => $comments_cheering,
-                'write_user_nickname' => $write_user_nickname);
+            if (!$boardRow) {
+                echo "게시글이 존재하지 않습니다.";
+                exit();
             }
+            
+            // 5. (변경) HTML에서 사용할 변수들에 값 할당
+            $contents = $boardRow['contents'];
+            $cheering = $boardRow['cheering'];
+            $nickname = $boardRow['nickname'];
+            $dateTime = new DateTime($boardRow['contents_save_time']);
+            
+            // 6. (★핵심 변경★) 'include find_video.php' -> 'injectMediaPaths()' 함수 호출
+            // Step 3에서 만든 함수를 호출하여 $contents 안의 미디어 태그를 완성시킵니다.
+            // 이 결과($processedContents)를 HTML 렌더링에 사용할 것입니다.
+            $processedContents = injectMediaPaths($pdo, $boardNumber, $contents);
 
-            // $contents와 $board_number를 선언해야 find_video.php 파일 안에서 sql 조회가 가능하다.
-            // 이미지를 텍스트와 합친다.
-            include 'find_video.php';
-            // $contents로 결과값이 나온다.
+            // --- 댓글 로직 시작 ---
+            
+            // 7. (변경) 전체 댓글 개수 쿼리 (PDO)
+            $sqlCommentCount = "SELECT COUNT(*) FROM comments WHERE board_number = ? AND parent_number = 0";
+            $stmtCommentCount = $pdo->prepare($sqlCommentCount);
+            $stmtCommentCount->execute([$boardNumber]);
+            $numberOfComments = (int)$stmtCommentCount->fetchColumn(); // (int)로 변환
+            
+            // 8. (★핵심 변경★) '댓글 20개 로드 쿼리' -> 'getCommentsForPost()' 함수 호출
+            // Step 11-3(통합)에서 만든 공용 함수를 호출하여 초기 댓글 목록을 가져옵니다.
+            $comments = getCommentsForPost(
+                $pdo,
+                $boardNumber,
+                $userNumber,
+                0, // $lastItemNumber (처음 로드이므로 0)
+                20
+            );
+            
+        } catch (PDOException $e) {
+            error_log("Failed to fetch post details or comments: " . $e->getMessage());
+            echo "페이지를 불러오는 데 실패했습니다.";
+            exit(); 
+        }
 
     ?>
     <div class="root">

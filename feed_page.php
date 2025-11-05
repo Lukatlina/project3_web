@@ -3,11 +3,8 @@
     // header('Cache-Control: no cache'); //no cache
     // session_cache_limiter('private_no_expire'); // works
     
-    include 'check_auto_login.php';
-
-    if (!session_id()) {
-        session_start();
-    }
+    include_once 'check_auto_login.php';
+    include_once 'config/config.php'; //
 
     // 이동한 페이지에서 뒤로가기를 눌러서 다시 main으로 이동했을 때 양식 다시 제출 확인 오류를 없애기 위한 코드
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -80,18 +77,23 @@
                 <div class="body">
 
                 <?php
-                    include 'server_connect.php';
-                    $user_number = $_SESSION['user_number'];
-                    $modified_board_number = $_POST['Modify_board_number'];
+                    $userNumber = (int)($_SESSION['user_number'] ?? 0);
+                    $modifiedBoardNumber = (int)($_POST['Modify_board_number'] ?? 0);
                     
-            
-                    $user_sql = "SELECT nickname, user_number FROM user WHERE user_number='$user_number';";
-                    $user_result = mysqli_query( $conn, $user_sql );
-                    
-                    // 유저 고유번호와 닉네임을 함께 조회해서 가져온다.
-                    if ($user_row = mysqli_fetch_array($user_result)) {
-                        $nickname = $user_row['nickname'];
-                        $user_number = $user_row['user_number'];
+                    $nickname = '';
+
+                    try {
+                        // PDO 쿼리로 닉네임 가져오기
+                        $sql = "SELECT nickname FROM user WHERE user_number = ?";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute([$userNumber]);
+                        $userRow = $stmt->fetch(); // fetch() 사용
+
+                        if ($userRow) {
+                            $nickname = $userRow['nickname'];
+                        }
+                    } catch (PDOException $e) {
+                        error_log("Failed to fetch user nickname: " . $e->getMessage());
                     }
                 ?>
 
@@ -134,11 +136,68 @@
                                         </div>
                                     </div>
                                     <?php
-                                    
-                                        $board_join_sql = "SELECT board_number, board.user_number, contents, contents_save_time, cheering, nickname FROM board LEFT JOIN user ON board.user_number=user.user_number ORDER BY board.board_number DESC LIMIT 20;";
-                                        $join_result = mysqli_query( $conn, $board_join_sql );
+                                        const POSTS_PER_PAGE = 20;
+                                        $posts = [];
 
-                                        $posts = array();
+                                        try {
+                                            // 1. (변경) PDO 쿼리 준비 (LIMIT 포함)
+                                        $sql = "SELECT board_number, board.user_number, contents, contents_save_time, cheering, nickname 
+                                                FROM board 
+                                                LEFT JOIN user ON board.user_number=user.user_number 
+                                                ORDER BY board.board_number DESC 
+                                                LIMIT :limit";
+                                        $stmt = $pdo->prepare($sql);
+                                        
+                                        // 2. LIMIT 값 바인딩
+                                        $limitCount = (int)POSTS_PER_PAGE;
+                                        $stmt->bindParam(':limit', $limitCount, PDO::PARAM_INT);
+                                        $stmt->execute();
+
+                                        // 3. fetchAll()로 20개 게시물 한 번에 가져오기
+                                        $allPosts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                        foreach ($allPosts as $post) {
+                                            $boardNumber = (int)$post['board_number'];
+                                            $boardUserNumber = (int)$post['user_number']; // writeUserNumber
+                                            $contents = $post['contents'];
+                                            $contentsSaveTime = $post['contents_save_time'];
+
+                                            // 5. (★핵심 변경) 'include find_image.php' -> 'injectMediaPaths()' 함수 호출
+                                            $processedContents = injectMediaPaths($pdo, $boardNumber, $contents);
+
+                                            // 6. (변경) 날짜 포맷팅
+                                            $dateTime = new DateTime($contentsSaveTime);
+                                            if ($dateTime->format('Y') === date('Y')) {
+                                                $formattedDateTime = $dateTime->format('m. d. H:i');
+                                            } else {
+                                                $formattedDateTime = $dateTime->format('Y. m. d. H:i');
+                                            }
+
+                                            // 7. (★핵심 변경) 'include count_likes.php' -> 'getLikeStatus()' 함수 호출
+                                            // $userNumber는 이 파일 상단(7-1)에서 정의했습니다.
+                                            $likeStatus = getLikeStatus($pdo, $userNumber, $boardNumber, null); 
+
+                                            // 8. (변경) $posts 배열에 camelCase 키로 저장 (JS와 일치시킴)
+                                            $posts[] = [
+                                                'id' => $boardNumber,
+                                                'writeUserNumber' => $boardUserNumber,
+                                                'writeUserNickname' => $post['nickname'],
+                                                'dateTime' => $formattedDateTime,
+                                                'contents' => $processedContents,
+                                                'cheering' => $post['cheering'],
+                                                'likesRowCount' => $likeStatus
+                                            ];
+                                        }
+
+                                        } catch (PDOException $e) {
+                                            error_log("Failed to fetch initial posts: " . $e->getMessage());
+                                        }
+
+
+
+                                
+
+                                        
 
                                         for ($i = 0; $i < mysqli_num_rows($join_result); $i++) {
                                             $board_row = mysqli_fetch_array($join_result);
@@ -195,12 +254,12 @@
                                                             <div class="PostHeaderView_text_wrap">
                                                                 <a href="">
                                                                     <div class="PostHeaderView_nickname_wrap">
-                                                                        <strong id="PostHeaderView_nickname<?php echo $post['id']; ?>" class="PostHeaderView_nickname"><?php echo $post['write_user_nickname'];?></strong>
+                                                                        <strong id="PostHeaderView_nickname<?php echo $post['id']; ?>" class="PostHeaderView_nickname"><?php echo $post['writeUserNickname'];?></strong>
                                                                     </div>
                                                                 </a>
                                                                 <div class="PostHeaderView_info_wrap">
                                                                     <span id="PostHeaderView_date<?php echo $post['id']; ?>" class="PostHeaderView_date">
-                                                                        <?php echo $post['date_time']; ?></span>
+                                                                        <?php echo $post['dateTime']; ?></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -209,7 +268,7 @@
                                                     <div class="PostListItemView_content_wrap">
                                                         <div class="PostListItemView_content_item"></div>
                                                         <div class="PostListItemView_content_item PostListItemView_-text_preview">
-                                                            <div id="PostPreviewTextView_text<?php echo $post['id']; ?>" class="PostPreviewTextView_text" onclick="location.href='weverse_fanpost.php?board_number=<?php echo $post['id'];?>'">
+                                                            <div id="PostPreviewTextView_text<?php echo $post['id']; ?>" class="PostPreviewTextView_text" onclick="location.href='post_detail_page.php?board_number=<?php echo $post['id'];?>'">
                                                                 <?php echo $post['contents']; ?>
                                                             </div>
                                                         </div>
@@ -222,7 +281,7 @@
                                                     
                                                                     
 
-                                                                    if ($post['likes_row_count'] === 1) : ?>
+                                                                    if ($post['likesRowCount'] === 1) : ?>
                                                                         <svg id="like_btn<?php echo $post['id']; ?>" class="add_like liked" width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                             
                                                                         </svg>
@@ -260,7 +319,7 @@
                                                                     </button>
                                                                     
                                                                     <?php
-                                                                    if ($user_number === $post['write_user_number']) : ?>
+                                                                    if ($userNumber === $post['writeUserNumber']) : ?>
                                                                         <ul id="DropdownOptionListView<?php echo $post['id']; ?>" class="DropdownOptionListView_option_list DropdownOptionListView_dropdown-action" role="listbox" data-use-placement="true" data-placement="top" >
                                                                         <li class="DropdownOptionListView_option_item" role="presentation" >
     

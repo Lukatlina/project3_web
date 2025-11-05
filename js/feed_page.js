@@ -233,7 +233,7 @@ function openModifyPostModal(board_number) {
   formData.append("board_number", board_number);
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "setModifyContents.php", true);
+  xhr.open("POST", "set_modify_contents.php", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -247,7 +247,7 @@ function openModifyPostModal(board_number) {
         let text = post.contents;
         ModifytextBox.innerHTML = text;
         saved_contents = ModifytextBox.textContent.trim();
-        modifying_board_number = post.board_number;
+        modifying_board_number = post.boardNumber;
       } else {
         console.log("POST 요청 실패");
       }
@@ -337,7 +337,7 @@ function saveModifiedPost() {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "modifyBoardTextPHP.php", true);
+  xhr.open("POST", "post/post_update_process.php", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -403,7 +403,7 @@ function completeDeletedPost() {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "deletePost.php", true);
+  xhr.open("POST", "post/post_delete_process.php", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -866,7 +866,7 @@ function changeMaximumLikes(board_number) {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "update_likes.php", true);
+  xhr.open("POST", "post/like_update_process.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
@@ -940,7 +940,7 @@ var scrolled = false;
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "readNewBoardData.php", true);
+    xhr.open("POST", "feed_load_posts.php", true);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
@@ -1057,7 +1057,7 @@ nestedDivElement6.className = 'PostHeaderView_nickname_wrap';
 var strongElement = document.createElement('strong');
 strongElement.id = 'PostHeaderView_nickname' + post.id;
 strongElement.className = 'PostHeaderView_nickname';
-strongElement.textContent = post.write_user_nickname;
+strongElement.textContent = post.writeUserNickname;
 
 nestedDivElement6.appendChild(strongElement);
 nestedAnchorElement2.appendChild(nestedDivElement6);
@@ -1073,7 +1073,7 @@ var spanElement = document.createElement('span');
 spanElement.id = 'PostHeaderView_date' + post.id;
 spanElement.className = 'PostHeaderView_date';
 
-spanElement.textContent = post.date_time;
+spanElement.textContent = post.dateTime;
 
 nestedDivElement5.appendChild(infoWrapDiv);
 infoWrapDiv.appendChild(spanElement);
@@ -1131,9 +1131,9 @@ buttonElement.onclick = function() {
     changeMaximumLikes(post.id);
 };
 
-console.log('post.likes_row_count' + post.likes_row_count);
+console.log('post.likesRowCount' + post.likesRowCount);
 // 첨부된 PHP 파일을 포함하여 좋아요 수를 가져온다.
-if (post.likes_row_count === 1) {
+if (post.likesRowCount === 1) {
     // <svg> 요소 생성
     var svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgElement.id = 'like_btn' + post.id;
@@ -1265,7 +1265,7 @@ var optionItemLi = document.createElement('li');
 optionItemLi.className = 'DropdownOptionListView_option_item';
 optionItemLi.setAttribute('role', 'presentation');
 
-if (post.user_number === post.write_user_number) {
+if (post.userNumber === post.writeUserNumber) {
   // "수정하기" 버튼 생성
   var editButton = document.createElement('button');
   editButton.type = 'button';

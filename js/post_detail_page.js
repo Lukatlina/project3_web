@@ -29,7 +29,7 @@ function saveCommentValue(board_number) {
 }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "saveCommentText.php", true);
+  xhr.open("POST", "post/comment_create_process.php", true);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -177,7 +177,7 @@ function complteDeletedComment() {
 }
 
 var xhr = new XMLHttpRequest();
-  xhr.open("POST", "deletePost.php", true);
+  xhr.open("POST", "post/post_delete_process.php", true);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -309,7 +309,7 @@ function saveReplyValue(board_number, reply_number) {
 }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "saveCommentText.php", true);
+  xhr.open("POST", "post/comment_create_process.php", true);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -446,7 +446,7 @@ function changeCommentMaximumLikes(board_number, comment_number) {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "update_likes.php", true);
+  xhr.open("POST", "post/like_update_process.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
@@ -516,7 +516,7 @@ function changeMaximumLikes(board_number) {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "update_likes.php", true);
+  xhr.open("POST", "post/like_update_process.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
@@ -600,7 +600,7 @@ scrollableArea.addEventListener('scroll', function() {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "readNewCommentData.php", true);
+    xhr.open("POST", "post_load_comments.php", true);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
@@ -644,11 +644,11 @@ function makeComment(comment) {
   // 대댓글의 갯수 체크 후 다르게 만들기
   var commentItemDiv = document.createElement('div');
 
-  console.log('comment.number_of_reply' + comment.number_of_reply);
+  console.log('comment.numberOfReply' + comment.numberOfReply);
 
-  if (comment.number_of_reply !== 0) {
+  if (comment.numberOfReply !== 0) {
     commentItemDiv.classList.add('comment_item', 'CommentView_comment_item', 'CommentView_-with_reply');
-  } else if(comment.number_of_reply === 0) {
+  } else if(comment.numberOfReply === 0) {
     commentItemDiv.classList.add('comment_item', 'CommentView_comment_item');
   } else {
     console.log('대댓글 여부 확인 불가');
@@ -668,14 +668,14 @@ function makeComment(comment) {
   postHeaderViewWrapDiv.classList.add('PostHeaderView_header_wrap', 'PostHeaderView_-header_type_post', 'PostHeaderView_-comment_depth1');
 
   // 프로필 생성 함수
-  var postHeaderViewGroupWrapDiv = createProfile_area(depth, comment.write_user_nickname, comment.date_time);
+  var postHeaderViewGroupWrapDiv = createProfile_area(depth, comment.writeUserNickname, comment.dateTime);
 
   postHeaderViewWrapDiv.appendChild(postHeaderViewGroupWrapDiv);
   commentContentDiv.appendChild(postHeaderViewWrapDiv);
   commentItemDiv.appendChild(commentContentDiv);
 
   // 삭제, 신고, 차단 버튼 리스트 생성
-  var postHeaderGroupWrapDiv = createDropdownButtonArea(comment.id, comment.user_number, comment.write_user_number); 
+  var postHeaderGroupWrapDiv = createDropdownButtonArea(comment.id, comment.userNumber, comment.writeUserNumber); 
   postHeaderViewWrapDiv.appendChild(postHeaderGroupWrapDiv);
   
   // 본문 생성
@@ -695,7 +695,7 @@ function makeComment(comment) {
   divCommentActions.className = 'CommentView_comment_actions';
 
   // 좋아요 버튼 생성
-  var divLikeActionItem = createLikeCommentItem(comment.board_number, comment.id, comment.cheering, comment.likes_row_count);
+  var divLikeActionItem = createLikeCommentItem(comment.boardNumber, comment.id, comment.cheering, comment.likesRowCount);
 
   // <div> 요소를 부모 요소에 추가
   divCommentActions.appendChild(divLikeActionItem);
@@ -707,13 +707,13 @@ function makeComment(comment) {
   divCommentActions.appendChild(divCommentActionItem);
 
   // 댓글을 생성하는 텍스트인풋
-  divInputWrap = createReplyWrap(comment.board_number, comment.id);
+  divInputWrap = createReplyWrap(comment.boardNumber, comment.id);
   commentContentDiv.appendChild(divInputWrap);
 
   // 대댓글 여부 확인 후 더보기 버튼 생성
-  if (comment.number_of_reply !== 0) {
+  if (comment.numberOfReply !== 0) {
   // 생성된 요소를 부모 요소에 추가
-    var divWrap = createMoreCommentItem(comment.number_of_reply, comment.id);
+    var divWrap = createMoreCommentItem(comment.numberOfReply, comment.id);
     commentItemDiv.appendChild(divWrap);
   }
 
@@ -1116,14 +1116,14 @@ function makeReply(reply) {
   var postHeaderViewWrapDiv = document.createElement('div');
   postHeaderViewWrapDiv.classList.add('PostHeaderView_header_wrap', 'PostHeaderView_-header_type_post', 'PostHeaderView_-comment_depth2');
 
-  var postHeaderViewGroupWrapDiv = createProfile_area(depth, reply.write_user_nickname, reply.date_time);
+  var postHeaderViewGroupWrapDiv = createProfile_area(depth,reply.writeUserNickname, reply.dateTime);
 
   postHeaderViewWrapDiv.appendChild(postHeaderViewGroupWrapDiv);
   commentContentDiv.appendChild(postHeaderViewWrapDiv);
   replyItemDiv.appendChild(commentContentDiv);
 
   // 삭제, 신고, 차단 버튼 리스트 생성
-  var postHeaderGroupWrapDiv = createDropdownButtonArea(reply.id, reply.user_number, reply.write_user_number); 
+  var postHeaderGroupWrapDiv = createDropdownButtonArea(reply.id, reply.userNumber, reply.writeUserNumber); 
   postHeaderViewWrapDiv.appendChild(postHeaderGroupWrapDiv);
   
   // 본문 생성
@@ -1142,7 +1142,7 @@ function makeReply(reply) {
   divCommentActions.className = 'CommentView_comment_actions';
 
   // 좋아요 버튼 생성
-  var divLikeActionItem = createLikeCommentItem(reply.board_number, reply.id, reply.cheering, reply.likes_row_count);
+  var divLikeActionItem = createLikeCommentItem(reply.boardNumber, reply.id, reply.cheering, reply.likesRowCount);
 
   // <div> 요소를 부모 요소에 추가
   divCommentActions.appendChild(divLikeActionItem);
@@ -1208,7 +1208,7 @@ function loadReply(number_of_reply, board_number, parent_number) {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "readNewReplyData.php", true);
+    xhr.open("POST", "post_load_replies.php", true);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
@@ -1300,7 +1300,7 @@ function loadMoreReply(board_number, parent_number, number_of_reply) {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "readNewReplyData.php", true);
+  xhr.open("POST", "post_load_replies.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
@@ -1385,7 +1385,7 @@ function loadMoreReply(board_number, parent_number, number_of_reply) {
 //   }
 
 //   var xhr = new XMLHttpRequest();
-//   xhr.open("POST", "readNewCommentData.php", true);
+//   xhr.open("POST", "post_load_comments.php", true);
 //   xhr.onreadystatechange = function () {
 //     if (xhr.readyState === XMLHttpRequest.DONE) {
 //       if (xhr.status === 200) {
