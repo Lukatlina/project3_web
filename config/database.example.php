@@ -2,12 +2,10 @@
 $dbHost = "127.0.0.1";
 $dbName = "weverse";
 $dbUser = "lunamoon";
-$dbPass = "digda1210";
-// 통신할 때 사용할 언어 세트입니다.
+$dbPass = "password_here";
+// 통신할 때 사용할 언어 세트
 $charset = "utf8mb4";
 
-// DSN(Data Source Name)은 PDO에 접속 정보를 알려주는 "명령서"
-// mysql 타입에 접속, 주소는 $dbHost, DB이름은 $dbName
 $dsn = "mysql:host=$dbHost;dbname=$dbName;charset=$charset";
 $options = [
     // (가장 중요) DB 에러 발생 시, 경고(Warning) 대신 예외(Exception)를 발생시킵니다.

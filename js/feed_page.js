@@ -1,4 +1,4 @@
-let modal = document.getElementById("Modal");
+let modal = document.getElementById("post-create-modal");
 // 이미지 파일을 추가할 때마다 저장할 배열 변수 선언 
 let uploadFiles = [];
 let submitFiles = [];
@@ -7,13 +7,13 @@ function openWriteTextModal() {
   modal.style.display = "flex";
 }
 
-function closeWriteTextModal() {
+function closePostCreateModal() {
   modal.style.display = "none";
   textBox.textContent = "위버스에 남겨보세요...";
 }
 
 
-const textBox = document.getElementById('wevEditor');
+const textBox = document.getElementById('post-editor-input');
 
 // 포커스가 갔을 때 
 textBox.addEventListener('focus', function () {
@@ -23,7 +23,7 @@ textBox.addEventListener('focus', function () {
     create_pTag();
     this.classList.remove('placeholder');
     this.classList.add('active');
-    let Modal_submit_btn = document.getElementById('Modal_submit_btn');
+    let Modal_submit_btn = document.getElementById('post-submit-button');
     if (textBox.textContent.trim() !== '' || images.length > 0) {
       Modal_submit_btn.disabled = false;
     } else {
@@ -39,7 +39,7 @@ textBox.addEventListener('focus', function () {
 // 텍스트 박스에 텍스트가 입력될 때마다 검사하는 함수
 // 안에 텍스트가 있다면 버튼 활성화, 없다면 비활성화
 textBox.addEventListener('input', function () {
-  let Modal_submit_btn = document.getElementById('Modal_submit_btn');
+  let Modal_submit_btn = document.getElementById('post-submit-button');
   let images = textBox.getElementsByTagName('img');
   console.log("텍스트 박스 길이" + textBox.textContent.trim().length);
   if (textBox.textContent.trim() !== '' && textBox.textContent.trim().length < 10000) {
@@ -83,7 +83,7 @@ function create_pTag() {
 
 }
 
-function saveBoardText() {
+function savePost() {
   console.log("saveBoardText() 시작");
 
   // 6-1. 등록 버튼을 클릭하면 게시판에 img 태그가 있을 경우 같은 이미지가 할당된 submitFiles을 보내 저장한다.
@@ -128,7 +128,7 @@ function saveBoardText() {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "saveBoardTextPHP.php", true);
+  xhr.open("POST", "post/post_create_process.php", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -154,48 +154,6 @@ function saveBoardText() {
   console.log("saveBoardText() 끝");
 }
 
-
-// let listboxs = document.getElementsByClassName("MoreButtonView_button_menu");
-// let listbox;
-// let beforeListBox;
-
-// for (var i = 0; i < listboxs.length; i++) {
-//   listboxs[i].addEventListener("click", function (event) {
-//     console.log("click listboxs 시작");
-//     // 클릭한 게시글의 ID 가져오기
-
-//     var buttonId = event.target.dataset.id;
-
-//     if (listbox !== null) {
-//       beforeListBox = listbox;
-//     }
-
-//     listbox = document.getElementById("DropdownOptionListView" + buttonId);
-//     console.log("DropdownOptionListView" + buttonId);
-
-//     console.log(listbox);
-
-//     // 버튼에 대한 추가적인 처리 수행
-//     console.log('버튼 ' + buttonId + '이 클릭되었습니다.');
-
-//     var computedStyle = window.getComputedStyle(listbox);
-//     var displayValue = computedStyle.getPropertyValue("display");
-
-//     console.log("computedStyle : " + computedStyle);
-//     console.log("displayValue : " + displayValue);
-
-
-//     if (displayValue === "none") {
-//       listbox.style.display = "block";
-//       if (beforeListBox !== undefined && beforeListBox !== listbox) {
-//         beforeListBox.style.display = "none";
-//       }
-//     } else {
-//       listbox.style.display = "none";
-//     }
-//   });
-
-// }
 
 
 
@@ -275,7 +233,7 @@ function openModifyPostModal(board_number) {
   formData.append("board_number", board_number);
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "setModifyContents.php", true);
+  xhr.open("POST", "set_modify_contents.php", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -289,7 +247,7 @@ function openModifyPostModal(board_number) {
         let text = post.contents;
         ModifytextBox.innerHTML = text;
         saved_contents = ModifytextBox.textContent.trim();
-        modifying_board_number = post.board_number;
+        modifying_board_number = post.boardNumber;
       } else {
         console.log("POST 요청 실패");
       }
@@ -379,7 +337,7 @@ function saveModifiedPost() {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "modifyBoardTextPHP.php", true);
+  xhr.open("POST", "post/post_update_process.php", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -445,7 +403,7 @@ function completeDeletedPost() {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "deletePost.php", true);
+  xhr.open("POST", "post/post_delete_process.php", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -485,7 +443,7 @@ function saveTemporarySaveFile(files) {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "upload_image.php", true);
+  xhr.open("POST", "media/media_upload_temp.php", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -578,8 +536,6 @@ function changeImage(preview_content, item_btn, dataURL) {
   preview_content.insertBefore(newPreviewItem, item_btn);
 }
 
-
-
 // 이미지 선택시 change 이벤트가 일어나면 실행되는 함수
 function getImageFiles(event) {
   console.log("getImageFiles() 시작");
@@ -594,43 +550,7 @@ function getImageFiles(event) {
   saveTemporarySaveFile(files);
 
 
-  // [...files].forEach(file => {
-  //   // 4-3. input tag 객체에 뭐가 들어있는지 확인한다.
-  //   // file == files 배열 안의 파일 요소, for문을 돌면서 하나씩 꺼내는 요소이다.
-  //   console.log(file);
-  //     // file API, File or Blob 객체를 이용해서 파일의 내용을 읽어내고 컴퓨터에 저장이 가능하게 만든다.
-  //     // reader라는 변수에 초기화한 FileReader()를 할당한다.
-  //     const reader = new FileReader();
-  //     // 읽기 동작이 성공적으로 완료 될 때 발생하는 이벤트 핸들러
-  //     reader.onload = (event) => {
-  //       console.log("onload 성공?");
-  //       const dataURL = event.target.result;
-  //       console.log("데이터 가져오기 성공:", dataURL);
-  //       // for문 밖에서 선언한 배열에 push로 배열 끝에 요소들을 추가해준다.
-  
-  //       submitFiles.push(file);
-  //       console.log("업로드파일길이" + uploadFiles.length + "마지막값" + uploadFiles[uploadFiles.length - 1]);
 
-  //       // 4-5. 이미지를 ‘이미지 쓰기’ 모달에 띄워준다.
-  //       // changeImage(dataURL);
-  //       // 파일을 선택 한 후 preview가 이미지 추가 창에 떠야 함
-  //       // 이미지 추가 창을 flex로 설정한다.
-        
-  //     };
-
-  //     reader.onerror = function (event) {
-  //       console.error("데이터 가져오기 실패:", event.target.error);
-  //     };
-
-  //     // 성공하면 onload 실패시 onerror 이벤트 핸들러가 실행이 된다.
-  //     reader.readAsDataURL(file);
-
-
-      // 이미지 파일이 같아도 중복해서 들어갈 수 있도록 이벤트를 초기화해주도록 한다.
-      // 4-6. 이미지 쓰기 모달에서 ‘+’버튼을 누르면 앞의 동작이 반복이 되서 이미지 추가가 더 될 수 있도록 만들어 준다. 이미지는 10개까지 추가하도록 한다.
-      
-    
-  // });
   previewPhotoModal.style.display = "flex";
   event.currentTarget.value = '';
   console.log("getImageFiles() 끝");
@@ -639,7 +559,7 @@ function getImageFiles(event) {
 // 4-1. HTML input 태그(type이 file이고 accept속성이 image/*며 id가 ape)를 자바스크립트로 HTML의 태그의 id값이 ape인지 확인해서 가져온다.
 // 유저가 올린 이미지를 가져온다.
 // HTML에서 id가 ape인 input태그 객체를 가져온다.
-let inputimageElement = document.getElementById("ape");
+let inputimageElement = document.getElementById("post-image-input");
 
 // 이미지 파일의 요소가 변경이 되었을 때 change 이벤트가 발생하게 된다.
 // 이벤트 발생시 getImageFiles 함수가 시작이 된다.
@@ -780,7 +700,7 @@ function deletePreview(preview_content) {
 
 // 2. 동영상 선택 후 확인을 누르면 동영상 프리뷰 화면이 뜨면서 어떤 영상을 추가했는지 확인 할 수 있음. jpg의 썸네일과 영상의 길이가 함께 뜬다.
 // HTML input 태그(type이 file이고 accept속성이 "video/mp4, video/*"며 id가 ave)를 자바스크립트로 HTML의 태그의 id값이 ape인지 확인해서 가져온다.
-let inputvideoElement = document.getElementById("ave");
+let inputvideoElement = document.getElementById("post-video-input");
 let secondinputimage = document.getElementById("apei");
 let secondinputvideo = document.getElementById("avei");
 
@@ -907,49 +827,6 @@ function confirmAddVideoModal() {
 
 }
 
-// 좋아요 버튼 클릭시 색이 바뀌는 함수
-
-// let emotion_btns = document.getElementsByClassName("EmotionButtonView_button_emotion");
-// let emotion_btn;
-// let before_emotion_btn;
-
-// for (var i = 0; i < emotion_btns.length; i++) {
-//   emotion_btns[i].addEventListener("click", function (event) {
-//     console.log("emotion_btns 시작");
-//     // 클릭한 게시글의 ID 가져오기
-
-//     var buttonId = event.target.dataset.id;
-
-//     if (emotion_btn !== null) {
-//       before_emotion_btn = emotion_btn;
-//     }
-
-//     emotion_btn = document.getElementById("DropdownOptionListView" + buttonId);
-//     console.log("DropdownOptionListView" + buttonId);
-
-//     console.log(emotion_btn);
-
-//     // 버튼에 대한 추가적인 처리 수행
-//     console.log('버튼 ' + buttonId + '이 클릭되었습니다.');
-
-//     var computedStyle = window.getComputedStyle(emotion_btn);
-//     var displayValue = computedStyle.getPropertyValue("display");
-
-//     console.log("computedStyle : " + computedStyle);
-//     console.log("displayValue : " + displayValue);
-
-
-//     if (displayValue === "none") {
-//       emotion_btn.style.display = "block";
-//       if (before_emotion_btn !== undefined && before_emotion_btn !== emotion_btn) {
-//         before_emotion_btn.style.display = "none";
-//       }
-//     } else {
-//       emotion_btn.style.display = "none";
-//     }
-//   });
-
-// }
 
 function changeMaximumLikes(board_number) {
   console.log("changeMaximumLikes() 시작");
@@ -989,7 +866,7 @@ function changeMaximumLikes(board_number) {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "update_likes.php", true);
+  xhr.open("POST", "post/like_update_process.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
@@ -1022,49 +899,6 @@ function changeMaximumLikes(board_number) {
   xhr.send(formData);
 }
 
-// // 최대 likes를 다시 조회하기 위한 변수
-// function resetLikes(board_number) {
-
-//   let formData = new FormData();
-//   formData.append("board_number", board_number);
-
-//   var xhr = new XMLHttpRequest();
-//   xhr.open("POST", "read_all_Likes.php", true);
-//   xhr.onreadystatechange = function () {
-//     if (xhr.readyState === XMLHttpRequest.DONE) {
-//       if (xhr.status === 200) {
-//         console.log("POST 요청 성공");
-//         var response = xhr.responseText;
-//         console.log("response: " + response);
-//         // 응답 결과에 따라 처리
-//         let emotion_btn = document.getElementById("EmotionButtonView_button_emotion" + board_number);
-//         let textNode = emotion_btn.lastChild;
-//         if (textNode.nodeType === Node.TEXT_NODE) {
-//           if (response === '0') {
-//             textNode.textContent = null;
-//           }else{
-//             textNode.textContent = response;
-//           }
-//         }
-//       } else {
-//         console.log("POST 요청 실패");
-//       }
-//     }
-//   };
-//   xhr.send(formData);
-// }
-
-// (() => {
-//   // 
-//   // const ul = document.querySelector('FeedPostListView_list_wrap');
-//   // let li;
-//   // let count = ul.children.length;
-//   console.log('board_row' + board_rows);
-
-// // for (let i = 0; i < array.length; i++) {
-// //   const element = array[i];
-  
-// // }
 
 var scrollCount = 0;
 var scrolled = false;
@@ -1106,7 +940,7 @@ var scrolled = false;
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "readNewBoardData.php", true);
+    xhr.open("POST", "feed_load_posts.php", true);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
@@ -1223,7 +1057,7 @@ nestedDivElement6.className = 'PostHeaderView_nickname_wrap';
 var strongElement = document.createElement('strong');
 strongElement.id = 'PostHeaderView_nickname' + post.id;
 strongElement.className = 'PostHeaderView_nickname';
-strongElement.textContent = post.write_user_nickname;
+strongElement.textContent = post.writeUserNickname;
 
 nestedDivElement6.appendChild(strongElement);
 nestedAnchorElement2.appendChild(nestedDivElement6);
@@ -1239,7 +1073,7 @@ var spanElement = document.createElement('span');
 spanElement.id = 'PostHeaderView_date' + post.id;
 spanElement.className = 'PostHeaderView_date';
 
-spanElement.textContent = post.date_time;
+spanElement.textContent = post.dateTime;
 
 nestedDivElement5.appendChild(infoWrapDiv);
 infoWrapDiv.appendChild(spanElement);
@@ -1297,9 +1131,9 @@ buttonElement.onclick = function() {
     changeMaximumLikes(post.id);
 };
 
-console.log('post.likes_row_count' + post.likes_row_count);
+console.log('post.likesRowCount' + post.likesRowCount);
 // 첨부된 PHP 파일을 포함하여 좋아요 수를 가져온다.
-if (post.likes_row_count === 1) {
+if (post.likesRowCount === 1) {
     // <svg> 요소 생성
     var svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgElement.id = 'like_btn' + post.id;
@@ -1431,7 +1265,7 @@ var optionItemLi = document.createElement('li');
 optionItemLi.className = 'DropdownOptionListView_option_item';
 optionItemLi.setAttribute('role', 'presentation');
 
-if (post.user_number === post.write_user_number) {
+if (post.userNumber === post.writeUserNumber) {
   // "수정하기" 버튼 생성
   var editButton = document.createElement('button');
   editButton.type = 'button';

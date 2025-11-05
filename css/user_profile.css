@@ -11,7 +11,7 @@ body{
     width: 100%;
 }
 
-.userdata_header{
+.user-data-header{
     display: flex;
     -webkit-box-align: center;
     align-items: center;
@@ -21,7 +21,7 @@ body{
     height: 6.4rem;
 }
 
-.userdata_img{
+.user-data-image{
     flex: 1 1 0%;
     text-align: left;
 }
@@ -31,7 +31,7 @@ a{
     text-decoration: none;
 }
 
-.user_logout_btn{
+.user-logout-button{
     padding: 0px;
     margin: 0px;
     appearance: none;
@@ -45,15 +45,15 @@ a{
     text-align: right;
 }
 
-.main_img{
+.main-image{
     margin-bottom: 0px;
 }
 
-.click_main_img{
+.clickable-main-image{
     vertical-align: middle;
 }
 
-.fullscreen_box{
+.fullscreen-box{
     position: relative;
     margin: 0px auto 2.4rem;
     border: none;
@@ -74,13 +74,13 @@ a{
 }
 
 
-.box_section{
+.box-section{
     margin-bottom: 4.8rem;
 }
 
 
 
-.box_header{
+.box-header{
     padding: 0px;
     margin: 0px 0px 2.4rem;
     font-size: 2.4rem;
@@ -96,7 +96,7 @@ h3{
     font-weight: bold;
 }
 
-.userdata_box{
+.user-data-box{
     padding: 0px;
     margin: 0px;
     list-style: none;
@@ -110,11 +110,11 @@ dl{
     margin-inline-end: 0px;
 }
 
-.userdata_box_s{
+.user-data-item{
     margin-bottom: 2.4rem;
 }
 
-.user_label{
+.user-label{
     font-size: 1.6rem;
     font-weight: bold;
     color: rgb(28, 29, 29);
@@ -124,7 +124,7 @@ dt {
     display: block;
 }
 
-.now_user_data{
+.current-user-data{
     padding: 1.2rem 0px 0px;
     margin: 0px;
     position: relative;
@@ -141,7 +141,7 @@ dd {
     margin-inline-start: 40px;
 }
 
-.mypage_change_btn{
+.mypage-change-button{
     flex-shrink: 0;
     margin-left: 20px;
     margin: 0px;
@@ -163,15 +163,15 @@ dd {
     cursor: pointer;
 }
 
-.now_user_data span{
+.current-user-data span{
     word-break: break-word;
 }
 
-.encoding_password{
+.encoded-password{
     font-size: 0.1rem;
 }
 
-.circle_password{
+.circle-password{
     display: inline-block;
     margin-right: 0.4rem;
     width: 0.8rem;
@@ -183,12 +183,12 @@ dd {
 
 
 @supports (height:100dvh){
-    .dialog_popup {
+    .dialog-popup {
         height: 100dvh;
     }
 }
 
-.dialog_popup{
+.dialog-popup{
     --dialog-vertical-margin: 0rem;
     --dialog-header-height: 6.4rem;
     --dialog-content-padding: 2rem;
@@ -209,14 +209,14 @@ dd {
     overflow-y: auto;
 }
 
-.dialog_box{
+.dialog-box{
     width: 100%;
     max-width: var(--dialog-max-width,none);
     border-radius: var(--dialog-border-radius,0);
     background-color: white;
 }
 
-.password_dialog_box{
+.password-dialog-box{
     width: 100%;
     max-width: var(--dialog-max-width,none);
     border-radius: var(--dialog-border-radius,0);
@@ -224,7 +224,7 @@ dd {
     transform: translate(0%, 50px);
 }
 
-.dialog_header{
+.dialog-header{
     display: flex;
     -webkit-box-align: center;
     align-items: center;
@@ -239,19 +239,19 @@ dd {
 
 
 @supports (height:100dvh){
-    .dialog_box .dialog_header + .dialog_section {
+    .dialog-box .dialog-header + .dialog-section {
         height: calc(100dvh - var(--dialog-header-height));
     }
 }
 
-.dialog_box .dialog_header + .dialog_section{
+.dialog-box .dialog-header + .dialog-section{
     height: calc(100vh - var(--dialog-header-height));
 }
 
 
 
 
-.dialog_inner{
+.dialog-inner{
     display: flex;
     flex-direction: column;
     position: relative;
@@ -259,7 +259,7 @@ dd {
 }
 
 
-.dialog_header_text{
+.dialog-header-text{
     padding: 0px;
     margin: 0px;
     -webkit-box-flex: 1;
@@ -280,7 +280,7 @@ h2 {
     font-weight: bold;
 }
 
-.dialog_section{
+.dialog-section{
     display: flex;
     flex-direction: column;
     padding-right: 48px;
@@ -293,14 +293,14 @@ h2 {
 }
 
 
-.dialog_inner{
+.dialog-inner{
     display: flex;
     flex-direction: column;
     position: relative;
     padding-bottom: calc(9rem);
 }
 
-.dialog_inner header{
+.dialog-inner header{
     margin-bottom: 3rem;
 }
 
@@ -308,7 +308,7 @@ header {
     display: block;
 }
 
-.dialog_inner header h3{
+.dialog-inner header h3{
     padding: 0px;
     margin: 0px 0px 2rem;
     font-size: 2.6rem;
@@ -316,7 +316,7 @@ header {
     line-height: 3.1rem;
 }
 
-.dialog_inner header h3 + p{
+.dialog-inner header h3 + p{
     padding: 0px;
     margin: 0px;
     font-size: 1.6rem;
@@ -334,7 +334,7 @@ p {
 }
 
 
-.dialog_inner form {
+.dialog-inner form {
     padding-bottom: calc(9rem);
 }
 
@@ -343,18 +343,18 @@ form {
     margin-top: 0em;
 }
 
-.change_form_box{
+.change-form-box{
     width: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.nickname_change_label{
+/* .nickname_change_label{
     height: 1.6rem;
     font-weight: 500;
     font-size: 1.3rem;
     color: rgb(109, 109, 109);
-}
+} */
 
 label {
     cursor: default;
@@ -362,7 +362,7 @@ label {
 
 
 
-.dialog_inner footer{
+.dialog-inner footer{
     position: fixed;
     left: 0px;
     bottom: 0px;
@@ -377,7 +377,7 @@ label {
 
 
 
-.nickname_change_cancel{
+.dialog-cancel-button{
     -webkit-box-pack: center;
     justify-content: center;
     -webkit-box-align: center;
@@ -396,11 +396,11 @@ label {
     color: rgb(17, 17, 17);
 }
 
-.change_btn_text{
+.button-text{
     z-index: 10;
 }
 
-.nickname_change_complete{
+.dialog-confirm-button{
     display: flex;
     -webkit-box-pack: center;
     justify-content: center;
@@ -419,7 +419,7 @@ label {
     color: rgb(255, 255, 255);
 }
 
-.current_password_check_text{
+.current-password-check-message{
     visibility: hidden;
     display: inline-flex;
     margin-top: 6.4px;
@@ -429,13 +429,13 @@ label {
     color: rgb(253, 91, 21);
 }
 
-.current_password_check{
+.current-password-check-area{
     margin-top: 6.4px;
     display: flex;
     flex-direction: column;
 }
 
-.member_withdraw{
+.member-withdraw-button{
     padding: 1.6rem 0px;
     border: 0px;
     background-color: transparent;
@@ -630,77 +630,77 @@ input, textarea {
         background-color: rgb(250, 251, 252);
     }
 
-    .fullscreen_box {
+    .fullscreen-box {
         --contents-horizontal-padding: 4.8rem;
         --contents-min-height: 72.3rem;
     }
-    .fullscreen_box {
+    .fullscreen-box {
         margin: 2.4rem auto;
         padding: 0px 4.8rem;
         width: 67rem;
         border: 1px solid rgb(245, 247, 250);
     }
 
-    .dialog_popup {
+    .dialog-popup {
         --dialog-vertical-margin: 3rem;
         --dialog-content-padding: 4.8rem;
         --dialog-max-width: 49.6rem;
         --dialog-border-radius: 0.8rem;
     }
 
-    .dialog_header {
+    .dialog-header {
         padding-top: 5rem;
         padding-bottom: 2.6rem;
         height: auto;
         border: 0px;
     }
 
-    .screen_box {
+    .screen-box {
         padding: 4.8rem 0px;
     }
 
-    .screen_box {
+    .screen-box {
         padding: 2.4rem 0px;
     }
 
-    .box_header {
+    .box-header {
         font-size: 3.2rem;
     }
 
-    .dialog_box .dialog_header + .dialog_section {
+    .dialog-box .dialog-header + .dialog-section {
         height: auto;
     }
 
-    .dialog_inner {
+    .dialog-inner {
         margin-top: -3.2rem;
     }
 
-    .dialog_header_text {
+    .dialog-header-text {
         padding-left: var(--dialog-content-padding,0);
         font-size: 2rem;
         text-align: left;
     }
 
-    .dialog_inner form {
+    .dialog-inner form {
         padding-bottom: 0px;
     }
 
-    .dialog_inner footer {
+    .dialog-inner footer {
         position: absolute;
         margin: calc(var(--dialog-content-padding,2rem) * -1);
         width: calc(100% + var(--dialog-content-padding,2rem) * 2);
         }
 
-        .nickname_change_cancel {
+        .dialog-cancel-button {
         display: block;
     }
 
-    .nickname_change_complete {
+    .dialog-confirm-button {
         background: rgb(255, 255, 255);
         color: rgb(8, 204, 202);
     }
 
-    .dialog_inner {
+    .dialog-inner {
         margin-top: -3.2rem
     }
 
