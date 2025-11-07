@@ -54,52 +54,6 @@ function saveCommentValue(board_number) {
 console.log("saveCommentValue() 끝");
 }
 
-// 관련 내용 주석 달기
-// let listboxs = document.getElementsByClassName("MoreButtonView_button_menu MoreButtonView_-comment MoreButtonView_-post");
-// let listbox;
-// let beforeListBox;
-
-// for (var i = 0; i < listboxs.length; i++) {
-//   listboxs[i].addEventListener("click", function(event) {
-//     console.log("click listboxs 시작");
-//     console.log("listbox 길이" + listboxs.length);
-//     // 클릭한 댓글의 ID 가져오기
-//     var buttonId = event.target.dataset.id;
-
-//     if (listbox!==null) {
-//       beforeListBox = listbox;
-//     }
-
-//     listbox = document.getElementById("CommentDropdownOptionListView"+buttonId);
-//     console.log("CommentDropdownOptionListView"+buttonId);
-//     console.log(listbox);
-
-//   // 버튼에 대한 추가적인 처리 수행
-//   console.log('버튼 ' + buttonId + '이 클릭되었습니다.');
-
-//   var computedStyle = window.getComputedStyle(listbox);
-//   var displayValue = computedStyle.getPropertyValue("display");
-
-//   console.log("computedStyle : " + computedStyle);
-//   console.log("displayValue : " + displayValue);
-
-
-//   if (displayValue === "none") {
-//     console.log("displayValue : none일때 시작" + displayValue);
-//     listbox.style.display = "block";
-//     console.log(listbox);
-//     if (beforeListBox!==undefined && beforeListBox!==listbox) {
-//       beforeListBox.style.display = "none";
-//     }
-//     console.log("displayValue : none일때 끝" + displayValue);
-//   } else {
-//     console.log("displayValue : block 일때 시작" + displayValue);
-//     listbox.style.display = "none";
-//     console.log("displayValue : block 일때 끝" + displayValue);
-//   }
-//   console.log("click listboxs 끝");
-// });
-// }
 
 let listbox;
 let beforeListBox;
@@ -166,7 +120,7 @@ function openDeleteCommentModal(comment_number){
   deleteCommentModal.style.display = "flex";
 }
 
-function complteDeletedComment() {
+function completeDeletedComment() {
   let formData = new FormData();
 
   console.log(deletePost_comment_number);
@@ -201,50 +155,6 @@ var xhr = new XMLHttpRequest();
 }
 
 
-// // 대댓글 입력창에 텍스트 입력시 버튼 활성화
-// // 대댓글 박스의 갯수를 먼저 확인한 후 각 대댓글 박스 버튼의 상태를 저장할 변수를 선언한다.
-// let textarea_list = document.getElementsByClassName('ReplyViewerView_input_wrap');
-// console.log(textarea_list.length);
-// let ReplyCreateButton;
-// let beforeReplyCreateButton;
-// let ReplyText;
-
-//   for (var i = 0; i < textarea_list.length; i++) {
-//     textarea_list[i].addEventListener("input", function(event) {
-//       console.log("input ReplyCreateButton 시작");
-//       // 작성중인 대댓글의 ID 가져오기
-
-//       var buttonId = event.target.dataset.id;
-
-//       if (ReplyCreateButton!==null) {
-//         beforeReplyCreateButton = ReplyCreateButton;
-//       }
-
-//       ReplyText = document.getElementById("ReplyInputView_textarea"+buttonId);
-//       ReplyCreateButton = document.getElementById("ReplyInputView_send_button"+buttonId);
-
-//       console.log("ReplyInputView_textarea"+buttonId);
-
-//       console.log("텍스트 내용" + ReplyText.value);
-//       console.log("버튼 상태" + ReplyCreateButton);
-
-//     // 버튼에 대한 추가적인 처리 수행
-//     console.log('버튼 ' + buttonId + '이 클릭되었습니다.');
-
-//     if (ReplyText.value !== "") {
-//       console.log(ReplyText.value);
-//       console.log("대댓글버튼.disabled" + ReplyCreateButton.disabled);
-//       ReplyCreateButton.disabled = false;
-//       console.log("대댓글버튼.disabled" + ReplyCreateButton.disabled);
-//     }else{
-//       console.log(ReplyText.value);
-//       console.log("대댓글버튼.disabled" + ReplyCreateButton.disabled);
-//       ReplyCreateButton.disabled = true;
-//       console.log("대댓글버튼.disabled" + ReplyCreateButton.disabled);
-//     }
-//     console.log("input ReplyCreateButton 끝");
-//   });
-// }
 
 let ReplyCreateButton;
 let beforeReplyCreateButton;
@@ -336,45 +246,6 @@ console.log("saveCommentValue() 끝");
 
 
 
-// 버튼 클릭시 댓글 작성할 수 있도록 만들기
-// let comment_btn_view_list = document.getElementsByClassName('CommentButtonView_button_comment CommentButtonView_-comment -post');
-// console.log(comment_btn_view_list[0]);
-
-//   for (var i = 0; i < comment_btn_view_list.length; i++) {
-//     comment_btn_view_list[i].addEventListener("click", function(event) {
-//       console.log("input ReplyCreateButton 시작");
-//       // 작성중인 대댓글의 ID 가져오기
-
-//       // console.log("이벤트" +event.target.dataset);
-
-//       // var buttonId1 = event.target.dataset.id;
-//       // console.log("버튼1" + buttonId1);
-//       // var buttonId2 = event.target.getAttribute('data-id');
-//       // console.log("버튼2" +buttonId2);
-//       var buttonId = event.target.dataset.id;
-
-//       let replyViewer = document.getElementById("ReplyViewerView_input_wrap"+buttonId);
-
-//       console.log("replyViewer"+buttonId);
-//       console.log(replyViewer);
-
-//       var computedStyle = window.getComputedStyle(replyViewer);
-//       var displayValue = computedStyle.getPropertyValue("display");
-
-//       console.log("코멘트 버튼 상태" + displayValue);
-
-//     // 버튼에 대한 추가적인 처리 수행
-//     console.log('버튼 ' + buttonId + '이 클릭되었습니다.');
-
-//     if (displayValue === "none") {
-//       replyViewer.style.display = "block";
-//     } else {
-//       replyViewer.style.display = "none";
-//     }
-//   });
-// }
-
-
 function clickWriteReply(id) {
 
   let replyViewer = document.getElementById("ReplyViewerView_input_wrap"+id);
@@ -397,54 +268,35 @@ function clickWriteReply(id) {
   }
 }
 
+function updateLike(board_number, comment_number = null) {
+  console.log("updateLike() 시작");
 
+  // 1. 댓글인지, 게시글인지 확인
+  const isCommentLike = (comment_number !== null);
 
-
-
-
-
-
-// 댓글과 대댓글에 좋아요를 하기 위한 함수
-function changeCommentMaximumLikes(board_number, comment_number) {
-  console.log("changeMaximumLikes() 시작");
-  // 버튼 클릭시 버튼의 색이 바뀐다. 하얀색 -> 컬러 전체 좋아요 +1
-  // 컬러 -> 하얀색 전체 좋아요 -1
-  // 먼저 버튼의 색이 바뀐 후 전체 좋아요 수가 바뀌게 된다.
-  // 좋아요 DB에 저장을 하기 위해서는 board_number와 user_number, comment_number가 필요하다.
-
-  let comment_svg = document.getElementById('comment_like_btn' + comment_number);
-
-  console.log('board_number : ' + board_number);
-  console.log('comment_number : ' + comment_number);
-  console.log('comment_svg' + comment_svg);
-
-  // POST로 보낼 formData
-  let formData = new FormData();
+  // 2. DOM 요소 ID와 formData를 조건에 맞게 설정
+  let elementId, formData = new FormData();
   formData.append("board_number", board_number);
-  formData.append("comment_number", comment_number);
-  
-  // 버튼에 liked 클래스가 있는지 확인하기. 이 클래스가 없다면 클릭시 컬러버튼이 되면서 이 유저의 좋아요를 포함한 최대 좋아요 수가 보여야 한다.
-  if (!comment_svg.classList.contains('liked')) {
-    // 버튼의 색이 컬러로 변하게 된다.
-    comment_svg.classList.add('liked');
-    // formData에 true, false값을 넣어서 버튼 상태를 확인하고 DB생성 여부를 결정하도록 만든다.
-    formData.append('is_button', true);
-    
-  }else{
-    // 있다면 클릭시 흰색버튼이 뜨면서 이 유저는 좋아요를 누르지 않은 모습이 된다.
-    // 버튼의 색이 흰색으로 변하게 된다.
-    comment_svg.classList.remove('liked');
-    // formData에 true, false값을 넣어서 버튼 상태를 확인하고 DB생성 여부를 결정하도록 만든다.
-    formData.append('is_button', false);
+
+  if (isCommentLike) {
+    // --- 댓글 좋아요일 경우 ---
+    console.log('댓글 좋아요: ' + comment_number);
+    elementId = 'comment_like_btn' + comment_number;
+    formData.append("comment_number", comment_number);
+  } else {
+    // --- 게시글 좋아요일 경우 ---
+    console.log('게시글 좋아요');
+    elementId = 'like_btn' + board_number;
+    // (comment_number는 formData에 추가하지 않음)
   }
 
-  // 좋아요를 누른 유저의 정보가 DB에 저장이 되어야 한다.
-  // 최대 좋아요는 불러오는 구조가 같기 때문에 같은 함수를 사용하도록 한다.
-
-  for (var pair of formData.entries()) {
-    console.log(pair[0] + ": " + pair[1]);
+  let button = document.getElementById(elementId);
+  if (!button) {
+    console.error("좋아요 버튼을 찾을 수 없습니다:", elementId);
+    return;
   }
 
+<<<<<<< HEAD
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "post/like_update_process.php", true);
   xhr.onreadystatechange = function () {
@@ -494,27 +346,18 @@ function changeMaximumLikes(board_number) {
   formData.append("board_number", board_number);
   
   // 버튼에 liked 클래스가 있는지 확인하기. 이 클래스가 없다면 클릭시 컬러버튼이 되면서 이 유저의 좋아요를 포함한 최대 좋아요 수가 보여야 한다.
+=======
+  // 3. (공통 로직) 버튼 상태에 따라 formData 설정
+>>>>>>> refactor/pdo-migration
   if (!button.classList.contains('liked')) {
-    // 버튼의 색이 컬러로 변하게 된다.
     button.classList.add('liked');
-    // formData에 true, false값을 넣어서 버튼 상태를 확인하고 DB생성 여부를 결정하도록 만든다.
     formData.append('is_button', true);
-    
-  }else{
-    // 있다면 클릭시 흰색버튼이 뜨면서 이 유저는 좋아요를 누르지 않은 모습이 된다.
-    // 버튼의 색이 흰색으로 변하게 된다.
+  } else {
     button.classList.remove('liked');
-    // formData에 true, false값을 넣어서 버튼 상태를 확인하고 DB생성 여부를 결정하도록 만든다.
     formData.append('is_button', false);
   }
 
-  // 좋아요를 누른 유저의 정보가 DB에 저장이 되어야 한다.
-  // 최대 좋아요는 불러오는 구조가 같기 때문에 같은 함수를 사용하도록 한다.
-
-  for (var pair of formData.entries()) {
-    console.log(pair[0] + ": " + pair[1]);
-  }
-
+  // 4. (공통 로직) AJAX 요청
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "post/like_update_process.php", true);
   xhr.onreadystatechange = function () {
@@ -523,32 +366,26 @@ function changeMaximumLikes(board_number) {
         console.log("POST 요청 성공");
         var response = xhr.responseText;
         console.log("response: " + response);
-        // 응답 결과에 따라 처리
-        if (response !== "") {
-          let emotion_btn = document.getElementById("EmotionButtonView_button_emotion");
+
+        // 5. (공통 로직) 좋아요 수 업데이트
+        // 좋아요 버튼의 부모 요소(EmotionButtonView_button_emotion...)를 찾음
+        let emotion_btn = button.closest('.EmotionButtonView_button_emotion');
+        if (emotion_btn) {
           let textNode = emotion_btn.lastChild;
-          if (textNode.nodeType === Node.TEXT_NODE) {
-            if (response === '0') {
-              textNode.textContent = null;
-            }else{
-              textNode.textContent = response;
-            }
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.textContent = (response === '0') ? null : response;
           }
-          // resetLikes(board_number);
-          // location.reload();
-          console.log("changeMaximumLikes() 끝");
-        } else {
-          console.log("response 오류");
-          return;
         }
+        console.log("updateLike() 끝");
       } else {
         console.log("POST 요청 실패");
+        // (실패 시 버튼 상태를 원상 복구할 수 있습니다)
+        button.classList.toggle('liked'); 
       }
     }
   };
   xhr.send(formData);
 }
-
 
 
 // 댓글 페이징
@@ -668,7 +505,11 @@ function makeComment(comment) {
   postHeaderViewWrapDiv.classList.add('PostHeaderView_header_wrap', 'PostHeaderView_-header_type_post', 'PostHeaderView_-comment_depth1');
 
   // 프로필 생성 함수
+<<<<<<< HEAD
   var postHeaderViewGroupWrapDiv = createProfile_area(depth, comment.writeUserNickname, comment.dateTime);
+=======
+  var postHeaderViewGroupWrapDiv = createProfileArea(depth, comment.writeUserNickname, comment.dateTime);
+>>>>>>> refactor/pdo-migration
 
   postHeaderViewWrapDiv.appendChild(postHeaderViewGroupWrapDiv);
   commentContentDiv.appendChild(postHeaderViewWrapDiv);
@@ -723,7 +564,7 @@ function makeComment(comment) {
 
 
   // 프로필 이미지 생성 함수
-  function createProfile_area(depth, write_user_nickname, date_time) {
+  function createProfileArea(depth, write_user_nickname, date_time) {
     // 프로필의 사진 부분 생성
     var postHeaderViewGroupWrapDiv = document.createElement('div');
     postHeaderViewGroupWrapDiv.classList.add('PostHeaderView_group_wrap', 'PostHeaderView_-profile_area');
@@ -1116,7 +957,11 @@ function makeReply(reply) {
   var postHeaderViewWrapDiv = document.createElement('div');
   postHeaderViewWrapDiv.classList.add('PostHeaderView_header_wrap', 'PostHeaderView_-header_type_post', 'PostHeaderView_-comment_depth2');
 
+<<<<<<< HEAD
   var postHeaderViewGroupWrapDiv = createProfile_area(depth,reply.writeUserNickname, reply.dateTime);
+=======
+  var postHeaderViewGroupWrapDiv = createProfileArea(depth,reply.writeUserNickname, reply.dateTime);
+>>>>>>> refactor/pdo-migration
 
   postHeaderViewWrapDiv.appendChild(postHeaderViewGroupWrapDiv);
   commentContentDiv.appendChild(postHeaderViewWrapDiv);
@@ -1155,58 +1000,57 @@ function makeReply(reply) {
 
 var openReply = false;
 
-// 버튼 클릭시 생성 or list 열리도록 만들기
-function loadReply(number_of_reply, board_number, parent_number) {
-  console.log("클릭됐나?");
+// // 버튼 클릭시 생성 or list 열리도록 만들기
+// function loadReply(number_of_reply, board_number, parent_number) {
+//   console.log("클릭됐나?");
 
+//   var wrap_comment_list = document.getElementById('wrap_comment_list'+parent_number);
+//   var more_recent_comment_wrap = document.getElementById("CommentView_more_recent_comment_wrap"+parent_number);
   
+//   console.log( "openReply : " + openReply);
+//   console.log( "wrap_comment_list : " + wrap_comment_list);
 
-  var wrap_comment_list = document.getElementById('wrap_comment_list'+parent_number);
-  var more_recent_comment_wrap = document.getElementById("CommentView_more_recent_comment_wrap"+parent_number);
-  
-  console.log( "openReply : " + openReply);
-  console.log( "wrap_comment_list : " + wrap_comment_list);
+//   // 버튼 클릭시 불러온 데이터 유무에 따라서 생성해야 한다.
+//   if (wrap_comment_list !== null && openReply === false) {
+//     console.log("어디로 들어감? 1");
+//     openReply = true;
+//     wrap_comment_list.style.display ='block';
+//   } else if (wrap_comment_list === null && openReply === false) {
+//     console.log("어디로 들어감? 2");
+//     openReply = true;
+//     var wrapCommentList = document.createElement("div");
+//     wrapCommentList.className = "wrap_comment_list";
+//     wrapCommentList.setAttribute("id", "wrap_comment_list" + parent_number);
 
-  // 버튼 클릭시 불러온 데이터 유무에 따라서 생성해야 한다.
-  if (wrap_comment_list !== null && openReply === false) {
-    console.log("어디로 들어감? 1");
-    openReply = true;
-    wrap_comment_list.style.display ='block';
-  } else if (wrap_comment_list === null && openReply === false) {
-    console.log("어디로 들어감? 2");
-    openReply = true;
-    var wrapCommentList = document.createElement("div");
-    wrapCommentList.className = "wrap_comment_list";
-    wrapCommentList.setAttribute("id", "wrap_comment_list" + parent_number);
+//     var list = document.createElement("div");
+//     list.className = "list";
 
-    var list = document.createElement("div");
-    list.className = "list";
+//     var commentListView = document.createElement("div");
+//     commentListView.classList.add('CommentListView_list_content','CommentListView_-comment_depth_depth2', '-comment_client_post');
 
-    var commentListView = document.createElement("div");
-    commentListView.classList.add('CommentListView_list_content','CommentListView_-comment_depth_depth2', '-comment_client_post');
-
-    var contentDiv = document.createElement("div");
-    contentDiv.setAttribute('id', 'plusReplybtn' + parent_number); 
+//     var contentDiv = document.createElement("div");
+//     contentDiv.setAttribute('id', 'plusReplybtn' + parent_number); 
 
 
 
-    commentListView.appendChild(contentDiv);
-    list.appendChild(commentListView);
-    wrapCommentList.appendChild(list);
-    more_recent_comment_wrap.appendChild(wrapCommentList);
+//     commentListView.appendChild(contentDiv);
+//     list.appendChild(commentListView);
+//     wrapCommentList.appendChild(list);
+//     more_recent_comment_wrap.appendChild(wrapCommentList);
 
 
-    let formData = new FormData();
+//     let formData = new FormData();
 
-    formData.append("board_number", board_number);
-    formData.append("lastItemNumber", '');
-    formData.append("number_of_reply", number_of_reply);
-    formData.append("parent_number", parent_number);
+//     formData.append("board_number", board_number);
+//     formData.append("lastItemNumber", '');
+//     formData.append("number_of_reply", number_of_reply);
+//     formData.append("parent_number", parent_number);
 
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
-    }
+//     for (var pair of formData.entries()) {
+//       console.log(pair[0] + ": " + pair[1]);
+//     }
 
+<<<<<<< HEAD
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "post_load_replies.php", true);
     xhr.onreadystatechange = function () {
@@ -1232,53 +1076,82 @@ function loadReply(number_of_reply, board_number, parent_number) {
                 var replyItemDiv = makeReply(reply);
                 lastItemElement.insertAdjacentElement('afterend', replyItemDiv);
               }
+=======
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("POST", "post_load_replies.php", true);
+//     xhr.onreadystatechange = function () {
+//       if (xhr.readyState === XMLHttpRequest.DONE) {
+//         if (xhr.status === 200) {
+//           console.log("POST 요청 성공");
+//           var replies = JSON.parse(xhr.responseText);
+//           console.log(replies);
+//           // 응답 결과에 따라 처리
+//           if (replies !== "" && replies.length !== 0) {
+//             // json에서 데이터를 하나씩 뽑아와서 추가해준다.
+//             replies.forEach(reply => {
+//               console.log('reply' + reply);
+//               // 데이터를 불러와서 요소 생성 후 추가해줄 태그 찾기
+//               const replyviewItemElements = document.querySelectorAll('[data-comment-alias="REPLY_COMMENT"]');
+//               console.log('replyviewItemElements 길이 : ' + replyviewItemElements.length);
+//               if (replyviewItemElements.length === 0) {
+//                 var replyItemDiv = makeReply(reply);
+//                 contentDiv.appendChild(replyItemDiv);
+//               }else{
+//                 // 요소의 가장 마지막 태그의 뒤쪽에 추가해줄 것
+//                 const lastItemElement = replyviewItemElements[replyviewItemElements.length - 1];
+//                 var replyItemDiv = makeReply(reply);
+//                 lastItemElement.insertAdjacentElement('afterend', replyItemDiv);
+//               }
+>>>>>>> refactor/pdo-migration
               
-            });
+//             });
             
-            console.log("Math.floor(number_of_reply / 10) : " + Math.floor(number_of_reply / 10));
+//             console.log("Math.floor(number_of_reply / 10) : " + Math.floor(number_of_reply / 10));
 
-            // 보여줄 데이터가 더 있다면 더 보기 버튼을 생성해서 넣어준다.
-            // 몫이 1보다 크거나 같으면 버튼을 생성한다.
-            if (Math.floor(number_of_reply / 10) >= 1) {
+//             // 보여줄 데이터가 더 있다면 더 보기 버튼을 생성해서 넣어준다.
+//             // 몫이 1보다 크거나 같으면 버튼을 생성한다.
+//             if (Math.floor(number_of_reply / 10) >= 1) {
               
-              // <a> 요소 생성
-              var linkMore = document.createElement("a");
-              linkMore.href = "#";
-              linkMore.classList.add('MoreRecentReplyView_link_more','-post');
-              linkMore.setAttribute("onclick", "loadMoreReply(" + board_number + "," + parent_number + "," + number_of_reply + ")");
-              linkMore.setAttribute("id", "MoreRecentReplyView_link_more" + parent_number);
-              linkMore.setAttribute("pagination", 1);
-              linkMore.textContent = "더보기";
+//               // <a> 요소 생성
+//               var linkMore = document.createElement("a");
+//               linkMore.href = "#";
+//               linkMore.classList.add('MoreRecentReplyView_link_more','-post');
+//               linkMore.setAttribute("onclick", "loadMoreReply(" + board_number + "," + parent_number + "," + number_of_reply + ")");
+//               linkMore.setAttribute("id", "MoreRecentReplyView_link_more" + parent_number);
+//               linkMore.setAttribute("pagination", 1);
+//               linkMore.textContent = "더보기";
 
-              // <a>를 <div>에 추가
+//               // <a>를 <div>에 추가
               
-              contentDiv.appendChild(linkMore);
-            }
+//               contentDiv.appendChild(linkMore);
+//             }
 
-          } else {
-            console.log("posts 오류");
-            return;
-          }
-        } else {
-          console.log("POST 요청 실패");
-        }
-      }
-    };
-    xhr.send(formData);
-  }else if (wrap_comment_list !== null && openReply === true) {
-    console.log("어디로 들어감? 3");
-    openReply = false;
-    wrap_comment_list.style.display ='none';
-  }else{
-    console.log("오류");
-  }
-  }
+//           } else {
+//             console.log("posts 오류");
+//             return;
+//           }
+//         } else {
+//           console.log("POST 요청 실패");
+//         }
+//       }
+//     };
+//     xhr.send(formData);
+//   }else if (wrap_comment_list !== null && openReply === true) {
+//     console.log("어디로 들어감? 3");
+//     openReply = false;
+//     wrap_comment_list.style.display ='none';
+//   }else{
+//     console.log("오류");
+//   }
+// }
   
 
-function loadMoreReply(board_number, parent_number, number_of_reply) {
-  console.log("클릭됐나?");
+// function loadMoreReply(board_number, parent_number, number_of_reply) {
+//   console.log("클릭됐나?");
 
+//   var wrap_comment_list = document.getElementById('wrap_comment_list'+parent_number);
   
+<<<<<<< HEAD
 
   var wrap_comment_list = document.getElementById('wrap_comment_list'+parent_number);
   
@@ -1369,45 +1242,78 @@ function loadMoreReply(board_number, parent_number, number_of_reply) {
 
 
 //   const commentviewItemElements = document.querySelectorAll('.comment_item.CommentView_comment_item');
+=======
+//   const replyviewItemElements = wrap_comment_list.querySelectorAll('[data-comment-alias="REPLY_COMMENT"]');
+>>>>>>> refactor/pdo-migration
 //   // 요소의 가장 마지막 태그의 뒤쪽에 추가해줄 것
-//   const lastItemElement = commentviewItemElements[commentviewItemElements.length - 1];
+//   const lastItemElement = replyviewItemElements[replyviewItemElements.length - 1];
 
 //   var lastItemNumber = lastItemElement.getAttribute("data-comment-id");
+
 
 //   let formData = new FormData();
 
 //   formData.append("board_number", board_number);
 //   formData.append("lastItemNumber", lastItemNumber);
-//   formData.append("scrollCount", scrollCount);
+//   formData.append("parent_number", parent_number);
 
 //   for (var pair of formData.entries()) {
 //     console.log(pair[0] + ": " + pair[1]);
 //   }
 
 //   var xhr = new XMLHttpRequest();
+<<<<<<< HEAD
 //   xhr.open("POST", "post_load_comments.php", true);
+=======
+//   xhr.open("POST", "post_load_replies.php", true);
+>>>>>>> refactor/pdo-migration
 //   xhr.onreadystatechange = function () {
 //     if (xhr.readyState === XMLHttpRequest.DONE) {
 //       if (xhr.status === 200) {
 //         console.log("POST 요청 성공");
-//         var comments = JSON.parse(xhr.responseText);
+//         var replies = JSON.parse(xhr.responseText);
+//         console.log(replies);
 //         // 응답 결과에 따라 처리
-//         if (comments !== "" && comments !== 0) {
+//         if (replies !== "" && replies.length !== 0) {
 //           // json에서 데이터를 하나씩 뽑아와서 추가해준다.
-//           comments.forEach(comment => {
-//             console.log('comment' + comment);
+//           replies.forEach(reply => {
+//             console.log('reply' + reply);
 //             // 데이터를 불러와서 요소 생성 후 추가해줄 태그 찾기
-//             const commentviewItemElements = document.querySelectorAll('.CommentView_comment_item');
+//             const replyviewItemElements = wrap_comment_list.querySelectorAll('[data-comment-alias="REPLY_COMMENT"]');
+//             console.log('replyviewItemElements 길이 : ' + replyviewItemElements.length);
 //             // 요소의 가장 마지막 태그의 뒤쪽에 추가해줄 것
-//             const lastItemElement = commentviewItemElements[commentviewItemElements.length - 1];
-//             new_board_comment = makeComment(comment);
-//             lastItemElement.insertAdjacentElement('afterend', new_board_comment);
-//           });
-//           scrolled = false;
+//             const lastItemElement = replyviewItemElements[replyviewItemElements.length - 1];
+//             var replyItemDiv = makeReply(reply);
+//             lastItemElement.insertAdjacentElement('afterend', replyItemDiv);
           
-//           // 모두 스크롤했는지 여부 확인. 만약 다 불러왔다면 더 이상 스크롤해도 불러와지지 않는다.
-//           if (comments.length != 20) {
-//             scrolled = true;
+//           });
+
+//           var element = document.getElementById("MoreRecentReplyView_link_more" + parent_number);
+//           var pagination = parseInt(element.getAttribute("pagination")) + 1;
+//           // && Math.floor(number_of_reply / 10) >= whole_page
+          
+//           // 보여줄 데이터가 더 있다면 더보기 버튼을 생성해서 넣어준다.
+
+//           console.log("replies.length : " + replies.length);
+//           console.log("pagination : " + pagination);
+//           console.log("Math.floor(number_of_reply / 10) : " + Math.floor(number_of_reply / 10));
+//           if (pagination < Math.ceil(number_of_reply / 10)) {
+//             // <a> 요소 생성
+//             var linkMore = document.createElement("a");
+//             linkMore.href = "#";
+//             linkMore.classList.add('MoreRecentReplyView_link_more','-post');
+//             linkMore.setAttribute("onclick", "loadMoreReply(" + board_number + "," + parent_number + "," + number_of_reply +")");            linkMore.setAttribute("id", "MoreRecentReplyView_link_more" + parent_number);
+//             linkMore.setAttribute("pagination", pagination);
+//             linkMore.textContent = "더보기";
+
+            
+
+//             var contentDiv = document.getElementById('plusReplybtn'+parent_number);
+//             // <a>를 <div>에 추가
+//             contentDiv.appendChild(linkMore);
+//             element.remove();
+//           }else{
+//             element.remove();
 //           }
 
 //         } else {
@@ -1421,3 +1327,145 @@ function loadMoreReply(board_number, parent_number, number_of_reply) {
 //   };
 //   xhr.send(formData);
 // }
+
+// 대댓글을 불러오는 공통 AJAX 함수
+function fetchReplies(board_number, parent_number, lastItemNumber, number_of_reply, isInitialLoad) {
+  console.log("대댓글 로드:", { parent: parent_number, lastItem: lastItemNumber, isInitial: isInitialLoad });
+
+  let formData = new FormData();
+  formData.append("board_number", board_number);
+  formData.append("lastItemNumber", lastItemNumber);
+  // formData.append("number_of_reply", number_of_reply); // 이 값은 현재 PHP에서 사용되지 않음
+  formData.append("parent_number", parent_number);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "post_load_replies.php", true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        console.log("POST 요청 성공 (대댓글)");
+        var replies = JSON.parse(xhr.responseText);
+        console.log(replies);
+
+        if (replies !== "" && replies.length !== 0) {
+          // 대댓글을 추가할 부모 컨테이너 찾기
+          var contentDiv = document.getElementById('plusReplybtn' + parent_number);
+          if (!contentDiv) {
+            console.error("대댓글 컨테이너를 찾을 수 없습니다:", 'plusReplybtn' + parent_number);
+            return;
+          }
+
+          replies.forEach(reply => {
+            var replyItemDiv = makeReply(reply); // makeReply 함수는 이미 존재함
+            contentDiv.appendChild(replyItemDiv);
+          });
+
+          // '더보기' 버튼 처리
+          var moreButtonId = "MoreRecentReplyView_link_more" + parent_number;
+          var moreButton = document.getElementById(moreButtonId);
+
+          // 현재 페이지 계산 (pagination 속성 사용)
+          var currentPage = moreButton ? parseInt(moreButton.getAttribute("pagination")) : 0;
+          if (isInitialLoad) {
+            currentPage = 1; // 처음 로드 시 1페이지
+          } else if (moreButton) {
+            currentPage++; // 더보기 클릭 시 페이지 증가
+          }
+
+          // 전체 페이지 계산
+          var totalPages = Math.ceil(number_of_reply / 10); // 한 페이지에 10개씩
+
+          // 기존 '더보기' 버튼 제거
+          if (moreButton) {
+            moreButton.remove();
+          }
+
+          // (공통 로직) 아직 로드할 페이지가 남았으면 '더보기' 버튼 다시 생성
+          if (currentPage < totalPages) {
+            var linkMore = document.createElement("a");
+            linkMore.href = "#";
+            linkMore.classList.add('MoreRecentReplyView_link_more', '-post');
+            // (주의) onclick 이벤트에 새 페이지 번호(currentPage)가 아닌, 필요한 파라미터 전달
+            linkMore.setAttribute("onclick", "loadMoreReply(" + board_number + "," + parent_number + "," + number_of_reply + ")");
+            linkMore.setAttribute("id", moreButtonId);
+            linkMore.setAttribute("pagination", currentPage); // 현재 페이지 저장
+            linkMore.textContent = "더보기";
+
+            contentDiv.appendChild(linkMore);
+          }
+
+        } else {
+          console.log("대댓글 응답 오류 또는 데이터 없음");
+          // '더보기' 버튼이 있었다면 제거 (더 이상 데이터가 없으므로)
+          var moreButton = document.getElementById("MoreRecentReplyView_link_more" + parent_number);
+          if (moreButton) moreButton.remove();
+        }
+      } else {
+        console.log("POST 요청 실패 (대댓글)");
+      }
+    }
+  };
+  xhr.send(formData);
+}
+
+// [리팩토링] 대댓글 목록을 열거나 처음 로드 (기존 958행)
+function loadReply(number_of_reply, board_number, parent_number) {
+  console.log("loadReply 클릭됨");
+
+  var wrap_comment_list = document.getElementById('wrap_comment_list' + parent_number);
+  var more_recent_comment_wrap = document.getElementById("CommentView_more_recent_comment_wrap" + parent_number);
+
+  // 1. 이미 로드됨 (목록이 존재함)
+  if (wrap_comment_list !== null) {
+    // 현재 상태가 'none'이면 'block'으로, 'block'이면 'none'으로 변경
+    wrap_comment_list.style.display = (wrap_comment_list.style.display === 'none') ? 'block' : 'none';
+
+  // 2. 처음 로드함 (목록이 없음)
+  } else if (wrap_comment_list === null) {
+    // 2-1. 대댓글을 담을 래퍼(wrapper) 생성
+    var wrapCommentList = document.createElement("div");
+    wrapCommentList.className = "wrap_comment_list";
+    wrapCommentList.setAttribute("id", "wrap_comment_list" + parent_number);
+    // (참고) 처음엔 display = 'block'이 기본값
+
+    var list = document.createElement("div");
+    list.className = "list";
+
+    var commentListView = document.createElement("div");
+    commentListView.classList.add('CommentListView_list_content', 'CommentListView_-comment_depth_depth2', '-comment_client_post');
+
+    // 2-2. 대댓글과 '더보기' 버튼이 추가될 컨테이너 생성
+    var contentDiv = document.createElement("div");
+    contentDiv.setAttribute('id', 'plusReplybtn' + parent_number); 
+
+    commentListView.appendChild(contentDiv);
+    list.appendChild(commentListView);
+    wrapCommentList.appendChild(list);
+    more_recent_comment_wrap.appendChild(wrapCommentList);
+
+    // 2-3. 공통 함수 호출 (처음 로드: true)
+    fetchReplies(board_number, parent_number, 0, number_of_reply, true);
+
+  } else {
+    console.log("대댓글 로드 로직 오류");
+  }
+}
+
+// 대댓글 '더보기' (기존 1048행)
+function loadMoreReply(board_number, parent_number, number_of_reply) {
+  console.log("loadMoreReply 클릭됨");
+
+  var wrap_comment_list = document.getElementById('wrap_comment_list' + parent_number);
+  if (!wrap_comment_list) return; // 래퍼가 없으면 중단
+
+  // 1. 마지막 대댓글 ID 찾기
+  const replyViewItemElements = wrap_comment_list.querySelectorAll('[data-comment-alias="REPLY_COMMENT"]');
+  if (replyViewItemElements.length === 0) return; // 대댓글이 없으면 중단
+
+  const lastItemElement = replyViewItemElements[replyViewItemElements.length - 1];
+  var lastItemNumber = lastItemElement.getAttribute("data-comment-id");
+
+  // 2. 공통 함수 호출 (처음 로드: false)
+  fetchReplies(board_number, parent_number, lastItemNumber, number_of_reply, false);
+}
+
