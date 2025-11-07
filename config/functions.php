@@ -119,7 +119,7 @@ function injectMediaPaths($pdo, $boardNumber, $contents) {
     
 /**
  * 특정 게시물의 댓글 목록을 가져옵니다.
- * (post_detail_page.php와 post_load_comments.php가 공통으로 사용)
+ * (post_detail_page.php와 post/load_comments.php가 공통으로 사용)
  *
  * @param PDO $pdo PDO 객체
  * @param int $boardNumber 게시글 번호
@@ -207,7 +207,7 @@ function getCommentsForPost($pdo, $boardNumber, $userNumber, $lastItemNumber = 0
 
 /**
  * 특정 부모 댓글의 대댓글 목록을 가져옵니다.
- * (post_detail_page.php와 post_load_replies.php가 공통으로 사용)
+ * (post_detail_page.php와 post/load_replies.php가 공통으로 사용)
  *
  * @param PDO $pdo PDO 객체
  * @param int $boardNumber 게시글 번호

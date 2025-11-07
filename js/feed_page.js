@@ -237,7 +237,7 @@ function openModifyPostModal(board_number) {
   formData.append("board_number", board_number);
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "set_modify_contents.php", true);
+  xhr.open("POST", "post/get_for_modify.php", true);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -862,7 +862,7 @@ var scrolled = false;
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "feed_load_posts.php", true);
+    xhr.open("POST", "post/load_feed.php", true);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {

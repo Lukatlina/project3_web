@@ -19,7 +19,7 @@ function writeWithdrawText() {
       }
     
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "write_withdraw_time.php", true);
+      xhr.open("POST", "user/withdraw_process.php", true);
     
       xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -29,7 +29,7 @@ function writeWithdrawText() {
             console.log("response: " + response);
             // 응답 결과에 따라 처리
             if (response === "1") {
-              form.action = "weverse_main.php";
+              form.action = "../weverse_main.php";
               console.log("response 성공");
             } else {
               console.log("response 오류");

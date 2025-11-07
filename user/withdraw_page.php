@@ -1,5 +1,5 @@
 <?php 
-include_once 'config/config.php';
+include_once '../config/config.php';
 ?>
 
 <!DOCTYPE html>
@@ -8,14 +8,14 @@ include_once 'config/config.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weverse Account</title>
-    <link rel="stylesheet" type="text/css" href="weverse_userdata.css">
-    <link rel="stylesheet" type="text/css" href="login_style.css">
-    <link rel="stylesheet" type="text/css" href="weverse.css">
+    <link rel="stylesheet" type="text/css" href="../css/user_profile.css">
+    <link rel="stylesheet" type="text/css" href="../css/login_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/weverse.css">
 
     <style>
         html{font-size: 10px;}
     </style>
-    <script src="weverse_member_withdraw.js"></script>
+    <script src="../js/user_withdraw.js"></script>
 </head>
 <body style="overflow: auto;">
     <div id="next">

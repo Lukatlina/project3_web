@@ -1,7 +1,7 @@
 <?php
     // header('Cache-Control: no cache'); //no cache
     // session_cache_limiter('private_no_expire'); // works
-    include_once 'check_auto_login.php';
+    include_once 'auth/check_auto_login.php';
     include_once 'config/config.php';
 ?>
 
@@ -106,7 +106,7 @@
                                 <img src="image/weverse.png" width="136px" height="20px">
                             </div>
                             <div class="HeaderView_action">
-                                <button class="user_data_btn" onclick="location.href='weverse_user_data.php'">
+                                <button class="user_data_btn" onclick="location.href='user/profile_page.php'">
                                     <img src="image/userdata_btn_img.png" width="38px" height="38px">
                                 </button>
                             </div>
@@ -527,7 +527,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="BaseModalView_close_button" onclick="location.href='weverse_artist_user.php';">
+                <button type="button" class="BaseModalView_close_button" onclick="location.href='feed_page.php';">
                     <span class="blind">close popup</span>
                 </button>
             </div>
@@ -550,6 +550,6 @@
             </div>
         </div>
     </div>
-    <script src="weverse_fanpost.js"></script>
+    <script src="js/post_detail_page.js"></script>
 </body>
 </html>

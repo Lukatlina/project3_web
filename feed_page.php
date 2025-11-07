@@ -3,12 +3,12 @@
     // header('Cache-Control: no cache'); //no cache
     // session_cache_limiter('private_no_expire'); // works
     
-    include_once 'check_auto_login.php';
+    include_once 'auth/check_auto_login.php';
     include_once 'config/config.php'; //
 
     // 이동한 페이지에서 뒤로가기를 눌러서 다시 main으로 이동했을 때 양식 다시 제출 확인 오류를 없애기 위한 코드
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        header('Location: weverse_artist_user.php');
+        header('Location: feed_page.php');
         exit();
     }
 
@@ -50,8 +50,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weverse</title>
-    <link rel="stylesheet" type="text/css" href="artist_style.css">
-    <link rel="stylesheet" type="text/css" href="weverse.css">
+    <link rel="stylesheet" type="text/css" href="../css/artist_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/weverse.css">
 </head>
 <body>
     <div class="root">
@@ -67,7 +67,7 @@
                                 </a>
                             </div>
                             <div class="HeaderView_action">
-                                <button class="user_data_btn" onclick="location.href='weverse_userdata.php'">
+                                <button class="user_data_btn" onclick="location.href='user/profile_page.php'">
                                     <img src="image/userdata_btn_img.png" width="38px" height="38px">
                                 </button>
                             </div>
@@ -585,6 +585,6 @@
             </div>
         </div>
     </div>
-    <script src="weverse_artist_user.js"></script>
+    <script src="js/feed_page.js"></script>
 </body>
 </html>

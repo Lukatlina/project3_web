@@ -386,7 +386,7 @@ scrollableArea.addEventListener('scroll', function() {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "post_load_comments.php", true);
+    xhr.open("POST", "post/load_comments.php", true);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
@@ -995,7 +995,7 @@ var openReply = false;
 
 
 //     var xhr = new XMLHttpRequest();
-//     xhr.open("POST", "post_load_replies.php", true);
+//     xhr.open("POST", "post/load_replies.php", true);
 //     xhr.onreadystatechange = function () {
 //       if (xhr.readyState === XMLHttpRequest.DONE) {
 //         if (xhr.status === 200) {
@@ -1085,7 +1085,7 @@ var openReply = false;
 
 //   var xhr = new XMLHttpRequest();
 
-//   xhr.open("POST", "post_load_replies.php", true);
+//   xhr.open("POST", "post/load_replies.php", true);
 //   xhr.onreadystatechange = function () {
 //     if (xhr.readyState === XMLHttpRequest.DONE) {
 //       if (xhr.status === 200) {
@@ -1158,7 +1158,7 @@ function fetchReplies(board_number, parent_number, lastItemNumber, number_of_rep
   formData.append("parent_number", parent_number);
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "post_load_replies.php", true);
+  xhr.open("POST", "post/load_replies.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {

@@ -104,7 +104,7 @@ $email = $_SESSION['email'] ?? null;
                 </dl>
                 </section>
                 <section class="box-section" style="margin-bottom: 0px; text-align: center;">
-                    <button type="submit" class="member-withdraw-button" onclick="location.href='../user/withdraw_page.php'">위버스 계정 탈퇴하기</button>
+                    <button type="submit" class="member-withdraw-button" onclick="location.href='withdraw_page.php'">위버스 계정 탈퇴하기</button>
                 </section>
             </div>
         </div> 

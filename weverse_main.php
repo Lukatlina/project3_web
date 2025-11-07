@@ -2,7 +2,7 @@
 // header('Cache-Control: no cache'); //no cache
 // session_cache_limiter('private_no_expire'); // works
 
-include 'check_auto_login.php';
+    include_once 'auth/check_auto_login.php';
 
 if (!session_id()) {
     session_start();
@@ -23,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weverse</title>
-    <link rel="stylesheet" type="text/css" href="main_style.css">
-    <link rel="stylesheet" type="text/css" href="artist_style.css">
-    <link rel="stylesheet" type="text/css" href="weverse.css">
+    <link rel="stylesheet" type="text/css" href="css/main_style.css">
+    <link rel="stylesheet" type="text/css" href="css/artist_style.css">
+    <link rel="stylesheet" type="text/css" href="css/weverse.css">
 </head>
 <body>
     <div class="wrap">
@@ -36,10 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <div class="hearderview_action">
                     <?php if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) : ?>
-                        <input class="signin_btn" type="button" value="Sign in" onclick="location.href='weverse_email_compare.php'">
+                        <input class="signin_btn" type="button" value="Sign in" onclick="location.href='auth/email_check_page.php'">
                         
                     <?php else : ?>
-                        <button type="button" class="user_data_btn" onclick="location.href='weverse_userdata.php'">
+                        <button type="button" class="user_data_btn" onclick="location.href='user/profile_page.php'">
                             <img src="image/userdata_btn_img.png" width="38px" height="38px">
                         </button>
                     <?php endif ?>
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </li>
                                     <?php else : ?>
                                     <li class="HomeArtistListSlotView_artist_item">
-                                        <a class="HomeArtistListSlotView_artist_link" onclick="location.href='weverse_artist_user.php'">
+                                        <a class="HomeArtistListSlotView_artist_link" onclick="location.href='feed_page.php'">
                                             <div class="HomeArtistListSlotView_artist_cover_wrap">
                                                 <img src="image/newjeans_thumbnail_fanboard.jpeg" width="208" height="208" class="HomeArtistListSlotView_cover_img">
                                             </div>
@@ -179,6 +179,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
-    <script src="weverse_main.js"></script>
+    <script src="js/weverse_main.js"></script>
 </body>
 </html>
