@@ -1,36 +1,36 @@
-let modal = document.getElementById("post-create-modal");
+let postCreateModal = document.getElementById("post-create-modal");
 // 이미지 파일을 추가할 때마다 저장할 배열 변수 선언 
-let uploadFiles = [];
-let submitFiles = [];
+let pendingUploadFiles = [];
+let filesToSubmit = [];
 
 function openWriteTextModal() {
-  modal.style.display = "flex";
+  postCreateModal.style.display = "flex";
 }
 
 function closePostCreateModal() {
-  modal.style.display = "none";
-  textBox.textContent = "위버스에 남겨보세요...";
+  postCreateModal.style.display = "none";
+  postCreateEditor.textContent = "위버스에 남겨보세요...";
 }
 
 
-const textBox = document.getElementById('post-editor-input');
+const postCreateEditor = document.getElementById('post-editor-input');
 
 // 포커스가 갔을 때 
-textBox.addEventListener('focus', function () {
-  let images = textBox.getElementsByTagName('img');
+postCreateEditor.addEventListener('focus', function () {
+  let images = postCreateEditor.getElementsByTagName('img');
   if (this.textContent.trim() === "위버스에 남겨보세요...") {
     this.textContent = '';
-    create_pTag();
+    createPTag();
     this.classList.remove('placeholder');
     this.classList.add('active');
-    let Modal_submit_btn = document.getElementById('post-submit-button');
-    if (textBox.textContent.trim() !== '' || images.length > 0) {
-      Modal_submit_btn.disabled = false;
+    let postCreateSubmitButton = document.getElementById('post-submit-button');
+    if (postCreateEditor.textContent.trim() !== '' || images.length > 0) {
+      postCreateSubmitButton.disabled = false;
     } else {
-      Modal_submit_btn.disabled = true;
+      postCreateSubmitButton.disabled = true;
     }
   } else if (images.length > 0) {
-    create_pTag();
+    createPTag();
     this.classList.remove('placeholder');
     this.classList.add('active');
   }
@@ -38,25 +38,25 @@ textBox.addEventListener('focus', function () {
 
 // 텍스트 박스에 텍스트가 입력될 때마다 검사하는 함수
 // 안에 텍스트가 있다면 버튼 활성화, 없다면 비활성화
-textBox.addEventListener('input', function () {
-  let Modal_submit_btn = document.getElementById('post-submit-button');
-  let images = textBox.getElementsByTagName('img');
-  console.log("텍스트 박스 길이" + textBox.textContent.trim().length);
-  if (textBox.textContent.trim() !== '' && textBox.textContent.trim().length < 10000) {
-    Modal_submit_btn.disabled = false;
-  } else if (textBox.textContent.length > 10000) {
-    Modal_submit_btn.disabled = true;
+postCreateEditor.addEventListener('input', function () {
+  let postCreateSubmitButton = document.getElementById('post-submit-button');
+  let images = postCreateEditor.getElementsByTagName('img');
+  console.log("텍스트 박스 길이" + postCreateEditor.textContent.trim().length);
+  if (postCreateEditor.textContent.trim() !== '' && postCreateEditor.textContent.trim().length < 10000) {
+    postCreateSubmitButton.disabled = false;
+  } else if (postCreateEditor.textContent.length > 10000) {
+    postCreateSubmitButton.disabled = true;
     alert("게시글은 9,999자까지만 작성할 수 있습니다.");
   } else if (images.length > 0) {
-    Modal_submit_btn.disabled = false;
+    postCreateSubmitButton.disabled = false;
   } else {
-    Modal_submit_btn.disabled = true;
+    postCreateSubmitButton.disabled = true;
   }
 });
 
 // 포커스 해제 시
-textBox.addEventListener('blur', function () {
-  let images = textBox.getElementsByTagName('img');
+postCreateEditor.addEventListener('blur', function () {
+  let images = postCreateEditor.getElementsByTagName('img');
   if (this.textContent.trim() === '' && images.length === 0) {
     this.textContent = "위버스에 남겨보세요...";
     this.classList.remove('active');
@@ -65,7 +65,7 @@ textBox.addEventListener('blur', function () {
 });
 
 
-function create_pTag() {
+function createPTag() {
   let new_pTag = document.createElement('p');
   new_pTag.contentEditable = true;
 
@@ -78,7 +78,7 @@ function create_pTag() {
   new_pTag.innerHTML = "";
 
   // 속성이 부여된 태그를 지정된 태그의 자식 태그로 넣는다.
-  textBox.appendChild(new_pTag);
+  postCreateEditor.appendChild(new_pTag);
   new_pTag.focus();
 
 }
@@ -86,14 +86,14 @@ function create_pTag() {
 function savePost() {
   console.log("saveBoardText() 시작");
 
-  // 6-1. 등록 버튼을 클릭하면 게시판에 img 태그가 있을 경우 같은 이미지가 할당된 submitFiles을 보내 저장한다.
-  console.log("이미지 서브밋 마지막 파일 이름" + submitFiles[submitFiles.length - 1]);
+  // 6-1. 등록 버튼을 클릭하면 게시판에 img 태그가 있을 경우 같은 이미지가 할당된 filesToSubmit을 보내 저장한다.
+  console.log("이미지 서브밋 마지막 파일 이름" + filesToSubmit[filesToSubmit.length - 1]);
 
   let formData = new FormData();
 
   // 이미지 태그의 src 속성 비우기
   // 텍스트 박스 안의 모든 img 태그 가져오기
-  imgElements = textBox.querySelectorAll('img');
+  imgElements = postCreateEditor.querySelectorAll('img');
 
 
   //for문으로 img태그의 갯수만큼 반복해서 src속성을 삭제해준다.
@@ -103,7 +103,7 @@ function savePost() {
     var id_number = parseInt(element.id.split('_')[1]);
 
     element.setAttribute('id', id_number);
-    formData.append('images[]', JSON.stringify(submitFiles[id_number-1].uploadfile));
+    formData.append('images[]', JSON.stringify(filesToSubmit[id_number-1].uploadfile));
     formData.append('id[]', element.id);
     formData.append('widget-type[]', element.getAttribute('widget-type'));
     element.removeAttribute('src');
@@ -115,13 +115,13 @@ function savePost() {
 
 
   // 이미지의 위치를 img 태그를 저장해서 텍스트에 표시해주기 위해서 innerHTML을 사용한다.
-  let divContent = textBox.innerHTML;
+  let postContentHtml = postCreateEditor.innerHTML;
   // 작성글의 길이를 확인하기 위해 textContent로 변수 선언
-  let confirmText = textBox.textContent.trim().length
-  console.log("텍스트 길이" + confirmText);
+  let postContentLength = postCreateEditor.textContent.trim().length
+  console.log("텍스트 길이" + postContentLength);
 
-  formData.append("divContent", divContent);
-  formData.append("confirmText", confirmText);
+  formData.append("divContent", postContentHtml);
+  formData.append("confirmText", postContentLength);
 
   for (var pair of formData.entries()) {
     console.log(pair[0] + ": " + pair[1]);
@@ -150,34 +150,34 @@ function savePost() {
   };
   xhr.send(formData);
   // formData 전송 후 바로 닫힐 수 있도록 만들어 준다.
-  modal.style.display = "none";
+  postCreateModal.style.display = "none";
   console.log("saveBoardText() 끝");
 }
 
 
 
 
-let listbox;
-let beforeListBox;
+let currentOpenDropdownMenu;
+let previouslyOpenDropdownMenu;
 
 function clickListBox(board_number) {
 
   console.log("click listboxs 시작");
   // 클릭한 게시글의 ID 가져오기
 
-  if (listbox !== null) {
-    beforeListBox = listbox;
+  if (currentOpenDropdownMenu !== null) {
+    previouslyOpenDropdownMenu = currentOpenDropdownMenu;
   }
 
-  listbox = document.getElementById("DropdownOptionListView" + board_number);
+  currentOpenDropdownMenu = document.getElementById("DropdownOptionListView" + board_number);
   console.log("DropdownOptionListView" + board_number);
 
-  console.log(listbox);
+  console.log(currentOpenDropdownMenu);
 
   // 버튼에 대한 추가적인 처리 수행
   console.log('버튼 ' + board_number + '이 클릭되었습니다.');
 
-  var computedStyle = window.getComputedStyle(listbox);
+  var computedStyle = window.getComputedStyle(currentOpenDropdownMenu);
   var displayValue = computedStyle.getPropertyValue("display");
 
   console.log("computedStyle : " + computedStyle);
@@ -185,12 +185,12 @@ function clickListBox(board_number) {
 
 
   if (displayValue === "none") {
-    listbox.style.display = "block";
-    if (beforeListBox !== undefined && beforeListBox !== listbox) {
-      beforeListBox.style.display = "none";
+    currentOpenDropdownMenu.style.display = "block";
+    if (previouslyOpenDropdownMenu !== undefined && previouslyOpenDropdownMenu !== currentOpenDropdownMenu) {
+      previouslyOpenDropdownMenu.style.display = "none";
     }
   } else {
-    listbox.style.display = "none";
+    currentOpenDropdownMenu.style.display = "none";
   }
 }
 
@@ -204,13 +204,13 @@ document.addEventListener("click", function (event) {
 
 
   for (let i = 0; i < listboxElements.length; i++) {
-    let listbox = listboxElements[i];
+    let currentOpenDropdownMenu = listboxElements[i];
     // console.log("listbox : " + listbox);
     // console.log(targetElement);
     // event.stopPropagation();
 
     if (!targetElement.closest("#DropdownOptionListView" + buttonId) && !targetElement.closest("#MoreButtonView_button_menu" + buttonId)) {
-      listbox.style.display = "none";
+      currentOpenDropdownMenu.style.display = "none";
       // console.log("버튼과 드롭다운옵션리스트뷰 이외의 모든 곳 클릭시 닫기 if문");
     }
   }
@@ -219,16 +219,16 @@ document.addEventListener("click", function (event) {
 
 
 // 수정하기
-let ModifyModal = document.getElementById("ModifyModal");
-let ModifytextBox = document.getElementById('Modify_wevEditor');
-let saved_contents;
-let modifying_board_number;
+let postModifyModal = document.getElementById("ModifyModal");
+let postModifyEditor = document.getElementById('Modify_wevEditor');
+let originalPostContent;
+let currentEditingPostId;
 
 // 수정 modal 오픈 후 set text를 위한 함수
 function openModifyPostModal(board_number) {
-  ModifyModal.style.display = "flex";
+  postModifyModal.style.display = "flex";
 
-  console.log("수정버튼 누를 때 모달 열림? " + modal.style.display);
+  console.log("수정버튼 누를 때 모달 열림? " + postCreateModal.style.display);
   var formData = new FormData();
   formData.append("board_number", board_number);
 
@@ -239,15 +239,15 @@ function openModifyPostModal(board_number) {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
         console.log("POST 요청 성공");
-        console.log("수정 post 요청 성공 후 모달 열림? " + modal.style.display);
+        console.log("수정 post 요청 성공 후 모달 열림? " + postCreateModal.style.display);
         var response = xhr.responseText;
         console.log("response: " + response);
         // 응답 결과에 따라 처리
         var post = JSON.parse(xhr.responseText);
         let text = post.contents;
-        ModifytextBox.innerHTML = text;
-        saved_contents = ModifytextBox.textContent.trim();
-        modifying_board_number = post.boardNumber;
+        postModifyEditor.innerHTML = text;
+        originalPostContent = postModifyEditor.textContent.trim();
+        currentEditingPostId = post.boardNumber;
       } else {
         console.log("POST 요청 실패");
       }
@@ -256,23 +256,23 @@ function openModifyPostModal(board_number) {
   xhr.send(formData);
 }
 
-let modify_modal_submit_btn = document.getElementById('Modify_Modal_submit_btn');
+let postModifySubmitButton = document.getElementById('Modify_Modal_submit_btn');
 
-ModifytextBox.addEventListener('input', function () {
-  let images = ModifytextBox.getElementsByTagName('img');
+postModifyEditor.addEventListener('input', function () {
+  let images = postModifyEditor.getElementsByTagName('img');
 
-  console.log(ModifytextBox.textContent.trim());
-  console.log(saved_contents);
+  console.log(postModifyEditor.textContent.trim());
+  console.log(originalPostContent);
 
-  if (ModifytextBox.textContent.trim() !== '' && ModifytextBox.textContent.trim() !== saved_contents && ModifytextBox.textContent.trim().length < 10000) {
-    modify_modal_submit_btn.disabled = false;
-  } else if (ModifytextBox.textContent.trim().length > 10000) {
-    modify_modal_submit_btn.disabled = true;
+  if (postModifyEditor.textContent.trim() !== '' && postModifyEditor.textContent.trim() !== originalPostContent && postModifyEditor.textContent.trim().length < 10000) {
+    postModifySubmitButton.disabled = false;
+  } else if (postModifyEditor.textContent.trim().length > 10000) {
+    postModifySubmitButton.disabled = true;
     alert("게시글은 9,999자까지만 작성할 수 있습니다.");
   } else if (images.length > 0) {
-    modify_modal_submit_btn.disabled = false;
+    postModifySubmitButton.disabled = false;
   } else {
-    modify_modal_submit_btn.disabled = true;
+    postModifySubmitButton.disabled = true;
   }
 });
 
@@ -287,7 +287,7 @@ function saveModifiedPost() {
 
   // 이미지 태그의 src 속성 비우기
   // 텍스트 박스 안의 모든 img 태그 가져오기
-  imgElements = ModifytextBox.querySelectorAll('img');
+  imgElements = postModifyEditor.querySelectorAll('img');
 
   // 
 
@@ -303,8 +303,8 @@ function saveModifiedPost() {
       console.log("뉴어탯치먼트 if문 실행됨? =====");
       // id 속성값을 함께 추가해준다.
 
-      for (let x = 0; x < submitFiles.length; x++) {
-        const submitFile = submitFiles[x];
+      for (let x = 0; x < filesToSubmit.length; x++) {
+        const submitFile = filesToSubmit[x];
         if (submitFile.id == element.id.split('_')[1]) {
           // json 문자열로 객체를 변환해서 보낸다.
           formData.append('images[]', JSON.stringify(submitFile.uploadfile));
@@ -323,13 +323,13 @@ function saveModifiedPost() {
   
 
   // 이미지의 위치를 img 태그를 저장해서 텍스트에 표시해주기 위해서 innerHTML을 사용한다.
-  let divContent = ModifytextBox.innerHTML;
+  let postContentHtml = postModifyEditor.innerHTML;
   // 작성글의 길이를 확인하기 위해 textContent로 변수 선언
-  let confirmText = ModifytextBox.textContent.trim().length
+  let postContentLength = postModifyEditor.textContent.trim().length
 
-  formData.append("board_number", modifying_board_number);
-  formData.append("divContent", divContent);
-  formData.append("confirmText", confirmText);
+  formData.append("board_number", currentEditingPostId);
+  formData.append("divContent", postContentHtml);
+  formData.append("confirmText", postContentLength);
 
 
   for (var pair of formData.entries()) {
@@ -358,24 +358,24 @@ function saveModifiedPost() {
     }
   };
   xhr.send(formData);
-  ModifyModal.style.display = "none";
+  postModifyModal.style.display = "none";
 
   console.log("saveModifiedPost() 끝");
 }
 
-let modifyPostModal = document.getElementById("modifyConfirmPostModal");
+let modifyConfirmCancelModal = document.getElementById("modifyConfirmPostModal");
 
 function returnBoardNotModify() {
-  modifyPostModal.style.display = "flex";
+  modifyConfirmCancelModal.style.display = "flex";
 }
 
 function returnModifyModal() {
-  modifyPostModal.style.display = "none";
+  modifyConfirmCancelModal.style.display = "none";
 }
 
 function closeModifyConfirmModal() {
-  modifyPostModal.style.display = "none";
-  ModifyModal.style.display = "none";
+  modifyConfirmCancelModal.style.display = "none";
+  postModifyModal.style.display = "none";
 }
 
 let deletePostModal = document.getElementById("deletePostModal");
@@ -384,19 +384,19 @@ function closeDeletePostModal() {
   deletePostModal.style.display = "none";
 }
 
-let deletePost_board_number;
+let postIdToDelete;
 function openDeletePostModal(board_number) {
 
   console.log("board_number :" + board_number);
-  deletePost_board_number = board_number;
+  postIdToDelete = board_number;
   deletePostModal.style.display = "flex";
 }
 
 function completeDeletedPost() {
   let formData = new FormData();
 
-  console.log(deletePost_board_number);
-  formData.append("board_number", deletePost_board_number);
+  console.log(postIdToDelete);
+  formData.append("board_number", postIdToDelete);
 
   for (var pair of formData.entries()) {
     console.log(pair[0] + ": " + pair[1]);
@@ -456,16 +456,16 @@ function saveTemporarySaveFile(files) {
           console.log("엠프티 확인" + element["videodestinationPath"] !== "undefined");
           if (typeof element["videodestinationPath"] !== "undefined") {
             // 동영상의 썸네일을 php에서 만들어서 저장해주었기 때문에 reader를 쓰지않고 주소값을 쓰도록 한다.
-            uploadFiles.push(element);
-            console.log('업로드파일 destinationPath'+uploadFiles[i]);
+            pendingUploadFiles.push(element);
+            console.log('업로드파일 destinationPath'+pendingUploadFiles[i]);
             const item_btn = document.getElementById('thumbnail_item_btn');
-            const preview_content = document.getElementById('thumbnail_content');
-            changeImage(preview_content,item_btn, element['destinationPath']);
+            const imagePreviewContainer = document.getElementById('thumbnail_content');
+            changeImage(imagePreviewContainer,item_btn, element['destinationPath']);
           }else{
-            uploadFiles.push(element);
+            pendingUploadFiles.push(element);
             const item_btn = document.getElementById('preview_item_btn');
-            const preview_content = document.getElementById('image_content'); // 요소를 추가할 컨테이너 선택 (원하는 대상에 맞게 변경)
-            changeImage(preview_content, item_btn, element['destinationPath']);
+            const imagePreviewContainer = document.getElementById('image_content'); // 요소를 추가할 컨테이너 선택 (원하는 대상에 맞게 변경)
+            changeImage(imagePreviewContainer, item_btn, element['destinationPath']);
           }
         }
       } else {
@@ -526,14 +526,14 @@ function createPreviewItem(file) {
 }
 
 // 이미지 변경 시 호출되는 함수
-function changeImage(preview_content, item_btn, dataURL) {
+function changeImage(imagePreviewContainer, item_btn, dataURL) {
 
   // 새로운 요소 생성
   const newPreviewItem = createPreviewItem(dataURL);
 
   // 생성한 요소를 적절한 위치에 추가
   // const preview = createPreviewItem(event, file);
-  preview_content.insertBefore(newPreviewItem, item_btn);
+  imagePreviewContainer.insertBefore(newPreviewItem, item_btn);
 }
 
 // 이미지 선택시 change 이벤트가 일어나면 실행되는 함수
@@ -541,8 +541,8 @@ function getImageFiles(event) {
   console.log("getImageFiles() 시작");
 
   // 4-2. 4-1에서 가져온 값을 변수를 선언해서 할당한다.
-  // inputimageElement에서 이미지 파일 리스트를 다시 file_list에 저장한다.
-  // = inputimageElement.files;
+  // postImageInput에서 이미지 파일 리스트를 다시 file_list에 저장한다.
+  // = postImageInput.files;
   let files = event.currentTarget.files; // 파일 리스트가 출력이 된다.
   console.log(files.length);
 
@@ -559,11 +559,11 @@ function getImageFiles(event) {
 // 4-1. HTML input 태그(type이 file이고 accept속성이 image/*며 id가 ape)를 자바스크립트로 HTML의 태그의 id값이 ape인지 확인해서 가져온다.
 // 유저가 올린 이미지를 가져온다.
 // HTML에서 id가 ape인 input태그 객체를 가져온다.
-let inputimageElement = document.getElementById("post-image-input");
+let postImageInput = document.getElementById("post-image-input");
 
 // 이미지 파일의 요소가 변경이 되었을 때 change 이벤트가 발생하게 된다.
 // 이벤트 발생시 getImageFiles 함수가 시작이 된다.
-inputimageElement.addEventListener('change', getImageFiles);
+postImageInput.addEventListener('change', getImageFiles);
 
 // 이벤트 발생한 타겟의 파일을 files 변수에 할당한다.
 // files를 console.log()를 통해서 출력해본다.
@@ -575,113 +575,101 @@ let previewPhotoModal = document.getElementById("previewPhotoModal");
 function closeAddImageModal() {
   console.log("closeAddImageModal 시작")
   previewPhotoModal.style.display = "none";
-  uploadFiles = [];
-  deletePreview(preview_content);
+  pendingUploadFiles = [];
+  deletePreview(imagePreviewContainer);
 }
 
 
-let preview_content = document.getElementById("image_content"); // 요소를 추가할 컨테이너 선택 (원하는 대상에 맞게 변경)
+let imagePreviewContainer = document.getElementById("image_content"); // 요소를 추가할 컨테이너 선택 (원하는 대상에 맞게 변경)
 
-// 이미지 추가 확인 버튼, 이미지가 textbox로 넘어가게 된다.
-// 4-7. 이미지 쓰기에서 확인을 누르면 에디터 화면에 이미지들이 뜨도록 만든다.
-function confirmAddImageModal() {
-  if (textBox.textContent.trim() === "위버스에 남겨보세요...") {
-    textBox.textContent = '';
+// 이미지/비디오를 에디터에 추가하는 공통 함수
+function addMediaToEditor(mediaFile, mediaType) {
+  // 1. 현재 활성화된 에디터(글쓰기 모달 또는 수정 모달)를 확인
+  let editor;
+  let submitButton;
+  if (postCreateModal.style.display === "flex") {
+    editor = postCreateEditor; // 글쓰기 모달의 에디터
+    submitButton = postCreateSubmitButton;
+  } else if (postModifyModal.style.display === "flex") {
+    editor = postModifyEditor; // 수정 모달의 에디터
+    submitButton = postModifySubmitButton;
+  } else {
+    console.error("활성화된 에디터를 찾을 수 없습니다.");
+    return;
   }
 
-  previewPhotoModal.style.display = "none";
+  if (editor.textContent.trim() === "위버스에 남겨보세요...") {
+    editor.textContent = '';
+  }
 
-  console.log("업로드파일" + uploadFiles.length);
+  let images = editor.getElementsByTagName('img');
+  const mediaUrl = mediaFile['destinationPath'];
 
-  for (let i = 0; i < uploadFiles.length; i++) {
-    if (modal.style.display === "flex") {
-      let images = textBox.getElementsByTagName('img');
-      const uploadFilesElement = uploadFiles[i]['destinationPath'];
-      const img = document.createElement('img');
-      img.setAttribute('src', uploadFilesElement);
-        if (images.length === 0) {
-          // img.setAttribute('id', 1);
-          img.setAttribute('id', 'newAttachment_'+1);
-          submitFiles.push({id: 1, uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'photo');
-        } else {
-          // img.setAttribute('id', images.length + 1);
-          img.setAttribute('id', 'newAttachment_' + (images.length + 1));
-          submitFiles.push({id: (images.length + 1), uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'photo');
-        }
-      textBox.appendChild(img);
-      Modal_submit_btn.disabled = false;
-    
-    }else if (modal.style.display !== "flex" || modal.style.display === '') {
-      let images = ModifytextBox.getElementsByTagName('img');
-      const uploadFilesElement = uploadFiles[i]['destinationPath'];
-      const img = document.createElement('img');
-      img.setAttribute('src', uploadFilesElement);
-        if (images.length === 0) {
-          // img.setAttribute('id', 1);
-          img.setAttribute('id', 'newAttachment_' + 1);
-          submitFiles.push({id: 1, uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'photo');
-        } else {
-          // id 속성 값 중 가장 큰 값을 찾는다.
-          let maxId = 0;
-            for (let i = 0; i < images.length; i++) {
-              let id = parseInt(images[i].getAttribute('id'));
-              if (images[i].getAttribute('id').split('_')[0] == 'newAttachment') {
-                id = parseInt(images[i].id.split('_')[1]);
-              }
-              
-              if (!isNaN(id) && id > maxId) {
-                maxId = id;
-              }
-            }
+  const img = document.createElement('img');
+  img.setAttribute('src', mediaUrl);
+  img.setAttribute('widget-type', mediaType); // 'photo' 또는 'video'
 
+  // 2. 새 ID 할당 로직 (기존 로직과 동일)
+  let newId;
+  if (images.length === 0) {
+    newId = 1;
+  } else {
+    let maxId = 0;
+    for (let i = 0; i < images.length; i++) {
+      let idStr = images[i].getAttribute('id');
+      let id = 0;
+      if (idStr.includes('newAttachment_')) {
+        id = parseInt(idStr.split('_')[1]);
+      } else {
+        id = parseInt(idStr); // 기존 이미지 ID
+      }
 
-          
-          // 가장 큰 값에 +1을 해서 겹치지 않도록 해준다.
-          // img.setAttribute('id', maxId + 1);
-          img.setAttribute('id', 'newAttachment_'+ (maxId + 1));
-          submitFiles.push({id: (maxId + 1), uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'photo');
-
-          // // 중복으로 값을 집어넣을 수 없는 Set 자료구조 생성
-          // let usedIds = new Set();
-
-          // // 이미지들의 id 값을 검사하여 사용된 id들을 추출
-          // for (let i = 0; i < images.length; i++) {
-          //   // parseInt로 문자열 중 정수로 변환 가능한 곳만 변환한다. 
-          //   let id = parseInt(images[i].id); // id값 변환
-          //   // isNAN() : 숫자가 아닌지 판별 아니라면 true, 맞다면 false
-          //   if (!isNaN(id)) {
-          //     // id가 숫자가 맞다면 set 자료구조에 id를 추가한다.
-          //     usedIds.add(id);
-          //   }
-          // }
-          
-          // // 사용되지 않은 id를 찾아 새로운 이미지 태그에 할당
-          // // 무한 루프 구문, 가운데의 조건 구문이 생략되었다.
-          // for (let id = 1; ; id++) {
-          //   // 만약 usedIds가 같은 값을 가지고 있지 않다면 id를 추가하고 break한다.
-          //   if (!usedIds.has(id)) {
-          //     img.setAttribute('id', id);
-          //     break;
-          //   }
-          // }
-        }
-      // textBox에 새로운 이미지 추가
-      ModifytextBox.appendChild(img);
-      modify_modal_submit_btn.disabled = false;
+      if (!isNaN(id) && id > maxId) {
+        maxId = id;
+      }
     }
+    newId = maxId + 1;
   }
-  deletePreview(preview_content);
-  uploadFiles = [];
 
-  // 등록 버튼 활성화
-  
+  img.setAttribute('id', 'newAttachment_' + newId);
+
+  // 3. filesToSubmit 배열에 파일 정보 추가
+  filesToSubmit.push({id: newId, uploadfile : mediaFile});
+
+  // 4. 에디터에 미디어 추가 및 버튼 활성화
+  editor.appendChild(img);
+  if (submitButton) {
+    submitButton.disabled = false;
+  }
 }
 
-function deletePreview(preview_content) {
+function confirmAddImageModal() {
+  previewPhotoModal.style.display = "none";
+  console.log("확인된 이미지 파일:", pendingUploadFiles.length);
+
+  // 공통 함수 호출
+  for (let i = 0; i < pendingUploadFiles.length; i++) {
+    addMediaToEditor(pendingUploadFiles[i], 'photo'); // 'photo' 타입으로 전달
+  }
+
+  deletePreview(imagePreviewContainer);
+  pendingUploadFiles = []; // 업로드 파일 배열 비우기
+}
+
+function confirmAddVideoModal() {
+  previewVideoModal.style.display = "none";
+  console.log("확인된 비디오 파일:", pendingUploadFiles.length);
+
+  // 공통 함수 호출
+  for (let i = 0; i < pendingUploadFiles.length; i++) {
+    addMediaToEditor(pendingUploadFiles[i], 'video'); // 'video' 타입으로 전달
+  }
+
+  deletePreview(videoPreviewContainer);
+  pendingUploadFiles = []; // 업로드 파일 배열 비우기
+}
+
+function deletePreview(imagePreviewContainer) {
   // querySelector는 일치하는 첫번째 요소만 가져오고 getElementsByClassName은 모든 요소를 가져옴
   // 기존의 요소 삭제
   const previewItems = document.getElementsByClassName('preview_item');
@@ -690,7 +678,7 @@ function deletePreview(preview_content) {
   for (let i = 0; i < previewItemsArray.length; i++) {
     let previewItem = previewItemsArray[i];
     if (previewItem.dataset.status === 'DONE') {
-      preview_content.removeChild(previewItem); // data-status가 DONE인 preview_item 삭제
+      imagePreviewContainer.removeChild(previewItem); // data-status가 DONE인 preview_item 삭제
     }
   }
 }
@@ -701,11 +689,11 @@ function deletePreview(preview_content) {
 // 2. 동영상 선택 후 확인을 누르면 동영상 프리뷰 화면이 뜨면서 어떤 영상을 추가했는지 확인 할 수 있음. jpg의 썸네일과 영상의 길이가 함께 뜬다.
 // HTML input 태그(type이 file이고 accept속성이 "video/mp4, video/*"며 id가 ave)를 자바스크립트로 HTML의 태그의 id값이 ape인지 확인해서 가져온다.
 let inputvideoElement = document.getElementById("post-video-input");
-let secondinputimage = document.getElementById("apei");
-let secondinputvideo = document.getElementById("avei");
+let previewModalImageInput = document.getElementById("apei");
+let previewModalVideoInput = document.getElementById("avei");
 
-secondinputimage.addEventListener('change', getImageFiles);
-secondinputvideo.addEventListener('change', getVideoFiles);
+previewModalImageInput.addEventListener('change', getImageFiles);
+previewModalVideoInput.addEventListener('change', getVideoFiles);
 
 
 // 이미지 파일의 요소가 변경이 되었을 때 change 이벤트가 발생하게 된다.
@@ -721,10 +709,10 @@ let previewVideoModal = document.getElementById("previewVideoModal");
 // 동영상이 추가되면 change 이벤트가 실행이 된다. 이벤트 실행 후 자동으로 실행될 함수
 function getVideoFiles(event) {
   console.log("getVideoFiles() 시작");
-  console.log("getVideoFiles() 시작 모달 열림? " + modal.style.display);
+  console.log("getVideoFiles() 시작 모달 열림? " + postCreateModal.style.display);
 
   // 4-2. 4-1에서 가져온 값을 변수를 선언해서 할당한다.
-  // inputimageElement에서 이미지 파일 리스트를 다시 file_list에 저장한다.
+  // postImageInput에서 이미지 파일 리스트를 다시 file_list에 저장한다.
   // = inputVideoElement.files;
   let files = event.currentTarget.files; // 파일 리스트가 출력이 된다.
   console.log(files.length);
@@ -732,7 +720,7 @@ function getVideoFiles(event) {
   // 동영상 파일을 임시 저장한 후 썸네일을 추출해서 preview에서 보여준다.
   saveTemporarySaveFile(files);
 
-  console.log("수정때 겟비디오 후 모달 열림? " + modal.style.display);
+  console.log("수정때 겟비디오 후 모달 열림? " + postCreateModal.style.display);
 
   previewVideoModal.style.display = "flex";
   event.currentTarget.value = '';
@@ -740,92 +728,18 @@ function getVideoFiles(event) {
 }
 
 // 동영상 프리뷰를 삭제하거나 추가하기 위한 변수 선언
-let thumbnail_content = document.getElementById("thumbnail_content"); // 요소를 추가할 컨테이너 선택 (원하는 대상에 맞게 변경)
+let videoPreviewContainer = document.getElementById("thumbnail_content"); // 요소를 추가할 컨테이너 선택 (원하는 대상에 맞게 변경)
 
 // 3. 동영상 추가 창에서 확인 클릭시 에디터에 영상 추가됨
 // 이미지 추가 삭제
 function closeAddVideoModal() {
   console.log("closeAddVideoModal 시작")
   previewVideoModal.style.display = "none";
-  uploadFiles = [];
-  deletePreview(thumbnail_content);
+  pendingUploadFiles = [];
+  deletePreview(videoPreviewContainer);
 }
 
-// 이미지 추가 확인 버튼, 이미지가 textbox로 넘어가게 된다.
-// 4-7. 이미지 쓰기에서 확인을 누르면 에디터 화면에 이미지들이 뜨도록 만든다.
-function confirmAddVideoModal() {
-  if (textBox.textContent.trim() === "위버스에 남겨보세요...") {
-    textBox.textContent = '';
-  }
-  previewVideoModal.style.display = "none";
 
-  console.log("업로드파일" + uploadFiles.length);
-
-  for (let i = 0; i < uploadFiles.length; i++) {
-    if (modal.style.display === "flex") {
-      let images = textBox.getElementsByTagName('img');
-      // 등록 버튼을 누를 때 사용할 리스트에 데이터를 추가해준다.
-      const uploadFilesElement = uploadFiles[i]['destinationPath'];
-      const img = document.createElement('img');
-      img.setAttribute('src', uploadFilesElement);
-        if (images.length === 0) {
-          img.setAttribute('id', 'newAttachment_'+1);
-          submitFiles.push({id: 1, uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'video');
-        } else {
-          img.setAttribute('id', 'newAttachment_'+ (images.length + 1));
-          submitFiles.push({id: (images.length + 1), uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'video');
-        }
-      textBox.appendChild(img);
-      Modal_submit_btn.disabled = false;
-    
-    }else if (modal.style.display !== "flex" || modal.style.display === '') {
-      let images = ModifytextBox.getElementsByTagName('img');
-      const uploadFilesElement = uploadFiles[i]['destinationPath'];
-      const img = document.createElement('img');
-      img.setAttribute('src', uploadFilesElement);
-        if (images.length === 0) {
-          // img.setAttribute('id', 1);
-          img.setAttribute('id', 'newAttachment_'+ 1);
-          submitFiles.push({id: 1, uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'video');
-        } else {
-          // id 속성 값 중 가장 큰 값을 찾는다.
-          let maxId = 0;
-            for (let i = 0; i < images.length; i++) {
-              let id = parseInt(images[i].getAttribute('id'));
-              if (images[i].getAttribute('id').split('_')[0] == 'newAttachment') {
-                id = parseInt(images[i].id.split('_')[1]);
-              }
-              
-              if (!isNaN(id) && id > maxId) {
-                maxId = id;
-              }
-            }
-            
-          // 가장 큰 값에 +1을 해서 겹치지 않도록 해준다.
-          // img.setAttribute('id', maxId + 1);
-          img.setAttribute('id', 'newAttachment_'+ (maxId + 1));
-          // 파일구별을 위해 id값 추가
-          submitFiles.push({id: (maxId + 1), uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'video');
-        }
-      // textBox에 새로운 이미지 추가
-      ModifytextBox.appendChild(img);
-      modify_modal_submit_btn.disabled = false;
-      
-
-    }else{
-    }
-  }
-  
-  deletePreview(thumbnail_content);
-  // submitFiles에 추가해줘서 데이터는 남아있기 때문에 preview 때 사용하는 uploadFiles를 비워준다.
-  // 만약 비워주지 않으면 동영상을 다시 추가했을 때 이전에 추가했던 데이터가 중복으로 올라가게 된다.
-  uploadFiles = [];
-
-}
 
 
 function changeMaximumLikes(board_number) {
