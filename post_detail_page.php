@@ -81,10 +81,17 @@
                 20
             );
             
+            $mainPostLikeStatus = getLikeStatus(
+                $pdo, 
+                $userNumber, 
+                $boardNumber, 
+                null
+            );
+
         } catch (PDOException $e) {
             error_log("Failed to fetch post details or comments: " . $e->getMessage());
             echo "페이지를 불러오는 데 실패했습니다.";
-            exit(); 
+            exit();
         }
 
     ?>
@@ -209,48 +216,10 @@
                                                 <div class="list">
                                                     <div class="CommentListView_list_content -comment_depth_depth1 -comment_client_post">
                                                         <div>
-                                                            <!-- 댓글을 꺼내는 for문 -->
-                                                            <?php foreach ($comments as $comment) : ?>
-                                                                <?php 
-                                                                    $reply_sql = "SELECT *
-                                                                    FROM comments
-                                                                    WHERE board_number='$board_number' AND parent_number='{$comment['id']}'
-                                                                    ORDER BY comments.comments_number;";
-
-                                                                    
-
-                                                                    $reply_result = mysqli_query( $conn, $reply_sql );
-
-                                                                    $number_of_reply = mysqli_num_rows($reply_result);
-
-                                                                    // $replies = array();
-
-                                                                    // for ($i = 0; $i < $number_of_reply; $i++) {
-                                                                    //     $reply_row = mysqli_fetch_array($reply_result);
-                                                                    //     $reply_comments_number = $reply_row['comments_number'];
-                                                                    //     $reply_parent_number = $reply_row['parent_number'];
-                                                                    //     $reply_user_number = $reply_row['user_number'];
-                                                                    //     $reply_text = $reply_row['comments_text'];
-                                                                    //     $reply_save_time = $reply_row['comments_save_time'];
-                                                                    //     $reply_cheering = $reply_row['comments_cheering'];
-                                                                    //     $reply_user_nickname = $reply_row['nickname'];
-                                                                        
-                                                                    //     // 날짜 포맷 변경을 위한 DateTime 함수 선언. 
-                                                                    //     $reply_dateTime = new DateTime($reply_save_time);
-
-                                                                    //     $replies[] = array(
-                                                                    //         'index' => $i,
-                                                                    //         'reply_id' => $reply_comments_number,
-                                                                    //         'reply_parent_number' => $reply_parent_number,
-                                                                    //         'reply_user_number' => $reply_user_number,
-                                                                    //         'reply_text' =>  $reply_text,
-                                                                    //         'reply_dateTime' => $reply_dateTime,
-                                                                    //         'reply_cheering' => $reply_cheering,
-                                                                    //         'reply_user_nickname' => $reply_user_nickname);
-                                                                    //     }
-                                                                ?>
+                                                            
+                                                                
                                                                 <!-- 대댓글의 갯수가 0개일 때 -->
-                                                                <?php if ($number_of_reply === 0) : ?>
+                                                                <?php if ($comment['numberOfReply'] === 0) : ?>
                                                                 <div class="comment_item CommentView_comment_item" data-comment-id="<?php echo $comment['id']?>" data-comment-anchored="false" data-comment-alias="COMMENT" data-comment-depth="depth1" data-comment-client="post" data-comment-use-background="false">
                                                                     <div class="CommentView_comment_content -comment_client_post">
                                                                         <div class="PostHeaderView_header_wrap PostHeaderView_-header_type_post PostHeaderView_-comment_depth1">
@@ -273,10 +242,10 @@
                                                                                     <div class="PostHeaderView_info_wrap">
                                                                                         <span class="PostHeaderView_date">
                                                                                             <?php
-                                                                                                if ($comment['comments_dateTime']->format('Y')===date('Y')) {
-                                                                                                    echo $comment['comments_dateTime']->format('m. d. H:i');
+                                                                                                if ($comment['dateTime']->format('Y')===date('Y')) {
+                                                                                                    echo $comment['dateTime']->format('m. d. H:i');
                                                                                                 }else{
-                                                                                                    echo $comment['comments_dateTime']->format('Y. m. d. H:i');
+                                                                                                    echo $comment['dateTime']->format('Y. m. d. H:i');
                                                                                             }
                                                                                             ?></span>
                                                                                     </div>
@@ -320,13 +289,11 @@
                                                                         <!-- 댓글에 달린 좋아요 버튼 -->
                                                                         <div class="CommentView_comment_actions">
                                                                             <div class="CommentView_comment_action_item">
-                                                                                <button id="EmotionButtonView_button_emotion<?php echo $comment['id']; ?>" type="button" class="EmotionButtonView_button_emotion EmotionButtonView_-comment -post" aria-pressed="false" onclick="changeCommentMaximumLikes(<?php echo $board_number; ?>,<?php echo $comment['id']; ?>)">
+                                                                                <button id="EmotionButtonView_button_emotion<?php echo $comment['id']; ?>" type="button" class="EmotionButtonView_button_emotion EmotionButtonView_-comment -post" aria-pressed="false" onclick="updateLike(<?php echo $board_number; ?>,<?php echo $comment['id']; ?>)">
                                                                                     <?php
                                                                                     $comment_number = $comment['id'];
 
-                                                                                    include 'count_likes.php';
-
-                                                                                    if ($likes_row_count === 1) : ?>
+                                                                                    if ($comment['likesRowCount'] === 1) : ?>
                                                                                         <svg id="comment_like_btn<?php echo $comment['id']; ?>" class="add_comment_like liked" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
                                                                                         <span class="blind">cheering</span>
                                                                                         <?php echo $comment['comments_cheering']; ?>
@@ -395,10 +362,10 @@
                                                                                     <div class="PostHeaderView_info_wrap">
                                                                                         <span class="PostHeaderView_date">
                                                                                             <?php
-                                                                                                if ($comment['comments_dateTime']->format('Y')===date('Y')) {
-                                                                                                    echo $comment['comments_dateTime']->format('m. d. H:i');
+                                                                                                if ($comment['dateTime']->format('Y')===date('Y')) {
+                                                                                                    echo $comment['dateTime']->format('m. d. H:i');
                                                                                                 }else{
-                                                                                                    echo $comment['comments_dateTime']->format('Y. m. d. H:i');
+                                                                                                    echo $comment['dateTime']->format('Y. m. d. H:i');
                                                                                             }
                                                                                             ?></span>
                                                                                     </div>
@@ -441,14 +408,14 @@
                                                                         <div class="CommentView_comment_text"><?php echo $comment['comments_text']; ?></div>
                                                                         <div class="CommentView_comment_actions">
                                                                             <div class="CommentView_comment_action_item">
-                                                                                <button id="EmotionButtonView_button_emotion<?php echo $comment['id']; ?>" type="button" class="EmotionButtonView_button_emotion EmotionButtonView_-comment -post" aria-pressed="false" onclick="changeCommentMaximumLikes(<?php echo $board_number; ?>,<?php echo $comment['id']; ?>)">
+                                                                                <button id="EmotionButtonView_button_emotion<?php echo $comment['id']; ?>" type="button" class="EmotionButtonView_button_emotion EmotionButtonView_-comment -post" aria-pressed="false" onclick="updateLike(<?php echo $board_number; ?>,<?php echo $comment['id']; ?>)">
                                                                                     <?php
 
                                                                                     $comment_number = $comment['id'];
 
-                                                                                    include 'count_likes.php';
+                                                                        
 
-                                                                                    if ($likes_row_count === 1) : ?>
+                                                                                    if ($comment['likesRowCount'] === 1) : ?>
                                                                                         <svg id="comment_like_btn<?php echo $comment['id']; ?>" class="add_comment_like liked" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                                             
                                                                                         </svg>
@@ -496,123 +463,12 @@
                                                                         </div>
                                                                     </div>  
                                                                     <div class="CommentView_more_recent_comment_wrap" id="CommentView_more_recent_comment_wrap<?php echo $comment['id']; ?>" data-id="<?php echo $comment['id']; ?>" >
-                                                                        <a href="#" class="MoreRecentCommentView_link_more -post" onclick="loadReply(<?php echo $number_of_reply ?>, <?php echo $board_number ?>, <?php echo $comment['id']; ?>)">
-                                                                            답글 <?php echo $number_of_reply ?>개
+                                                                        <a href="#" class="MoreRecentCommentView_link_more -post" onclick="loadReply(<?php echo $comment['numberOfReply'] ?>, <?php echo $board_number ?>, <?php echo $comment['id']; ?>)">
+                                                                            답글 <?php echo $comment['numberOfReply'] ?>개
                                                                         </a>
-                                                                        <!-- 대댓글 시작 -->
-                                                                        <!-- <div class="wrap_comment_list<?php echo $comment['id']; ?>">
-                                                                            <div class="list">
-                                                                                <div class="CommentListView_list_content CommentListView_-comment_depth_depth2 -comment_client_post">
-                                                                                    <div>
-                                                                                    <?php foreach ($replies as $reply) : ?>
-                                                                                        <div class="comment_item CommentView_comment_item" data-comment-id="<?php echo $reply['reply_id']?>" data-comment-anchored="false" data-comment-alias="REPLY_COMMENT" data-comment-depth="depth2" data-comment-client="post" data-comment-use-background="false">
-                                                                                            <div class="CommentView_comment_content -comment_client_post">
-                                                                                                <div class="PostHeaderView_header_wrap PostHeaderView_-header_type_post PostHeaderView_-comment_depth2">
-                                                                                                    <div class="PostHeaderView_group_wrap PostHeaderView_-profile_area">
-                                                                                                        <a class="PostHeaderView_thumbnail_wrap">
-                                                                                                            <div class="ProfileThumbnailView_thumbnail_area" style="width: 22px; height: 22px;">
-                                                                                                                <div class="ProfileThumbnailView_thumbnail_wrap">
-                                                                                                                    <div style="aspect-ratio: auto 22 / 22; content-visibility: auto; contain-intrinsic-size: 22px; width: 100%; height: 100%;">
-                                                                                                                        <img class="ProfileThumbnailView_thumbnail" src="image/icon_empty_profile.png" width="22" height="22" alt>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </a>
-                                                                                                        <div class="PostHeaderView_text_wrap">
-                                                                                                            <a href="">
-                                                                                                                <div class="PostHeaderView_nickname_wrap">
-                                                                                                                    <strong class="PostHeaderView_nickname"><?php echo $reply['reply_user_nickname'];?></strong>
-                                                                                                                </div>
-                                                                                                            </a>
-                                                                                                            <div class="PostHeaderView_info_wrap">
-                                                                                                                <span class="PostHeaderView_date">
-                                                                                                                    <?php
-                                                                                                                        if ($reply['reply_dateTime']->format('Y')===date('Y')) {
-                                                                                                                            echo $reply['reply_dateTime']->format('m. d. H:i');
-                                                                                                                        }else{
-                                                                                                                            echo $reply['reply_dateTime']->format('Y. m. d. H:i');
-                                                                                                                    }
-                                                                                                                    ?></span>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="PostHeaderView_group_wrap PostHeaderView_-button_area">
-                                                                                                        <div type="button" class="TranslationButtonView_translation_button" aria-pressed="false"></div>
-                                                                                                        <div class="PostHeaderView_button_item PostHeaderView_-menu">
-                                                                                                            <div>
-                                                                                                                <button type="button" id="MoreButtonView_button_menu<?php echo $reply['reply_id']; ?>" class="MoreButtonView_button_menu MoreButtonView_-comment MoreButtonView_-post" data-id="<?php echo $reply['reply_id']; ?>" onclick="clickCommentListBox(<?php echo $reply['reply_id']; ?>)">
-                                                                                                                    <span class="blind">Show More Content</span>
-                                                                                                                </button>
-                                                                                                                <?php
-                                                                                                                if ($user_number === $reply['reply_user_number']) : ?>
-                                                                                                                    <ul id="CommentDropdownOptionListView<?php echo $reply['reply_id']; ?>" class="DropdownOptionListView_option_list DropdownOptionListView_dropdown-action" role="listbox" data-use-placement="true" data-placement="top" >
-                                                                                                                        <li class="DropdownOptionListView_option_item" role="presentation">
-                                                                                                                            <button class="ContentMetaActionLayerView_button_item ContentMetaActionLayerView_-delete" onclick="openDeleteCommentModal(<?php echo $reply['reply_id']?>)">
-                                                                                                                                삭제하기
-                                                                                                                            </button>
-                                                                                                                        </li>   
-                                                                                                                    </ul>
-                                                                                                                <?php else : ?>
-                                                                                                                    <ul id="CommentDropdownOptionListView<?php echo $reply['reply_id']; ?>" class="DropdownOptionListView_option_list DropdownOptionListView_dropdown-action" role="listbox" data-use-placement="true" data-placement="top">
-                                                                                                                        <li class="DropdownOptionListView_option_item" role="presentation">
-                                                                                                                            <button class="ContentMetaActionLayerView_button_item ContentMetaActionLayerView_-report">
-                                                                                                                                신고하기
-                                                                                                                            </button>
-                                                                                                                        </li>
-                                                                                                                        <li class="DropdownOptionListView_option_item" role="presentation">
-                                                                                                                            <button class="ContentMetaActionLayerView_button_item ContentMetaActionLayerView_-block">
-                                                                                                                                작성자 차단
-                                                                                                                            </button>
-                                                                                                                        </li>
-                                                                                                                    </ul>
-                                                                                                                <?php endif ?>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="CommentView_comment_text"><?php echo $reply['reply_text']; ?></div>
-                                                                                                <div class="CommentView_comment_actions">
-                                                                                                    <div class="CommentView_comment_action_item">
-                                                                                                        <button id="EmotionButtonView_button_emotion<?php echo $reply['reply_id']; ?>" type="button" class="EmotionButtonView_button_emotion EmotionButtonView_-comment -post" aria-pressed="false" onclick="changeCommentMaximumLikes(<?php echo $board_number ?>,<?php echo $reply['reply_id']; ?>)">
-                                                                                                            <?php
-
-                                                                                                            $comment_number = $reply['reply_id'];
-                                                                                                        
-                                                                                                            include 'count_likes.php';
-
-                                                                                                            if ($likes_row_count === 1) : ?>
-                                                                                                                <svg id="comment_like_btn<?php echo $reply['reply_id']; ?>" class="add_comment_like liked" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                                                    
-                                                                                                                </svg>
-                                                                                                                <span class="blind">cheering</span>
-                                                                                                                <?php echo $reply['reply_cheering']; ?>
-                                                                                                            <?php else : ?>
-                                                                                                                <svg id="comment_like_btn<?php echo $reply['reply_id']; ?>" class="add_comment_like" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                                                    
-                                                                                                                </svg>
-                                                                                                                <span class="blind">cheering</span>
-                                                                                                                <?php 
-                                                                                                                    if ($reply['reply_cheering'] == 0) {
-                                                                                                                        NULL;
-                                                                                                                    }else {
-                                                                                                                        echo $reply['reply_cheering'];
-                                                                                                                    }
-                                                                                                                ?>
-                                                                                                            <?php endif ?>
-                                                                                                        </button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <?php endforeach; ?>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>   -->
                                                                     </div>
                                                                 </div>
                                                             <?php endif ?>
-                                                            <?php endforeach; ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -645,14 +501,14 @@
                             </div>
                         </div>
                         <div class="PostModalView_post_action">
-                            <button id="EmotionButtonView_button_emotion" type="button" class="EmotionButtonView_button_emotion" aria-pressed="false" onclick="changeMaximumLikes(<?php echo $board_number ?>)">
+                            <button id="EmotionButtonView_button_emotion" type="button" class="EmotionButtonView_button_emotion" aria-pressed="false" onclick="updateLike(<?php echo $board_number ?>)">
                             <?php
 
                             $comment_number = '';
                             
-                            include 'count_likes.php';
+                          
                             
-                            if ($likes_row_count === 1) : ?>
+                            if ($mainPostLikeStatus === 1) : ?>
                                 <svg id="like_btn<?php echo $board_number; ?>" class="add_like liked" width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
                                 <span class="blind">cheering</span>
                                 <?php echo $cheering; ?>
@@ -687,7 +543,7 @@
                         </p>
                         <div class="ModalButtonView_button_wrap">
                             <button aria-label="cancel modal" type="button" class="ModalButtonView_button ModalButtonView_-cancel" onclick="closeDeleteCommentModal()">취소</button>
-                            <button aria-label="confirm modal" type="button" class="ModalButtonView_button ModalButtonView_-confirm" onclick="complteDeletedComment()">확인</button>
+                            <button aria-label="confirm modal" type="button" class="ModalButtonView_button ModalButtonView_-confirm" onclick="completeDeletedComment()">확인</button>
                         </div>
                     </div>
                 </div>

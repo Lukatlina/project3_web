@@ -192,47 +192,6 @@
                                         } catch (PDOException $e) {
                                             error_log("Failed to fetch initial posts: " . $e->getMessage());
                                         }
-
-
-
-                                
-
-                                        
-
-                                        for ($i = 0; $i < mysqli_num_rows($join_result); $i++) {
-                                            $board_row = mysqli_fetch_array($join_result);
-                                            $board_number = $board_row['board_number'];
-                                            $board_user_number = $board_row['user_number'];
-                                            $contents = $board_row['contents'];
-                                            $contents_save_time = $board_row['contents_save_time'];
-                                            $cheering = $board_row['cheering'];
-                                            $write_user_nickname = $board_row['nickname'];
-                                            
-                                            // $contents와 $board_number를 선언해야 find_image.php 파일 안에서 sql 조회가 가능하다.
-                                            // 이미지를 텍스트와 합친다.
-                                            include 'find_image.php';
-
-                                            // 날짜 포맷 변경을 위한 DateTime 함수 선언. 
-                                            $dateTime = new DateTime($contents_save_time);
-                                            // 현재 시간과 년도가 같다면 년도 생략, 다르다면 작성된 년도 출력
-                                            
-                                            if ($dateTime->format('Y')===date('Y')) {
-                                                $formattedDateTime = $dateTime->format('m. d. H:i');
-                                            }else{
-                                                $formattedDateTime  = $dateTime->format('Y. m. d. H:i');
-                                            }
-
-                                            include 'count_likes.php';
-
-                                            $posts[] = array(
-                                                'id' => $board_number,
-                                                'write_user_number' => $board_user_number,
-                                                'write_user_nickname' =>  $write_user_nickname,
-                                                'date_time' => $formattedDateTime,
-                                                'contents' => $contents,
-                                                'cheering' => $cheering,
-                                                'likes_row_count' => $likes_row_count);
-                                            }
                                         ?>
 
                                     <div class="FeedPostListView_container">

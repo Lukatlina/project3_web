@@ -1,4 +1,6 @@
-<?php include 'login_check.php';?>
+<?php 
+include_once 'config/config.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,22 +29,35 @@
         
         <div class="fullscreen_box" style="--display: flex; --flex-direction: column; --justify-content: space-between;">
         <?php
-            $serverName = "192.168.56.102";
-            $userName = "lunamoon";
-            $server_pw = "digda1210";
-            $email = $_SESSION['email'];
-            
-            $conn = mysqli_connect( $serverName , $userName , $server_pw , "weverse" );
-            $sql = "SELECT nickname, first_name, last_name, password FROM user WHERE email='$email';";
-            $result = mysqli_query( $conn, $sql );
-            
-            while( $row = mysqli_fetch_array( $result ) ) {
-                $nickname =  $row[ 'nickname' ];
-                $first_name = $row[ 'first_name' ];
-                $last_name = $row[ 'last_name' ];
-                $password = $row[ 'password' ];
-             
-                } 
+            $email = $_SESSION['email'] ?? null;
+            // 2. (초기화) 변수 기본값 설정
+            $nickname = '';
+            $firstName = '';
+            $lastName = '';
+            $password = '';
+
+
+            if ($email) {
+                try {
+                    // SQL Injection 방지를 위해 ? 사용
+                    $sql = "SELECT nickname, first_name, last_name, password FROM user WHERE email = ?";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute([$email]);
+
+                    // mysqli_fetch_array 대신 fetch 사용
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+                    if ($row) {
+                        $nickname =  $row[ 'nickname' ];
+                        $firstName = $row[ 'first_name' ]; // (수정) first_name
+                        $lastName = $row[ 'last_name' ];  // (수정) last_name
+                        $password = $row[ 'password' ];
+                    }
+                } catch (PDOException $e) {
+                    // 에러 발생 시 로그 남기기
+                    error_log("Failed to fetch user data for withdraw page: " . $e->getMessage());
+                }
+            }
         ?>
             <header class="withdraw_header">
                 <h1 class="withdraw_header_text">Weverse 탈퇴</h1>
@@ -62,7 +77,6 @@
                 </div>
             </header>
             <form id="form_withdraw" class="form_withdraw" method="POST">
-                <!-- <input type="hidden" name="withdraw_email" value="<?php echo $_POST['email'];?>"> -->
                 <header>
                     <p>유의 사항을 충분히 숙지하고 동의하신다면, 아래 문구를 직접 입력해주세요.</p>
                     <p>Weverse 탈퇴</p>
