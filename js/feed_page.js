@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-let modal = document.getElementById("post-create-modal");
-=======
+
 let postCreateModal = document.getElementById("post-create-modal");
->>>>>>> refactor/pdo-migration
 // 이미지 파일을 추가할 때마다 저장할 배열 변수 선언 
 let pendingUploadFiles = [];
 let filesToSubmit = [];
@@ -12,21 +9,12 @@ function openWriteTextModal() {
 }
 
 function closePostCreateModal() {
-<<<<<<< HEAD
-  modal.style.display = "none";
-  textBox.textContent = "위버스에 남겨보세요...";
-}
-
-
-const textBox = document.getElementById('post-editor-input');
-=======
   postCreateModal.style.display = "none";
   postCreateEditor.textContent = "위버스에 남겨보세요...";
 }
 
-
 const postCreateEditor = document.getElementById('post-editor-input');
->>>>>>> refactor/pdo-migration
+
 
 // 포커스가 갔을 때 
 postCreateEditor.addEventListener('focus', function () {
@@ -36,15 +24,10 @@ postCreateEditor.addEventListener('focus', function () {
     createPTag();
     this.classList.remove('placeholder');
     this.classList.add('active');
-<<<<<<< HEAD
-    let Modal_submit_btn = document.getElementById('post-submit-button');
-    if (textBox.textContent.trim() !== '' || images.length > 0) {
-      Modal_submit_btn.disabled = false;
-=======
+    
     let postCreateSubmitButton = document.getElementById('post-submit-button');
     if (postCreateEditor.textContent.trim() !== '' || images.length > 0) {
       postCreateSubmitButton.disabled = false;
->>>>>>> refactor/pdo-migration
     } else {
       postCreateSubmitButton.disabled = true;
     }
@@ -57,16 +40,7 @@ postCreateEditor.addEventListener('focus', function () {
 
 // 텍스트 박스에 텍스트가 입력될 때마다 검사하는 함수
 // 안에 텍스트가 있다면 버튼 활성화, 없다면 비활성화
-<<<<<<< HEAD
-textBox.addEventListener('input', function () {
-  let Modal_submit_btn = document.getElementById('post-submit-button');
-  let images = textBox.getElementsByTagName('img');
-  console.log("텍스트 박스 길이" + textBox.textContent.trim().length);
-  if (textBox.textContent.trim() !== '' && textBox.textContent.trim().length < 10000) {
-    Modal_submit_btn.disabled = false;
-  } else if (textBox.textContent.length > 10000) {
-    Modal_submit_btn.disabled = true;
-=======
+
 postCreateEditor.addEventListener('input', function () {
   let postCreateSubmitButton = document.getElementById('post-submit-button');
   let images = postCreateEditor.getElementsByTagName('img');
@@ -75,7 +49,6 @@ postCreateEditor.addEventListener('input', function () {
     postCreateSubmitButton.disabled = false;
   } else if (postCreateEditor.textContent.length > 10000) {
     postCreateSubmitButton.disabled = true;
->>>>>>> refactor/pdo-migration
     alert("게시글은 9,999자까지만 작성할 수 있습니다.");
   } else if (images.length > 0) {
     postCreateSubmitButton.disabled = false;
@@ -187,13 +160,9 @@ function savePost() {
 
 
 
-<<<<<<< HEAD
-let listbox;
-let beforeListBox;
-=======
+
 let currentOpenDropdownMenu;
 let previouslyOpenDropdownMenu;
->>>>>>> refactor/pdo-migration
 
 function clickListBox(board_number) {
 
@@ -280,15 +249,10 @@ function openModifyPostModal(board_number) {
         // 응답 결과에 따라 처리
         var post = JSON.parse(xhr.responseText);
         let text = post.contents;
-<<<<<<< HEAD
-        ModifytextBox.innerHTML = text;
-        saved_contents = ModifytextBox.textContent.trim();
-        modifying_board_number = post.boardNumber;
-=======
+
         postModifyEditor.innerHTML = text;
         originalPostContent = postModifyEditor.textContent.trim();
         currentEditingPostId = post.boardNumber;
->>>>>>> refactor/pdo-migration
       } else {
         console.log("POST 요청 실패");
       }
@@ -600,11 +564,8 @@ function getImageFiles(event) {
 // 4-1. HTML input 태그(type이 file이고 accept속성이 image/*며 id가 ape)를 자바스크립트로 HTML의 태그의 id값이 ape인지 확인해서 가져온다.
 // 유저가 올린 이미지를 가져온다.
 // HTML에서 id가 ape인 input태그 객체를 가져온다.
-<<<<<<< HEAD
-let inputimageElement = document.getElementById("post-image-input");
-=======
+
 let postImageInput = document.getElementById("post-image-input");
->>>>>>> refactor/pdo-migration
 
 // 이미지 파일의 요소가 변경이 되었을 때 change 이벤트가 발생하게 된다.
 // 이벤트 발생시 getImageFiles 함수가 시작이 된다.
@@ -734,13 +695,9 @@ function deletePreview(imagePreviewContainer) {
 // 2. 동영상 선택 후 확인을 누르면 동영상 프리뷰 화면이 뜨면서 어떤 영상을 추가했는지 확인 할 수 있음. jpg의 썸네일과 영상의 길이가 함께 뜬다.
 // HTML input 태그(type이 file이고 accept속성이 "video/mp4, video/*"며 id가 ave)를 자바스크립트로 HTML의 태그의 id값이 ape인지 확인해서 가져온다.
 let inputvideoElement = document.getElementById("post-video-input");
-<<<<<<< HEAD
-let secondinputimage = document.getElementById("apei");
-let secondinputvideo = document.getElementById("avei");
-=======
+
 let previewModalImageInput = document.getElementById("apei");
 let previewModalVideoInput = document.getElementById("avei");
->>>>>>> refactor/pdo-migration
 
 previewModalImageInput.addEventListener('change', getImageFiles);
 previewModalVideoInput.addEventListener('change', getVideoFiles);
@@ -789,85 +746,8 @@ function closeAddVideoModal() {
   deletePreview(videoPreviewContainer);
 }
 
-<<<<<<< HEAD
-// 이미지 추가 확인 버튼, 이미지가 textbox로 넘어가게 된다.
-// 4-7. 이미지 쓰기에서 확인을 누르면 에디터 화면에 이미지들이 뜨도록 만든다.
-function confirmAddVideoModal() {
-  if (textBox.textContent.trim() === "위버스에 남겨보세요...") {
-    textBox.textContent = '';
-  }
-  previewVideoModal.style.display = "none";
 
-  console.log("업로드파일" + uploadFiles.length);
 
-  for (let i = 0; i < uploadFiles.length; i++) {
-    if (modal.style.display === "flex") {
-      let images = textBox.getElementsByTagName('img');
-      // 등록 버튼을 누를 때 사용할 리스트에 데이터를 추가해준다.
-      const uploadFilesElement = uploadFiles[i]['destinationPath'];
-      const img = document.createElement('img');
-      img.setAttribute('src', uploadFilesElement);
-        if (images.length === 0) {
-          img.setAttribute('id', 'newAttachment_'+1);
-          submitFiles.push({id: 1, uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'video');
-        } else {
-          img.setAttribute('id', 'newAttachment_'+ (images.length + 1));
-          submitFiles.push({id: (images.length + 1), uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'video');
-        }
-      textBox.appendChild(img);
-      Modal_submit_btn.disabled = false;
-    
-    }else if (modal.style.display !== "flex" || modal.style.display === '') {
-      let images = ModifytextBox.getElementsByTagName('img');
-      const uploadFilesElement = uploadFiles[i]['destinationPath'];
-      const img = document.createElement('img');
-      img.setAttribute('src', uploadFilesElement);
-        if (images.length === 0) {
-          // img.setAttribute('id', 1);
-          img.setAttribute('id', 'newAttachment_'+ 1);
-          submitFiles.push({id: 1, uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'video');
-        } else {
-          // id 속성 값 중 가장 큰 값을 찾는다.
-          let maxId = 0;
-            for (let i = 0; i < images.length; i++) {
-              let id = parseInt(images[i].getAttribute('id'));
-              if (images[i].getAttribute('id').split('_')[0] == 'newAttachment') {
-                id = parseInt(images[i].id.split('_')[1]);
-              }
-              
-              if (!isNaN(id) && id > maxId) {
-                maxId = id;
-              }
-            }
-            
-          // 가장 큰 값에 +1을 해서 겹치지 않도록 해준다.
-          // img.setAttribute('id', maxId + 1);
-          img.setAttribute('id', 'newAttachment_'+ (maxId + 1));
-          // 파일구별을 위해 id값 추가
-          submitFiles.push({id: (maxId + 1), uploadfile : uploadFiles[i]});
-          img.setAttribute('widget-type', 'video');
-        }
-      // textBox에 새로운 이미지 추가
-      ModifytextBox.appendChild(img);
-      modify_modal_submit_btn.disabled = false;
-      
-
-    }else{
-    }
-  }
-  
-  deletePreview(thumbnail_content);
-  // submitFiles에 추가해줘서 데이터는 남아있기 때문에 preview 때 사용하는 uploadFiles를 비워준다.
-  // 만약 비워주지 않으면 동영상을 다시 추가했을 때 이전에 추가했던 데이터가 중복으로 올라가게 된다.
-  uploadFiles = [];
-
-}
-=======
-
->>>>>>> refactor/pdo-migration
 
 
 function changeMaximumLikes(board_number) {

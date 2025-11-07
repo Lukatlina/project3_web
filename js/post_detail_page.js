@@ -296,59 +296,8 @@ function updateLike(board_number, comment_number = null) {
     return;
   }
 
-<<<<<<< HEAD
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "post/like_update_process.php", true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-      if (xhr.status === 200) {
-        console.log("POST 요청 성공");
-        var response = xhr.responseText;
-        console.log("response: " + response);
-        // 응답 결과에 따라 처리
-        if (response !== "") {
-          let emotion_btn = document.getElementById("EmotionButtonView_button_emotion" + comment_number);
-          let textNode = emotion_btn.lastChild;
-          if (textNode.nodeType === Node.TEXT_NODE) {
-            if (response === '0') {
-              textNode.textContent = null;
-            }else{
-              textNode.textContent = response;
-            }
-          }
-          // resetLikes(board_number);
-          // location.reload();
-          console.log("changeMaximumLikes() 끝");
-        } else {
-          console.log("response 오류");
-          return;
-        }
-      } else {
-        console.log("POST 요청 실패");
-      }
-    }
-  };
-  xhr.send(formData);
-}
 
-
-function changeMaximumLikes(board_number) {
-  console.log("changeMaximumLikes() 시작");
-  // 버튼 클릭시 버튼의 색이 바뀐다. 하얀색 -> 컬러 전체 좋아요 +1
-  // 컬러 -> 하얀색 전체 좋아요 -1
-  // 먼저 버튼의 색이 바뀐 후 전체 좋아요 수가 바뀌게 된다.
-  // 좋아요 DB에 저장을 하기 위해서는 board_number와 user_number가 필요하다.
-
-  let button = document.getElementById('like_btn' + board_number);
-
-  // POST로 보낼 formData
-  let formData = new FormData();
-  formData.append("board_number", board_number);
-  
-  // 버튼에 liked 클래스가 있는지 확인하기. 이 클래스가 없다면 클릭시 컬러버튼이 되면서 이 유저의 좋아요를 포함한 최대 좋아요 수가 보여야 한다.
-=======
   // 3. (공통 로직) 버튼 상태에 따라 formData 설정
->>>>>>> refactor/pdo-migration
   if (!button.classList.contains('liked')) {
     button.classList.add('liked');
     formData.append('is_button', true);
@@ -505,11 +454,8 @@ function makeComment(comment) {
   postHeaderViewWrapDiv.classList.add('PostHeaderView_header_wrap', 'PostHeaderView_-header_type_post', 'PostHeaderView_-comment_depth1');
 
   // 프로필 생성 함수
-<<<<<<< HEAD
-  var postHeaderViewGroupWrapDiv = createProfile_area(depth, comment.writeUserNickname, comment.dateTime);
-=======
+
   var postHeaderViewGroupWrapDiv = createProfileArea(depth, comment.writeUserNickname, comment.dateTime);
->>>>>>> refactor/pdo-migration
 
   postHeaderViewWrapDiv.appendChild(postHeaderViewGroupWrapDiv);
   commentContentDiv.appendChild(postHeaderViewWrapDiv);
@@ -957,11 +903,8 @@ function makeReply(reply) {
   var postHeaderViewWrapDiv = document.createElement('div');
   postHeaderViewWrapDiv.classList.add('PostHeaderView_header_wrap', 'PostHeaderView_-header_type_post', 'PostHeaderView_-comment_depth2');
 
-<<<<<<< HEAD
-  var postHeaderViewGroupWrapDiv = createProfile_area(depth,reply.writeUserNickname, reply.dateTime);
-=======
+
   var postHeaderViewGroupWrapDiv = createProfileArea(depth,reply.writeUserNickname, reply.dateTime);
->>>>>>> refactor/pdo-migration
 
   postHeaderViewWrapDiv.appendChild(postHeaderViewGroupWrapDiv);
   commentContentDiv.appendChild(postHeaderViewWrapDiv);
@@ -1050,33 +993,7 @@ var openReply = false;
 //       console.log(pair[0] + ": " + pair[1]);
 //     }
 
-<<<<<<< HEAD
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "post_load_replies.php", true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          console.log("POST 요청 성공");
-          var replies = JSON.parse(xhr.responseText);
-          console.log(replies);
-          // 응답 결과에 따라 처리
-          if (replies !== "" && replies.length !== 0) {
-            // json에서 데이터를 하나씩 뽑아와서 추가해준다.
-            replies.forEach(reply => {
-              console.log('reply' + reply);
-              // 데이터를 불러와서 요소 생성 후 추가해줄 태그 찾기
-              const replyviewItemElements = document.querySelectorAll('[data-comment-alias="REPLY_COMMENT"]');
-              console.log('replyviewItemElements 길이 : ' + replyviewItemElements.length);
-              if (replyviewItemElements.length === 0) {
-                var replyItemDiv = makeReply(reply);
-                contentDiv.appendChild(replyItemDiv);
-              }else{
-                // 요소의 가장 마지막 태그의 뒤쪽에 추가해줄 것
-                const lastItemElement = replyviewItemElements[replyviewItemElements.length - 1];
-                var replyItemDiv = makeReply(reply);
-                lastItemElement.insertAdjacentElement('afterend', replyItemDiv);
-              }
-=======
+
 //     var xhr = new XMLHttpRequest();
 //     xhr.open("POST", "post_load_replies.php", true);
 //     xhr.onreadystatechange = function () {
@@ -1101,9 +1018,7 @@ var openReply = false;
 //                 const lastItemElement = replyviewItemElements[replyviewItemElements.length - 1];
 //                 var replyItemDiv = makeReply(reply);
 //                 lastItemElement.insertAdjacentElement('afterend', replyItemDiv);
-//               }
->>>>>>> refactor/pdo-migration
-              
+//               }              
 //             });
             
 //             console.log("Math.floor(number_of_reply / 10) : " + Math.floor(number_of_reply / 10));
@@ -1151,100 +1066,7 @@ var openReply = false;
 
 //   var wrap_comment_list = document.getElementById('wrap_comment_list'+parent_number);
   
-<<<<<<< HEAD
-
-  var wrap_comment_list = document.getElementById('wrap_comment_list'+parent_number);
-  
-  const replyviewItemElements = wrap_comment_list.querySelectorAll('[data-comment-alias="REPLY_COMMENT"]');
-  // 요소의 가장 마지막 태그의 뒤쪽에 추가해줄 것
-  const lastItemElement = replyviewItemElements[replyviewItemElements.length - 1];
-
-  var lastItemNumber = lastItemElement.getAttribute("data-comment-id");
-
-
-  let formData = new FormData();
-
-  formData.append("board_number", board_number);
-  formData.append("lastItemNumber", lastItemNumber);
-  formData.append("parent_number", parent_number);
-
-  for (var pair of formData.entries()) {
-    console.log(pair[0] + ": " + pair[1]);
-  }
-
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "post_load_replies.php", true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-      if (xhr.status === 200) {
-        console.log("POST 요청 성공");
-        var replies = JSON.parse(xhr.responseText);
-        console.log(replies);
-        // 응답 결과에 따라 처리
-        if (replies !== "" && replies.length !== 0) {
-          // json에서 데이터를 하나씩 뽑아와서 추가해준다.
-          replies.forEach(reply => {
-            console.log('reply' + reply);
-            // 데이터를 불러와서 요소 생성 후 추가해줄 태그 찾기
-            const replyviewItemElements = wrap_comment_list.querySelectorAll('[data-comment-alias="REPLY_COMMENT"]');
-            console.log('replyviewItemElements 길이 : ' + replyviewItemElements.length);
-            // 요소의 가장 마지막 태그의 뒤쪽에 추가해줄 것
-            const lastItemElement = replyviewItemElements[replyviewItemElements.length - 1];
-            var replyItemDiv = makeReply(reply);
-            lastItemElement.insertAdjacentElement('afterend', replyItemDiv);
-          
-          });
-
-          var element = document.getElementById("MoreRecentReplyView_link_more" + parent_number);
-          var pagination = parseInt(element.getAttribute("pagination")) + 1;
-          // && Math.floor(number_of_reply / 10) >= whole_page
-          
-          // 보여줄 데이터가 더 있다면 더보기 버튼을 생성해서 넣어준다.
-
-          console.log("replies.length : " + replies.length);
-          console.log("pagination : " + pagination);
-          console.log("Math.floor(number_of_reply / 10) : " + Math.floor(number_of_reply / 10));
-          if (pagination < Math.ceil(number_of_reply / 10)) {
-            // <a> 요소 생성
-            var linkMore = document.createElement("a");
-            linkMore.href = "#";
-            linkMore.classList.add('MoreRecentReplyView_link_more','-post');
-            linkMore.setAttribute("onclick", "loadMoreReply(" + board_number + "," + parent_number + "," + number_of_reply +")");            linkMore.setAttribute("id", "MoreRecentReplyView_link_more" + parent_number);
-            linkMore.setAttribute("pagination", pagination);
-            linkMore.textContent = "더보기";
-
-            
-
-            var contentDiv = document.getElementById('plusReplybtn'+parent_number);
-            // <a>를 <div>에 추가
-            contentDiv.appendChild(linkMore);
-            element.remove();
-          }else{
-            element.remove();
-          }
-
-          
-
-        } else {
-          console.log("posts 오류");
-          return;
-        }
-      } else {
-        console.log("POST 요청 실패");
-      }
-    }
-  };
-  xhr.send(formData);
-}
-
-
-
-
-
-//   const commentviewItemElements = document.querySelectorAll('.comment_item.CommentView_comment_item');
-=======
 //   const replyviewItemElements = wrap_comment_list.querySelectorAll('[data-comment-alias="REPLY_COMMENT"]');
->>>>>>> refactor/pdo-migration
 //   // 요소의 가장 마지막 태그의 뒤쪽에 추가해줄 것
 //   const lastItemElement = replyviewItemElements[replyviewItemElements.length - 1];
 
@@ -1262,11 +1084,8 @@ var openReply = false;
 //   }
 
 //   var xhr = new XMLHttpRequest();
-<<<<<<< HEAD
-//   xhr.open("POST", "post_load_comments.php", true);
-=======
+
 //   xhr.open("POST", "post_load_replies.php", true);
->>>>>>> refactor/pdo-migration
 //   xhr.onreadystatechange = function () {
 //     if (xhr.readyState === XMLHttpRequest.DONE) {
 //       if (xhr.status === 200) {

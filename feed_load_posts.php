@@ -6,7 +6,7 @@
 4. for문으로 보여줄 수 있다면 스크롤 예제를 찾은 후 예제를 맞게 고친다.
 */
 
-include 'server_connect.php';
+include_once 'config/config.php';
 
 $userNumber = (int)($_SESSION['user_number'] ?? 0);
 $lastItemNumber = (int)($_POST['lastItemNumber'] ?? 0);

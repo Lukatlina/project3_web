@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    include_once 'config/config.php';
 ?>
 
 <!DOCTYPE html>
@@ -15,19 +15,34 @@
 </head>
 <body>
     <?php
+        // 2. 변수 가져오기 (타입 캐스팅 및 Null 병합 연산자 사용)
+        $board_number = (int)($_GET['board'] ?? 0);
+        $user_number = 0; // 기본값 초기화
+        $contents = ""; // 기본값 초기화
 
-        $serverName = "192.168.56.102";
-        $userName = "lunamoon";
-        $server_pw = "digda1210";
-        $board_number = $_GET['board'];
-        
-        $conn = mysqli_connect( $serverName , $userName , $server_pw , "weverse" );
-        $sql = "SELECT board_number, contents, user_number FROM board WHERE board_number='$board_number';";
-        $result = mysqli_query( $conn, $sql );
-        
-        // 유저 고유번호와 닉네임을 함께 조회해서 가져온다.
-        $row = mysqli_fetch_assoc($result);
-        $user_number = $row['user_number'];          
+        if ($board_number > 0) {
+            try {
+                // 3. (변경) SQL Injection 방지를 위해 ? (placeholder) 사용
+                $sql = "SELECT board_number, contents, user_number FROM board WHERE board_number = ?";
+                
+                // 4. (변경) $pdo로 쿼리 준비 및 실행
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$board_number]);
+
+                // 5. (변경) mysqli_fetch_assoc 대신 fetch
+                $row = $stmt->fetch();
+
+                if ($row) {
+                    $user_number = $row['user_number'];
+                    // (★중요) set_modify_contents.php와 동일하게
+                    // injectMediaPaths 함수를 사용해서 원본 콘텐츠를 불러옵니다.
+                    $contents = injectMediaPaths($pdo, $board_number, $row['contents']);
+                }
+            } catch (PDOException $e) {
+                error_log("Failed to fetch post for modification: " . $e->getMessage());
+                $contents = "게시글을 불러오는 데 실패했습니다.";
+            }
+        }    
         ?>
 
     <div class="root">
@@ -75,7 +90,7 @@
                                         <input id="Modify_board_number" type="hidden" name="Modify_board_number" value="<?php echo $board_number;?>">
                                         <input id="Modify_user_number" type="hidden" name="Modify_user_number" value="<?php echo $user_number;?>">
                                         <div id="Modify_wevEditor" contenteditable="true" style="position: relative; outline: none;" class="cke_editable cke_editable_inline cke_contents_ltr" tabindex="0" spellcheck="false" role="textbox" aria-label="false">
-                                            <?php echo $row['contents'];?>
+                                            <?php echo $contents;?>
                                         </div>
                                     </form>
                                 </div>

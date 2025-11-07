@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
   
-
 /**
  * (변경) 함수가 $pdo를 인자로 받도록 수정 (의존성 주입)
  * @param PDO $pdo
