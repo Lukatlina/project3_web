@@ -8,4 +8,11 @@ ini_set('display_errors', 1);
 if (!session_id()) {
     session_start();
 }
+
+// 절대 경로 지정
+// 브라우저(Front-end) 기준 절대경로
+define('BASE_PATH', '');
+
+// 서버(Back-end) 기준 절대경로
+define('PROJECT_ROOT', __DIR__ . '/..');
 ?>

@@ -1,0 +1,715 @@
+body{
+    background-color: rgb(255, 255, 255);
+    color: rgb(32, 36, 41);
+    font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.4rem;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.4;
+    letter-spacing: normal;
+    width: 100%;
+}
+
+.user-data-header{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(32, 36, 41, 0.1) 0px 1px 0px 0px;
+    padding: 1.6rem 2.4rem;
+    height: 6.4rem;
+}
+
+.user-data-image{
+    flex: 1 1 0%;
+    text-align: left;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+}
+
+.user-logout-button{
+    padding: 0px;
+    margin: 0px;
+    appearance: none;
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    font-size: 1.6rem;
+    color: rgb(135, 142, 150);
+    text-align: right;
+}
+
+.main-image{
+    margin-bottom: 0px;
+}
+
+.clickable-main-image{
+    vertical-align: middle;
+}
+
+.fullscreen-box{
+    position: relative;
+    margin: 0px auto 2.4rem;
+    border: none;
+    border-radius: 0.8rem;
+    background-color: rgb(255, 255, 255);
+    --display: block;
+    --flex-direction: auto;
+    --justify-content: auto;
+    --header-height: 6.4rem;
+    --contents-horizontal-padding: 2.4rem;
+    --contents-min-height: 100vh;
+    display: var(--display);
+    flex-direction: var(--flex-direction);
+    -webkit-box-pack: var(--justify-content);
+    justify-content: var(--justify-content);
+    padding: 0 var(--contents-horizontal-padding,2.4rem);
+    min-height: calc(var(--contents-min-height,auto) - var(--header-height));
+}
+
+
+.box-section{
+    margin-bottom: 4.8rem;
+}
+
+
+
+.box-header{
+    padding: 0px;
+    margin: 0px 0px 2.4rem;
+    font-size: 2.4rem;
+}
+
+h3{
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.user-data-box{
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+}
+
+dl{
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.user-data-item{
+    margin-bottom: 2.4rem;
+}
+
+.user-label{
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: rgb(28, 29, 29);
+}
+
+dt {
+    display: block;
+}
+
+.current-user-data{
+    padding: 1.2rem 0px 0px;
+    margin: 0px;
+    position: relative;
+    font-size: 1.6rem;
+    color: rgb(32, 36, 41);
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    overflow-wrap: anywhere;
+}
+
+dd {
+    display: block;
+    margin-inline-start: 40px;
+}
+
+.mypage-change-button{
+    flex-shrink: 0;
+    margin-left: 20px;
+    margin: 0px;
+    appearance: none;
+    background: none;
+    outline: none;
+    display: inline-block;
+    padding: 0px 1.2rem;
+    width: auto;
+    height: 3.2rem;
+    border: 1px solid rgb(8, 204, 202);
+    border-radius: 0.4rem;
+    font-size: 1.4rem;
+    color: rgb(8, 204, 202);
+    font-weight: 700;
+    line-height: 3rem;
+    text-align: center;
+    transition: all 0.1s ease-out 0s;
+    cursor: pointer;
+}
+
+.current-user-data span{
+    word-break: break-word;
+}
+
+.encoded-password{
+    font-size: 0.1rem;
+}
+
+.circle-password{
+    display: inline-block;
+    margin-right: 0.4rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 0.4rem;
+    background-color: rgb(17, 17, 17);
+}
+
+
+
+@supports (height:100dvh){
+    .dialog-popup {
+        height: 100dvh;
+    }
+}
+
+.dialog-popup{
+    --dialog-vertical-margin: 0rem;
+    --dialog-header-height: 6.4rem;
+    --dialog-content-padding: 2rem;
+    --dialog-content-padding-top: 3.2rem;
+    --dialog-content-scroll: auto;
+    --dialog-max-width: none;
+    --dialog-border-radius: 0;
+    position: fixed;
+    inset: 0px;
+    display: none;
+    place-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+
+.dialog-box{
+    width: 100%;
+    max-width: var(--dialog-max-width,none);
+    border-radius: var(--dialog-border-radius,0);
+    background-color: white;
+}
+
+.password-dialog-box{
+    width: 100%;
+    max-width: var(--dialog-max-width,none);
+    border-radius: var(--dialog-border-radius,0);
+    background-color: white;
+    transform: translate(0%, 50px);
+}
+
+.dialog-header{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: var(--dialog-header-height);
+    border-bottom: 0.1rem solid rgb(235, 235, 235);
+    background-color: rgb(255, 255, 255);
+    box-sizing: border-box;
+}
+
+
+
+@supports (height:100dvh){
+    .dialog-box .dialog-header + .dialog-section {
+        height: calc(100dvh - var(--dialog-header-height));
+    }
+}
+
+.dialog-box .dialog-header + .dialog-section{
+    height: calc(100vh - var(--dialog-header-height));
+}
+
+
+
+
+.dialog-inner{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: calc(9rem);
+}
+
+
+.dialog-header-text{
+    padding: 0px;
+    margin: 0px;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: rgb(32, 36, 41);
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.dialog-section{
+    display: flex;
+    flex-direction: column;
+    padding-right: 48px;
+    padding-bottom: 48px;
+    padding-left: 48px;
+    padding-top: var(--dialog-content-padding-top,0);
+    background-color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    overflow-y: var(--dialog-content-scroll);
+}
+
+
+.dialog-inner{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: calc(9rem);
+}
+
+.dialog-inner header{
+    margin-bottom: 3rem;
+}
+
+header {
+    display: block;
+}
+
+.dialog-inner header h3{
+    padding: 0px;
+    margin: 0px 0px 2rem;
+    font-size: 2.6rem;
+    color: rgb(17, 17, 17);
+    line-height: 3.1rem;
+}
+
+.dialog-inner header h3 + p{
+    padding: 0px;
+    margin: 0px;
+    font-size: 1.6rem;
+    line-height: 138%;
+    font-weight: 400;
+    color: rgb(160, 160, 160);
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+
+.dialog-inner form {
+    padding-bottom: calc(9rem);
+}
+
+form {
+    display: block;
+    margin-top: 0em;
+}
+
+.change-form-box{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.nickname_change_label{
+    height: 1.6rem;
+    font-weight: 500;
+    font-size: 1.3rem;
+    color: rgb(109, 109, 109);
+}
+
+label {
+    cursor: default;
+}
+
+
+
+.dialog-inner footer{
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    display: flex;
+    padding-bottom: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    gap: 2rem;
+    border-radius: var(--dialog-border-radius,0);
+}
+
+
+
+.dialog-cancel-button{
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 5rem;
+    box-sizing: border-box;
+    border-radius: 0.4rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: rgb(255, 255, 255);
+    display: none;
+    border: 0px;
+    color: rgb(17, 17, 17);
+}
+
+.button-text{
+    z-index: 10;
+}
+
+.dialog-confirm-button{
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 5rem;
+    border: 0px;
+    box-sizing: border-box;
+    border-radius: 0.4rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(90deg, rgb(8, 204, 202) 0%, rgb(24, 231, 156) 100%);
+    color: rgb(255, 255, 255);
+}
+
+.form-check-message {
+    visibility: hidden;
+    color: rgb(253, 91, 21);
+}
+
+.current-password-check-message{
+    visibility: hidden;
+    display: inline-flex;
+    margin-top: 6.4px;
+    height: 25.6px;
+    font-weight: 400;
+    font-size: 19.2px;
+    color: rgb(253, 91, 21);
+}
+
+.current-password-check-area{
+    margin-top: 6.4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.member-withdraw-button{
+    padding: 1.6rem 0px;
+    border: 0px;
+    background-color: transparent;
+    font-size: 1.4rem;
+    color: rgb(135, 142, 150);
+    text-align: center;
+    cursor: pointer;
+}
+
+.withdraw_header{
+    padding-top: 6rem;
+}
+
+.withdraw_header_text{
+    padding: 0px;
+    margin: 0px 0px 1.6rem;
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: rgb(32, 36, 41);
+    line-height: 1.4;
+    white-space: pre-line;
+}
+
+h1 {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.withdraw_textbox{
+    padding: 1.8rem;
+    background-color: rgb(244, 244, 244);
+    border-radius: 0.8rem;
+    color: rgb(68, 68, 68);
+    margin-bottom: 2rem;
+}
+
+.withdraw_textbox strong {
+    display: block;
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    color: rgb(17, 17, 17);
+    font-weight: bold;
+}
+
+.withdraw_textbox ul {
+    font-size: 1.4rem;
+    line-height: 1.71;
+    padding-left: 1.7rem;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+::marker {
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
+    text-transform: none;
+    text-indent: 0px !important;
+    text-align: start !important;
+    text-align-last: start !important;
+}
+
+.form_withdraw header {
+    margin-bottom: 0.8rem;
+}
+
+.form_withdraw header p:first-child {
+    margin-bottom: 2rem;
+    line-height: 1.31;
+}
+
+.form_withdraw header p {
+    padding: 0px;
+    margin: 0px;
+    font-size: 1.6rem;
+    color: rgb(255, 56, 68);
+}
+
+.form_withdraw header p:last-child {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 1.8rem;
+    height: 5.6rem;
+    border-radius: 0.8rem;
+    background-color: rgb(255, 242, 243);
+    font-weight: 500;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+.form_withdraw_input {
+    width: 100%;
+    margin-top: 0.2rem;
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 1.8rem;
+    border: 0.1rem solid transparent;
+    background-color: rgb(244, 244, 244);
+    border-radius: 0.8rem;
+}
+
+.withdraw_confirmtext {
+    box-sizing: border-box;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    border: 0px none;
+    height: 4.2rem;
+    color: rgb(89, 95, 99);
+    outline: none;
+    font-weight: 500;
+    font-size: 1.5rem;
+    padding: 0px 0.2rem;
+    word-break: keep-all;
+}
+
+input, textarea {
+    appearance: none;
+}
+
+.form_withdraw_input_box .form_withdraw_input {
+    border-color: transparent;
+}
+
+.form_withdraw_input > .withdraw_confirmtext {
+    height: 5.6rem;
+}
+
+.form_withdraw_hr{
+    border: 0px;
+}
+
+.form_withdraw_button_box {
+    margin: 3rem 0px;
+}
+
+.form_draw_btn:disabled {
+    background: rgb(200, 200, 200);
+    cursor: not-allowed;
+}
+
+.form_draw_btn {
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 5rem;
+    border: 0px;
+    box-sizing: border-box;
+    border-radius: 0.4rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(90deg, rgb(8, 204, 202) 0%, rgb(24, 231, 156) 100%);
+    color: rgb(255, 255, 255);
+}
+
+.form_draw_btn::before {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    transition: all 0.5s ease 0s;
+    content: "";
+}
+
+.withdraw_btn {
+    z-index: 10;
+}
+
+@media screen and (min-width: 768px){
+    body {
+        background-color: rgb(250, 251, 252);
+    }
+
+    .fullscreen-box {
+        --contents-horizontal-padding: 4.8rem;
+        --contents-min-height: 72.3rem;
+    }
+    .fullscreen-box {
+        margin: 2.4rem auto;
+        padding: 0px 4.8rem;
+        width: 67rem;
+        border: 1px solid rgb(245, 247, 250);
+    }
+
+    .dialog-popup {
+        --dialog-vertical-margin: 3rem;
+        --dialog-content-padding: 4.8rem;
+        --dialog-max-width: 49.6rem;
+        --dialog-border-radius: 0.8rem;
+    }
+
+    .dialog-header {
+        padding-top: 5rem;
+        padding-bottom: 2.6rem;
+        height: auto;
+        border: 0px;
+    }
+
+    .screen-box {
+        padding: 4.8rem 0px;
+    }
+
+    .screen-box {
+        padding: 2.4rem 0px;
+    }
+
+    .box-header {
+        font-size: 3.2rem;
+    }
+
+    .dialog-box .dialog-header + .dialog-section {
+        height: auto;
+    }
+
+    .dialog-inner {
+        margin-top: -3.2rem;
+    }
+
+    .dialog-header-text {
+        padding-left: var(--dialog-content-padding,0);
+        font-size: 2rem;
+        text-align: left;
+    }
+
+    .dialog-inner form {
+        padding-bottom: 0px;
+    }
+
+    .dialog-inner footer {
+        position: absolute;
+        margin: calc(var(--dialog-content-padding,2rem) * -1);
+        width: calc(100% + var(--dialog-content-padding,2rem) * 2);
+        }
+
+        .dialog-cancel-button {
+        display: block;
+    }
+
+    .dialog-confirm-button {
+        background: rgb(255, 255, 255);
+        color: rgb(8, 204, 202);
+    }
+
+    .dialog-inner {
+        margin-top: -3.2rem
+    }
+
+    .form_withdraw_button_box {
+        margin-bottom: 6rem;
+    }
+}
