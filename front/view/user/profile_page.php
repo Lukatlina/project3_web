@@ -1,7 +1,13 @@
 <?php 
     include_once __DIR__ . '/../../../config/config.php';
+    include_once PROJECT_ROOT .'/back/feature/auth/check_auto_login.php';
 
-$email = $_SESSION['email'] ?? null;
+    $email = $_SESSION['email'] ?? null;
+
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: ' . BASE_PATH . '/front/view/auth/login_notice_popup.php'); // 로그인되지 않은 경우 로그인 페이지로 이동하게 된다
+        exit();
+    }
 // if (empty($email)) {
 //     // (개선) 로그인이 안되어있으면 auth/login_page.php로 보냅니다.
 //     header("Location: ../auth/login_page.php");
@@ -39,7 +45,6 @@ $email = $_SESSION['email'] ?? null;
                 </a>
                 <button class="user-logout-button" onclick="logoutUser()">로그아웃</button>
         </header>
-        
         <div class="fullscreen-box">
         <?php
             try {
@@ -52,7 +57,6 @@ $email = $_SESSION['email'] ?? null;
                 $firstName = $row['first_name'] ?? '';
                 $lastName = $row['last_name'] ?? '';
                 $password = $row[ 'password' ] ?? '';
-
             } catch (\PDOException $e) {
                 die("Failed to fetch user data: " . $e->getMessage());
             }
