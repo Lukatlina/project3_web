@@ -19,15 +19,14 @@ if ($userToken) {
     $user = $stmt->fetch();
 
     if ($user) {
-      // 유저 고유번호와 닉네임을 함께 조회해서 가져온다.
+      // 유저 고유번호와 이메일을 함께 조회해서 가져온다.
       $_SESSION['user_number'] = $user['user_number'];
       $_SESSION['email'] = $user['email'];
       $_SESSION['loggedin'] = true;
     } else {
-      // 6. (추가) 쿠키는 있지만 DB에 없는(가짜) 토큰일 경우
-        $_SESSION['loggedin'] = false;
+      // 6. 쿠키는 있지만 DB에 없는(가짜) 토큰일 경우
+      $_SESSION['loggedin'] = false;
     }
-
   } catch (PDOException $e) {
     error_log("Auto login query failed: " . $e->getMessage());
     $_SESSION['loggedin'] = false;

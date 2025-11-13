@@ -54,10 +54,10 @@ function loadData() {
             var response = xhr.responseText.trim();
             console.log("response: " + response);
             // 응답 결과에 따라 처리
-            if (response === "1") {
-              form.action = BASE_PATH + "/front/view/auth/login_page.php";
-            } else if (response === "0") {
+            if (response === "0") {
               form.action = BASE_PATH + "/front/view/auth/register_page.php";
+            } else if (response === "1") {
+              form.action = BASE_PATH + "/front/view/auth/login_page.php";
             } else if (response === "2") {
               email_check.textContent = "탈퇴한지 90일이 지나지 않은 이메일입니다.";
               email_check.style.color = "rgb(253, 91, 21)";
