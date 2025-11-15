@@ -397,7 +397,7 @@ a {
 }
 
 .add_comment_like.liked {
-    background-image: url(../image/small_like_btn.svg);
+    background-image: url(/res/image/small_like_btn.svg);
 }
 
 

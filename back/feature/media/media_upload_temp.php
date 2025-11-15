@@ -1,5 +1,5 @@
 <?php
-include_once '../config/config.php';
+include_once __DIR__ . '/../../../config/config.php';
 // TODO:
 /*
 4. 1초 부분의 이미지를 추출하고 기존과 같이 저장한다.
@@ -15,7 +15,7 @@ try {
     }
 
     $files = $_FILES['files'];
-    $uploadDir = '../uploads/'; // (★경로) 임시 업로드 폴더
+    $uploadDir = PROJECT_ROOT . '/uploads/temp/'; // (★경로) 임시 업로드 폴더
     $userNumber = $_SESSION['user_number'];
 
     if (!is_dir($uploadDir)) {
@@ -71,11 +71,14 @@ try {
                 throw new Exception('FFmpeg thumbnail extraction failed for ' . $originalName);
             }
 
+            $videoWebPath = BASE_PATH . '/uploads/temp/' . $videoFileName;
+            $thumbWebPath = BASE_PATH . '/uploads/temp/' . $thumbFileName;
+
             // 1c. (★중요) JS가 원하는 JSON 형식 맞추기
             $item = [
-                "destinationPath" => $thumbDestinationPath,    // 썸네일 경로
+                "destinationPath" => $thumbWebPath,    // 썸네일 경로
                 "fileName" => $thumbFileName,            // 썸네일 파일명
-                "videodestinationPath" => $videoDestinationPath, // 인코딩된 비디오 경로
+                "videodestinationPath" => $videoWebPath, // 인코딩된 비디오 경로
                 "videofileName" => $videoFileName,         // 인코딩된 비디오 파일명
             ];
 
@@ -88,9 +91,11 @@ try {
                 throw new Exception('Failed to move image file: ' . $originalName);
             }
 
+            $imageWebPath = BASE_PATH . '/uploads/temp/' . $imageFileName;
+
             // 2a. (★중요) JS가 원하는 JSON 형식 맞추기
             $item = [
-                "destinationPath" => $imageDestinationPath,
+                "destinationPath" => $imageWebPath,
                 "fileName" => $imageFileName
             ];
         } else {

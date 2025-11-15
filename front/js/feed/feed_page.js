@@ -1,19 +1,24 @@
 
 let postCreateModal = document.getElementById("post-create-modal");
+let postCreateSubmitButton = document.getElementById('post-submit-button');
+const postCreateEditor = document.getElementById('post-editor-input');
+
 // 이미지 파일을 추가할 때마다 저장할 배열 변수 선언 
 let pendingUploadFiles = [];
 let filesToSubmit = [];
 
 function openWriteTextModal() {
+  pendingUploadFiles = [];
   postCreateModal.style.display = "flex";
 }
 
 function closePostCreateModal() {
   postCreateModal.style.display = "none";
   postCreateEditor.textContent = "위버스에 남겨보세요...";
+  pendingUploadFiles = [];
+  filesToSubmit = [];
 }
 
-const postCreateEditor = document.getElementById('post-editor-input');
 
 
 // 포커스가 갔을 때 
@@ -25,7 +30,6 @@ postCreateEditor.addEventListener('focus', function () {
     this.classList.remove('placeholder');
     this.classList.add('active');
     
-    let postCreateSubmitButton = document.getElementById('post-submit-button');
     if (postCreateEditor.textContent.trim() !== '' || images.length > 0) {
       postCreateSubmitButton.disabled = false;
     } else {
@@ -227,6 +231,8 @@ let currentEditingPostId;
 
 // 수정 modal 오픈 후 set text를 위한 함수
 function openModifyPostModal(board_number) {
+  pendingUploadFiles = [];
+  filesToSubmit = [];
   postModifyModal.style.display = "flex";
 
   console.log("수정버튼 누를 때 모달 열림? " + postCreateModal.style.display);
@@ -283,7 +289,7 @@ postModifyEditor.addEventListener('input', function () {
 // 새로 추가한 이미지는 src 속성에서 base64 형식으로 보이기 때문에 src 속성값을 확인 한 뒤 저장한다.
 // php에서 DB 안에 같은 id 값이 있는지 여부 확인 후 update 하거나 새로 저장할 것.
 function saveModifiedPost() {
-  console.log("saveModifiedPost() 시작");
+console.log("saveModifiedPost() 시작");
 
   let formData = new FormData();
 
@@ -306,10 +312,10 @@ function saveModifiedPost() {
       // id 속성값을 함께 추가해준다.
 
       for (let x = 0; x < filesToSubmit.length; x++) {
-        const submitFile = filesToSubmit[x];
-        if (submitFile.id == element.id.split('_')[1]) {
+        const file = filesToSubmit[x];
+        if (file.id == element.id.split('_')[1]) {
           // json 문자열로 객체를 변환해서 보낸다.
-          formData.append('images[]', JSON.stringify(submitFile.uploadfile));
+          formData.append('images[]', JSON.stringify(file.uploadfile));
         }
       }
       
@@ -325,13 +331,13 @@ function saveModifiedPost() {
   
 
   // 이미지의 위치를 img 태그를 저장해서 텍스트에 표시해주기 위해서 innerHTML을 사용한다.
-  let postContentHtml = postModifyEditor.innerHTML;
+  let divContent = postModifyEditor.innerHTML;
   // 작성글의 길이를 확인하기 위해 textContent로 변수 선언
-  let postContentLength = postModifyEditor.textContent.trim().length
+  let confirmText = postModifyEditor.textContent.trim().length
 
   formData.append("board_number", currentEditingPostId);
-  formData.append("divContent", postContentHtml);
-  formData.append("confirmText", postContentLength);
+  formData.append("divContent", divContent);
+  formData.append("confirmText", confirmText);
 
 
   for (var pair of formData.entries()) {
@@ -360,7 +366,7 @@ function saveModifiedPost() {
     }
   };
   xhr.send(formData);
-  postModifyModal.style.display = "none";
+  ModifyModal.style.display = "none";
 
   console.log("saveModifiedPost() 끝");
 }
@@ -378,6 +384,8 @@ function returnModifyModal() {
 function closeModifyConfirmModal() {
   modifyConfirmCancelModal.style.display = "none";
   postModifyModal.style.display = "none";
+  pendingUploadFiles = [];
+  filesToSubmit = [];
 }
 
 let deletePostModal = document.getElementById("deletePostModal");
@@ -441,7 +449,7 @@ function saveTemporarySaveFile(files) {
   }
 
   for (var pair of formData.entries()) {
-    console.log(pair[0] + ": " + pair[1]);
+    console.log(pair[0] + "확인 :  " + pair[1]);
   }
 
   var xhr = new XMLHttpRequest();
@@ -550,7 +558,6 @@ function getImageFiles(event) {
 
   // 업로드 되는 파일들을 하나하나 저장하기 위해 선언한 배열로 선언한 변수
   saveTemporarySaveFile(files);
-
 
 
   previewPhotoModal.style.display = "flex";
@@ -704,6 +711,27 @@ previewModalVideoInput.addEventListener('change', getVideoFiles);
 // 이벤트 발생시 getImageFiles 함수가 시작이 된다.
 inputvideoElement.addEventListener('change', getVideoFiles);
 
+// 수정 모달의 새 ID를 위한 별도의 이벤트 리스너
+let modifyImageInput = document.getElementById("modify-image-input");
+let modifyVideoInput = document.getElementById("modify-video-input");
+
+if (modifyImageInput) {
+    modifyImageInput.addEventListener('change', getImageFiles);
+}
+if (modifyVideoInput) {
+    modifyVideoInput.addEventListener('change', getVideoFiles);
+}
+
+let previewAddImageInput = document.getElementById("preview-add-image-input");
+let previewAddVideoInput = document.getElementById("preview-add-video-input");
+
+if (previewAddImageInput) {
+    previewAddImageInput.addEventListener('change', getImageFiles);
+}
+if (previewAddVideoInput) {
+    previewAddVideoInput.addEventListener('change', getVideoFiles);
+}
+
 // 이벤트 발생한 타겟의 파일을 files 변수에 할당한다.
 // files를 console.log()를 통해서 출력해본다.
 
@@ -803,8 +831,6 @@ function changeMaximumLikes(board_number) {
               textNode.textContent = response;
             }
           }
-          // resetLikes(board_number);
-          // location.reload();
           console.log("changeMaximumLikes() 끝");
         } else {
           console.log("response 오류");
@@ -955,7 +981,7 @@ nestedDivElement3.appendChild(nestedDivElement4);
 // 중첩 <div> 요소 내부 <div> 요소 내부 첫 번째 중첩 <div> 요소 내부 <div> 요소 내부 <img> 요소 생성
 var nestedImgElement = document.createElement('img');
 nestedImgElement.className = 'ProfileThumbnailView_thumbnail';
-nestedImgElement.src = 'image/icon_empty_profile.png';
+nestedImgElement.src = BASE_PATH + '/../../../res/image/icon_empty_profile.png';
 nestedImgElement.width = '36';
 nestedImgElement.height = '36';
 // 요소 추가
@@ -1091,7 +1117,7 @@ if (post.likesRowCount === 1) {
 
     // 텍스트 노드 생성
     // json에서 'null'이 아닌 null값을 넣어줬다면 꺼내서 비교시에도 null 그대로 비교해야함
-    if (post.cheering === '0' || post.cheering === null) {
+    if (post.cheering === 0 || post.cheering === '0' || post.cheering === null) {
       var textNode = document.createTextNode('');
     }else{
       var textNode = document.createTextNode(post.cheering);

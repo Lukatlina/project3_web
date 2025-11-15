@@ -167,7 +167,7 @@
                                             $contentsSaveTime = $post['contents_save_time'];
 
                                             // 5. (★핵심 변경) 'include find_image.php' -> 'injectMediaPaths()' 함수 호출
-                                            $processedContents = injectMediaPaths($pdo, $boardNumber, $contents);
+                                            $processedContents = injectMediaPaths($pdo, $boardNumber, $contents, 'feed');
 
                                             // 6. (변경) 날짜 포맷팅
                                             $dateTime = new DateTime($contentsSaveTime);
@@ -241,9 +241,6 @@
                                                             <div class="PostListItemView_button_item">
                                                                 <button id="EmotionButtonView_button_emotion<?php echo $post['id']; ?>" type="button" class="EmotionButtonView_button_emotion" aria-pressed="false" onclick="changeMaximumLikes(<?php echo $post['id']; ?>)">
                                                                     <?php
-                                                    
-                                                                    
-
                                                                     if ($post['likesRowCount'] === 1) : ?>
                                                                         <svg id="like_btn<?php echo $post['id']; ?>" class="add_like liked" width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                             
@@ -447,15 +444,15 @@
                             <div class="EditorWriteModalFooterView_container">
                                 <div class="EditorWriteModalFooterView_button_area">
                                     <div class="EditorWriteModalFooterView_button_icon_wrap -photo">
-                                        <label for="post-image-input" class="EditorWriteModalFooterView_button_icon">
+                                        <label for="modify-image-input" class="EditorWriteModalFooterView_button_icon">
                                             <span class="blind">Attach photo</span>
-                                            <input class="blind" id="post-image-input" type="file" multiple accept="image/*">
+                                            <input class="blind" id="modify-image-input" type="file" multiple accept="image/*">
                                         </label>
                                     </div>
                                     <div class="EditorWriteModalFooterView_button_icon_wrap EditorWriteModalFooterView_-video">
-                                        <label for="post-video-input" class="EditorWriteModalFooterView_button_icon">
+                                        <label for="modify-video-input" class="EditorWriteModalFooterView_button_icon">
                                             <span class="blind">Attach photo</span>
-                                            <input class="blind" id="post-video-input" type="file" multiple accept="video/mp4, video/*">
+                                            <input class="blind" id="modify-video-input" type="file" multiple accept="video/mp4, video/*">
                                         </label>
                                     </div>
                                 </div>
@@ -526,12 +523,13 @@
                                         <div class="wrap_preview">
                                             <div class="preview_content" data-editor-alias="wevEditor" id="image_content">
                                                 <div class="preview_item" id="preview_item_btn">
-                                                    <label for="post-image-input" class="add_more">
+                                                    <label for="preview-add-image-input" class="add_more">
                                                         <span class="blind">add more file</span>
                                                         <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M18.5 6C17.6716 6 17 6.67157 17 7.5V17H7.5C6.67157 17 6 17.6716 6 18.5C6 19.3284 6.67157 20 7.5 20H17V29.5C17 30.3284 17.6716 31 18.5 31C19.3284 31 20 30.3284 20 29.5V20H29.5C30.3284 20 31 19.3284 31 18.5C31 17.6716 30.3284 17 29.5 17H20V7.5C20 6.67157 19.3284 6 18.5 6Z" fill="#8E8E8E"></path>
                                                         </svg>
                                                     </label>
+                                                    <input class="blind" id="preview-add-image-input" type="file" multiple accept="image/*">
                                                 </div>
                                             </div>
                                         </div>
@@ -566,12 +564,13 @@
                                         <div class="wrap_preview">
                                             <div class="preview_content" data-editor-alias="wevEditor" id="thumbnail_content">
                                                 <div class="preview_item" id="thumbnail_item_btn">
-                                                    <label for="post-video-input" class="add_more">
+                                                    <label for="preview-add-video-input" class="add_more">
                                                         <span class="blind">add more file</span>
                                                         <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M18.5 6C17.6716 6 17 6.67157 17 7.5V17H7.5C6.67157 17 6 17.6716 6 18.5C6 19.3284 6.67157 20 7.5 20H17V29.5C17 30.3284 17.6716 31 18.5 31C19.3284 31 20 30.3284 20 29.5V20H29.5C30.3284 20 31 19.3284 31 18.5C31 17.6716 30.3284 17 29.5 17H20V7.5C20 6.67157 19.3284 6 18.5 6Z" fill="#8E8E8E"></path>
                                                         </svg>
                                                     </label>
+                                                    <input class="blind" id="preview-add-video-input" type="file" multiple accept="video/mp4, video/*">
                                                 </div>
                                             </div>
                                         </div>

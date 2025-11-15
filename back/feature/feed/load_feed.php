@@ -7,6 +7,7 @@
 */
 
 include_once __DIR__ . '/../../../config/config.php';
+include_once PROJECT_ROOT . '/back/common/functions.php';
 
 $userNumber = (int)($_SESSION['user_number'] ?? 0);
 $lastItemNumber = (int)($_POST['lastItemNumber'] ?? 0);
@@ -63,7 +64,7 @@ if ($scrollCount > 0 && $lastItemNumber > 0) {
 
             // 8. (★핵심 변경) `include 'find_image.php';` -> `injectMediaPaths()` 함수 호출
             // Step 3에서 만든 함수를 호출하여 $contents 안의 <img> 태그를 완성시킵니다.
-            $processedContents = injectMediaPaths($pdo, $boardNumber, $contents);
+            $processedContents = injectMediaPaths($pdo, $boardNumber, $contents, 'feed');
 
             // 9. (변경) 날짜 포맷팅 (기존 로직과 동일, 함수로 빼도 좋습니다)
             $dateTime = new DateTime($contentsSaveTime);

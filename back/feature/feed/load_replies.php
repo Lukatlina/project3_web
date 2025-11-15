@@ -4,6 +4,7 @@
 */
 
 include_once __DIR__ . '/../../../config/config.php';
+include_once PROJECT_ROOT . '/back/common/functions.php';
 
 $userNumber = (int)($_SESSION['user_number'] ?? 0);
 $lastItemNumber = (int)($_POST['lastItemNumber'] ?? 0); // JS에서 ''로 보낼 경우 0이 됨

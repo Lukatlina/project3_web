@@ -13,7 +13,6 @@ textarea.addEventListener('input', function() {
   });
 
 // 댓글창에 텍스트를 입력하면 저장하는 함수
-
 function saveCommentValue(board_number) {
   console.log("saveCommentValue() 시작");
   console.log(textarea.value);
@@ -29,7 +28,7 @@ function saveCommentValue(board_number) {
 }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", BASE_PATH + "../../../back/feature/feed/comment_create_process.php", true);
+  xhr.open("POST", BASE_PATH + "/back/feature/feed/comment_create_process.php", true);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -131,7 +130,7 @@ function completeDeletedComment() {
 }
 
 var xhr = new XMLHttpRequest();
-  xhr.open("POST", "post/post_delete_process.php", true);
+  xhr.open("POST", BASE_PATH + "/back/feature/feed/post_delete_process.php", true);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -219,7 +218,7 @@ function saveReplyValue(board_number, reply_number) {
 }
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "post/comment_create_process.php", true);
+  xhr.open("POST", BASE_PATH + "/back/feature/feed/comment_create_process.php", true);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -241,7 +240,7 @@ function saveReplyValue(board_number, reply_number) {
   };
   xhr.send(formData);
 
-console.log("saveCommentValue() 끝");
+console.log("saveReplyValue() 끝");
 }
 
 
@@ -308,7 +307,7 @@ function updateLike(board_number, comment_number = null) {
 
   // 4. (공통 로직) AJAX 요청
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "post/like_update_process.php", true);
+  xhr.open("POST", BASE_PATH + "/back/feature/feed/like_update_process.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
@@ -344,8 +343,6 @@ var scrolled = false;
 
 // 696 0 505
 const scrollableArea = document.querySelector('.CommentViewerView_scrollable_area');
-
-
 
 scrollableArea.addEventListener('scroll', function() {
   // 스크롤 요소의 높이와 스크롤 위치를 가져옵니다.
@@ -386,7 +383,7 @@ scrollableArea.addEventListener('scroll', function() {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "post/load_comments.php", true);
+    xhr.open("POST", BASE_PATH + "/back/feature/feed/load_comments.php", true);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
@@ -466,7 +463,7 @@ function makeComment(comment) {
   postHeaderViewWrapDiv.appendChild(postHeaderGroupWrapDiv);
   
   // 본문 생성
-  var content_textNode = document.createTextNode(comment.contents); // 추가할 텍스트 노드 생성
+  var content_textNode = document.createTextNode(comment.commentsText); // 추가할 텍스트 노드 생성
 
 
   // 새로운 <div> 요소 생성
@@ -482,7 +479,7 @@ function makeComment(comment) {
   divCommentActions.className = 'CommentView_comment_actions';
 
   // 좋아요 버튼 생성
-  var divLikeActionItem = createLikeCommentItem(comment.boardNumber, comment.id, comment.cheering, comment.likesRowCount);
+  var divLikeActionItem = createLikeCommentItem(comment.boardNumber, comment.id, comment.commentsCheering, comment.likesRowCount);
 
   // <div> 요소를 부모 요소에 추가
   divCommentActions.appendChild(divLikeActionItem);
@@ -532,7 +529,7 @@ function makeComment(comment) {
 
     var profileThumbnailViewImage = document.createElement('img');
     profileThumbnailViewImage.className = 'ProfileThumbnailView_thumbnail';
-    profileThumbnailViewImage.src = 'image/icon_empty_profile.png';
+    profileThumbnailViewImage.src = BASE_PATH + '/../../../res/image/icon_empty_profile.png';
 
     profileThumbnailViewImage.alt = '';
 
@@ -693,7 +690,7 @@ function createLikeCommentItem(board_number, id, cheering, likes_row_count) {
   buttonEmotion.classList.add('EmotionButtonView_button_emotion', 'EmotionButtonView_-comment', '-post');
   buttonEmotion.setAttribute('aria-pressed', 'false');
   buttonEmotion.onclick = function() {
-    changeCommentMaximumLikes(board_number, id);
+    updateLike(board_number, id);
   };
 
 
@@ -717,7 +714,7 @@ function createLikeCommentItem(board_number, id, cheering, likes_row_count) {
     spanBlind.textContent = "cheering";
 
     // 텍스트 노드 생성
-    if (cheering === '0' || cheering === null) {
+    if (cheering === 0 || cheering === '0' || cheering === null) {
       var textNode = document.createTextNode('');
     }else{
       var textNode = document.createTextNode(cheering);
@@ -1158,7 +1155,7 @@ function fetchReplies(board_number, parent_number, lastItemNumber, number_of_rep
   formData.append("parent_number", parent_number);
 
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "post/load_replies.php", true);
+  xhr.open("POST", BASE_PATH + "/back/feature/feed/load_replies.php", true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {

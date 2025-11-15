@@ -3,6 +3,7 @@
 1. board_number가 같으면서 부모댓글이 0인 댓글들을 comment_number의 역순으로 보여준다.
 */
 include_once __DIR__ . '/../../../config/config.php';
+include_once PROJECT_ROOT . '/back/common/functions.php';
 
 $userNumber = (int)($_SESSION['user_number'] ?? 0);
 $lastItemNumber = (int)($_POST['lastItemNumber'] ?? 0);

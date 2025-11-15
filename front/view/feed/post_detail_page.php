@@ -57,13 +57,17 @@
                 echo "게시글이 존재하지 않습니다.";
                 exit();
             }
-            
+
+
+ 
+
             // 5. (변경) HTML에서 사용할 변수들에 값 할당
             $contents = $boardRow['contents'];
             $cheering = $boardRow['cheering'];
             $nickname = $boardRow['nickname'];
             $dateTime = new DateTime($boardRow['contents_save_time']);
-            
+    
+
             // 6. (★핵심 변경★) 'include find_video.php' -> 'injectMediaPaths()' 함수 호출
             // Step 3에서 만든 함수를 호출하여 $contents 안의 미디어 태그를 완성시킵니다.
             // 이 결과($processedContents)를 HTML 렌더링에 사용할 것입니다.
@@ -174,7 +178,7 @@
                                 <div class="PostModalView_post_body">
                                     <div class="styles_scrollStartPointer undefined"></div>
                                     <div class="WeverseViewer">
-                                        <?php echo $contents;?>
+                                        <?php echo $processedContents;?>
                                         <div id="ve"></div>
                                     </div>
                                     <div>
@@ -361,13 +365,8 @@
                                                                                     </a>
                                                                                     <div class="PostHeaderView_info_wrap">
                                                                                         <span class="PostHeaderView_date">
-                                                                                            <?php
-                                                                                                if ($comment['dateTime']->format('Y')===date('Y')) {
-                                                                                                    echo $comment['dateTime']->format('m. d. H:i');
-                                                                                                }else{
-                                                                                                    echo $comment['dateTime']->format('Y. m. d. H:i');
-                                                                                            }
-                                                                                            ?></span>
+                                                                                            <?php echo $comment['dateTime'];?>
+                                                                                        </span>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -466,6 +465,7 @@
                                                                         <a href="#" class="MoreRecentCommentView_link_more -post" onclick="loadReply(<?php echo $comment['numberOfReply'] ?>, <?php echo $boardNumber ?>, <?php echo $comment['id']; ?>)">
                                                                             답글 <?php echo $comment['numberOfReply'] ?>개
                                                                         </a>
+                    
                                                                     </div>
                                                                 </div>
                                                             <?php endif ?>

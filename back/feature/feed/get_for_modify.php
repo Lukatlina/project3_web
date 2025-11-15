@@ -29,7 +29,7 @@ try {
     $contents = $row['contents'];
     // injectMediaPaths() 함수를 호출
     // 이 함수가 $pdo를 이용해 video, image를 모두 조회하고 HTML을 완성해줍니다.
-    $processedContents = injectMediaPaths($pdo, $boardNumber, $contents);
+    $processedContents = injectMediaPaths($pdo, $boardNumber, $contents, 'feed');
 
     $responseArray = [
         'boardNumber' => $row['board_number'],

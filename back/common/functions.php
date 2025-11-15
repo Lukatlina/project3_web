@@ -48,72 +48,96 @@ function getLikeStatus($pdo, $userId, $boardId, $commentId = null) {
  * @param string $contents 원본 HTML (<img> 태그의 src가 비어있음)
  * @return string 미디어(src)가 주입된 HTML
  */
-function injectMediaPaths($pdo, $boardNumber, $contents) {
+function injectMediaPaths(PDO $pdo, $board_number, $contents, $context = 'detail') {
+    
     try {
-        // 1. (변경) $sql: 변수를 ? 로 변경
-        // (기존 find_video.php의 SQL과 동일합니다)
-        $sql = "SELECT image_path, image_id, video_number, is_thumbnail 
-                FROM image 
-                WHERE board_number = ?";
+        // 1. $board_number로 모든 미디어 정보 한 번에 조회 (PDO Prepared Statement 사용)
+        $image_sql = "SELECT image_path, image_id, video_number, is_thumbnail 
+                      FROM image WHERE board_number = ?";
+        
+        $stmt = $pdo->prepare($image_sql);
+        $stmt->execute([$board_number]); // 파라미터 바인딩
 
-        // 2. (변경) PDO로 쿼리 준비 및 실행
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$boardNumber]);
-
-        /**
-         * 3. (변경) fetchAll(PDO::FETCH_ASSOC)
-         * mysqli_fetch_array를 루프(loop) 돌리는 대신,
-         * fetchAll()을 사용해 모든 미디어 정보를 한 번에 배열로 가져옵니다.
-         */
-        $mediaItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // 미디어가 없으면 원본 $contents를 그대로 반환
-        if (!$mediaItems) {
-            return $contents;
+        $images = array();
+        while ($image_row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // image_id를 키로 사용하는 배열로 재구성 (검색 속도 향상)
+            $images[$image_row['image_id']] = $image_row;
         }
 
-        // 4. (추가) 비디오 경로를 가져올 쿼리를 *미리* 준비합니다.
-        // (foreach 루프 안에서 매번 쿼리를 준비(prepare)하는 것은 비효율적입니다.)
-        $videoSql = "SELECT video_path FROM video WHERE board_number = ? AND video_number = ?";
-        $stmtVideo = $pdo->prepare($videoSql);
-
-        // 5. (로직 동일) 가져온 모든 미디어를 순회하며 $contents 수정
-        foreach ($mediaItems as $item) {
-            $imageId = $item['image_id'];
-            $isThumbnail = (int)$item['is_thumbnail']; // (int)로 형 변환
-            $pattern = '/<img id="' . preg_quote($imageId) . '">/'; // <img> 태그 찾기
-
-            if ($isThumbnail === 1) {
-                // --- 1. 비디오일 경우 (find_video.php의 if 로직) ---
-                $videoNumber = $item['video_number'];
-
-                // 5a. (변경) 미리 준비한 $stmtVideo를 실행 (mysqli_query 대신)
-                $stmtVideo->execute([$boardNumber, $videoNumber]);
-                $video = $stmtVideo->fetch(); // (mysqli_fetch_assoc 대신)
-                $videoPath = $video['video_path'] ?? ''; // video_path 가져오기
-
-                // 5b. (로직 동일) <img>를 <video> 태그로 교체
-                $replacement = "<video id=\"$imageId\" controls><source src=\"$videoPath\" type=\"video/mp4\"></video>";
-
-            } else {
-                // --- 2. 일반 이미지일 경우 (find_video.php의 elseif 로직) ---
-                $imagePath = $item['image_path'];
-
-                // 5c. (로직 동일) <img>에 src 속성만 주입
-                $replacement = "<img id=\"$imageId\" src=\"$imagePath\">";
-            }
-
-            // 6. (로직 동일) preg_replace로 $contents 안의 내용을 교체
-            $contents = preg_replace($pattern, $replacement, $contents);
+        // 미디어가 없으면 원본 반환 (mysqli_num_rows 대신 empty() 체크)
+        if (empty($images)) {
+            return $contents; 
         }
 
-        // 7. (변경) 모든 미디어 경로가 주입된 최종 $contents를 반환
-        return $contents;
+        // 2. 비디오 정보 미리 조회 (N+1 쿼리 방지)
+        $video_sql = "SELECT video_number, video_path FROM video WHERE board_number = ?";
+        $video_stmt = $pdo->prepare($video_sql);
+        $video_stmt->execute([$board_number]);
+        
+        // PDO::FETCH_KEY_PAIR : 1번 열(video_number)을 키로, 2번 열(video_path)을 값으로 하는
+        // 연관 배열을 자동으로 생성합니다. (매우 효율적)
+        $videos = $video_stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+
+
+        // 3. HTML 파싱 및 교체 (이 로직은 DB와 무관하므로 변경 없음)
+        $pattern = '/<img id="(\d+)">/'; // (예: <img id="1">)
+
+        $newContents = preg_replace_callback(
+            $pattern,
+            function ($matches) use ($images, $videos, $context) {
+                $imageId = $matches[1]; // "1"
+
+                // <img> 태그 ID에 해당하는 미디어 정보가 DB에 없으면, 태그 삭제
+                if (!isset($images[$imageId])) {
+                    return ''; // (또는 $matches[0]를 반환하여 원본 유지)
+                }
+
+                $image = $images[$imageId];
+                $is_thumbnail = (int)$image['is_thumbnail'];
+                $image_path = $image['image_path'];
+
+                $replacement_html = '';
+
+                // 2. --- 썸네일(비디오)일 경우 ---
+                if ($is_thumbnail === 1) {
+                    $video_number = $image['video_number'];
+                    // $videos 배열에서 키(video_number)로 경로(video_path)를 즉시 찾음
+                    $video_path = $videos[$video_number] ?? ''; 
+                    $image_path = $image['image_path']; // 썸네일 이미지 경로
+
+                    // [★ 핵심] $context에 따라 교체할 HTML 문자열을 "생성"
+                    if ($context === 'detail') {
+                        // "상세" 페이지: <video> 태그와 썸네일 <img> 태그 모두 생성
+                        $replacement_html = "<video id=\"video_$imageId\" controls><source src=\"$video_path\" type=\"video/mp4\"></video>";
+                                        
+                    } else {
+                        // "피드" 또는 "수정" 모달: 썸네일 <img> 태그만 생성
+                        $replacement_html = "<img id=\"$imageId\" src=\"$image_path\">";
+                    }
+
+                // 3. --- 일반 사진일 경우 ---
+                } else {
+        
+                    
+                    // "상세", "피드", "수정" 모두 <img> 태그 생성
+                    $replacement_html = "<img id=\"$imageId\" src=\"$image_path\">";
+                }
+
+                // 4. --- preg_replace 실행 ---
+                // $pattern에 일치하는 부분을 위에서 조건에 맞게 생성한 $replacement_html 문자열로 교체합니다.
+                return $replacement_html;
+            },
+            $contents
+        );
+
+        return $newContents;
 
     } catch (PDOException $e) {
-        error_log("injectMediaPaths failed: " . $e->getMessage());
-        // 에러 시 원본 $contents를 그대로 반환
-        return $contents; 
+        // 실제 운영 환경에서는 오류를 로깅해야 합니다.
+        // error_log("Media injection failed: " . $e->getMessage());
+        
+        // DB 오류 발생 시, 원본 콘텐츠를 그대로 반환하여 사이트가 깨지는 것을 방지
+        return $contents;
     }
 }
     

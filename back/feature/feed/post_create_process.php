@@ -32,8 +32,8 @@ try {
 
     if (!empty($imagesJson)) {
         // --- 8a. 이미지/비디오가 첨부된 경우 ---
-        $tempUploadDir = '../uploads/'; // (경로) 임시 폴더
-        $finalUploadDir = '../upload_images/' . $boardNumber . '/'; // (경로) 최종 저장 폴더
+        $tempUploadDir = PROJECT_ROOT . '/uploads/temp/'; // (경로) 임시 폴더
+        $finalUploadDir = PROJECT_ROOT . '/uploads/board/' . $boardNumber . '/'; // (경로) 최종 저장 폴더
 
         if (!is_dir($finalUploadDir)) {
             mkdir($finalUploadDir, 0755, true);
@@ -56,7 +56,7 @@ try {
             $thumbFileName = basename($imageInfo['fileName']);
             $tempThumbPath = $tempUploadDir . $thumbFileName;
             $finalThumbPath = $finalUploadDir . $thumbFileName;
-            $finalThumbDbPath = 'upload_images/' . $boardNumber . '/' . $thumbFileName; 
+            $finalThumbDbPath = BASE_PATH . '/uploads/board/' . $boardNumber . '/' . $thumbFileName; 
 
             if (file_exists($tempThumbPath) && copy($tempThumbPath, $finalThumbPath)) {
                 unlink($tempThumbPath); // 임시 파일 삭제
@@ -70,7 +70,7 @@ try {
                 $videoFileName = basename($imageInfo['videofileName']);
                 $tempVideoPath = $tempUploadDir . $videoFileName;
                 $finalVideoPath = $finalUploadDir . $videoFileName;
-                $finalVideoDbPath = 'upload_images/' . $boardNumber . '/' . $videoFileName; 
+                $finalVideoDbPath = BASE_PATH . '/uploads/board/' . $boardNumber . '/' . $videoFileName;
                 
                 if (file_exists($tempVideoPath) && copy($tempVideoPath, $finalVideoPath)) {
                     unlink($tempVideoPath); 
